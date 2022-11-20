@@ -2,6 +2,7 @@
 	path = Engine/vendor/glfw
 	url = https://github.com/glfw/glfw
 [submodule "Engine/vendor/glfw"]
-	url = https://github.com/glfw/glfw.git
+	url = https://github.com/glfw/glfw
+	path = Engine/vendor/glfw
 [submodule "./Engine/vendor/glfw"]
 	url = https://github.com/glfw/glfw.git
