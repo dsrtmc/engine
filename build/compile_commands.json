@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/dys/Documents/Projects/engine/build",
-  "command": "/usr/bin/g++   -g -o CMakeFiles/engine.dir/main.cpp.o -c /home/dys/Documents/Projects/engine/main.cpp",
-  "file": "/home/dys/Documents/Projects/engine/main.cpp"
-}
-]
