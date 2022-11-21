@@ -4,6 +4,14 @@
 
 #include <iostream>
 
+void ProcessInput(GLFWwindow *window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    {
+        glfwSetWindowShouldClose(window, 1);
+    }
+}
+
 int main(void)
 {
     GLFWwindow *window;
@@ -30,6 +38,7 @@ int main(void)
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+        ProcessInput(window);
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(SetTo1(), 0.05f, 0.2f, 1.0f);
