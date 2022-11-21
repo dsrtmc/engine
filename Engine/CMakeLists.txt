@@ -5,7 +5,7 @@ include(CTest)
 enable_testing()
 
 # Main library
-add_library(${PROJECT_NAME} src/Engine/Application.cpp)
+add_library(${PROJECT_NAME} src/Engine/Application.cpp src/Engine/Log.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC src/)
 

@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Log.h"
 
 #include <GLFW/glfw3.h>
 #include "spdlog/spdlog.h"
@@ -30,6 +31,7 @@ namespace Engine
 
         glfwMakeContextCurrent(window);
 
+        ENG_CORE_INFO("log from application.cpp");
         while (!glfwWindowShouldClose(window))
         {
             glClear(GL_COLOR_BUFFER_BIT);
