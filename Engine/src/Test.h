@@ -1,3 +1,6 @@
 #pragma once
 
-float SetTo1();
+namespace Engine
+{
+    float SetTo1();
+}

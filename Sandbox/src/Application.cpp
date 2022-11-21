@@ -41,7 +41,7 @@ int main(void)
         ProcessInput(window);
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
-        glClearColor(SetTo1(), 0.05f, 0.2f, 1.0f);
+        glClearColor(Engine::SetTo1(), 0.05f, 0.2f, 1.0f);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

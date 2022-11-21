@@ -2,7 +2,10 @@
 
 #include <iostream>
 
-float SetTo1()
+namespace Engine
 {
-    return 1.0f;
+    float SetTo1()
+    {
+        return 1.0f;
+    }
 }
