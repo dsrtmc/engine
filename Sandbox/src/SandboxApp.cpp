@@ -1,8 +1,19 @@
 #include <GLFW/glfw3.h>
 
-#include "Test.h"
-
 #include <iostream>
+
+#include "Engine.h"
+
+class Sandbox : public Engine::Application
+{
+public:
+    Sandbox()
+    {
+    }
+    ~Sandbox()
+    {
+    }
+};
 
 void ProcessInput(GLFWwindow *window)
 {
@@ -14,6 +25,10 @@ void ProcessInput(GLFWwindow *window)
 
 int main(void)
 {
+    // Sandbox *sandbox = new Sandbox();
+    // sandbox->Run();
+    // delete sandbox;
+    // return 0;
     GLFWwindow *window;
 
     /* Initialize the library */
@@ -23,14 +38,15 @@ int main(void)
     }
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(960, 540, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
         return -1;
     }
 
-    std::cout << glGetString(GL_VERSION) << std::endl;
+    // breaks logging after that point lol
+    // std::cout << glGetString(GL_VERSION) << std::endl;
 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
@@ -41,7 +57,7 @@ int main(void)
         ProcessInput(window);
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
-        glClearColor(Engine::SetTo1(), 0.05f, 0.2f, 1.0f);
+        glClearColor(1.0f, 0.05f, 0.2f, 1.0f);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
