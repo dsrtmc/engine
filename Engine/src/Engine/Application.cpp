@@ -17,12 +17,10 @@ namespace Engine
 
     void Application::Run()
     {
-        GLFWwindow *window;
-
         if (!glfwInit())
             return;
 
-        window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+        GLFWwindow *window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
         if (!window)
         {
             glfwTerminate();
