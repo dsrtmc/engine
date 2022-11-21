@@ -9,4 +9,6 @@ namespace Engine
         virtual ~Application();
         void Run();
     };
+
+    Application *CreateApplication();
 };

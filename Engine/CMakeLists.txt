@@ -4,6 +4,7 @@ project(engine VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
+# Main library
 add_library(${PROJECT_NAME} src/Engine/Application.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC src/)
