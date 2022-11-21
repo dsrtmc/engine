@@ -9,6 +9,9 @@ add_library(${PROJECT_NAME} src/Engine/Application.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC src/)
 
+# spdlog setup
+target_include_directories(${PROJECT_NAME} PUBLIC vendor/spdlog/include/)
+
 # GLFW setup
 set(OpenGL_GL_PREFERENCE GLVND)
 add_subdirectory(vendor/glfw)
