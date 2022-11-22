@@ -7,9 +7,9 @@ namespace Engine
     class Application
     {
     public:
-        Application();
-        virtual ~Application();
-        void Run();
+        Application() {}
+        virtual ~Application() {}
+        virtual void Run() = 0;
 
     private:
         Window *m_Window;

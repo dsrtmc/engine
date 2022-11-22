@@ -5,7 +5,7 @@ include(CTest)
 enable_testing()
 
 # Main executable
-add_executable(${PROJECT_NAME} Sandbox/src/SandboxApp.cpp)
+add_executable(${PROJECT_NAME} Sandbox/src/Sandbox.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
