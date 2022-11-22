@@ -1,11 +1,11 @@
 #pragma once
+#include <iostream>
 
 extern Engine::Application *Engine::CreateApplication();
 
-int main(int argc, char **argv)
+int main(void)
 {
-    // Engine::Log::Init();
-    // ENG_CORE_INFO("Initialized Log!");
+    Engine::Log::Init();
     auto app = Engine::CreateApplication();
     app->Run();
     delete app;
