@@ -28,6 +28,11 @@ find_package(OpenGL REQUIRED)
 target_link_libraries(${PROJECT_NAME} OpenGL::GL)
 target_include_directories(${PROJECT_NAME} PUBLIC vendor/glfw/include/)
 
+# glad setup
+add_subdirectory(vendor/glad)
+target_link_libraries(${PROJECT_NAME} glad)
+target_include_directories(${PROJECT_NAME} PUBLIC vendor/glad/include/)
+
 # not sure if needed, TODO: read docs
 # set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 # set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
