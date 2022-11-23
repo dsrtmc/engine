@@ -23,7 +23,6 @@ namespace Engine
         {
             ss << line << '\n';
         }
-        std::cout << "answer: " << ss.str() << std::endl;
         return ss.str();
     }
 
@@ -38,6 +37,14 @@ namespace Engine
     {
         std::string vertexSource = ParseShader(vertexShaderPath);
         std::string fragmentSource = ParseShader(fragmentShaderPath);
+        if (vertexSource == "")
+        {
+            ENG_WARN("Vertex shader not found");
+        }
+        if (fragmentSource == "")
+        {
+            ENG_WARN("Fragment shader not found");
+        }
 
         GLuint vs = CreateShader(vertexSource, GL_VERTEX_SHADER);
         GLuint fs = CreateShader(fragmentSource, GL_FRAGMENT_SHADER);
