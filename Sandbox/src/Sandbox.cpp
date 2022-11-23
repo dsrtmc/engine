@@ -1,9 +1,11 @@
 #include "Sandbox.h"
 #include <string>
 
+using namespace Engine;
+
 Sandbox::Sandbox()
 {
-    m_Window = Engine::Window::Create();
+    m_Window = Window::Create();
 }
 
 Sandbox::~Sandbox()
@@ -26,17 +28,16 @@ void Sandbox::Run()
     std::string version = std::string((const char *)glGetString(GL_VERSION));
     ENG_INFO("OpenGL version: {0}", version);
 
-    ENG_INFO("Current directory: {0}", __FILE__);
     // Filepaths are relative from /build/
-    m_Shader = std::unique_ptr<Engine::Shader>(Engine::Shader::FromTextFiles(
+    m_Shader = std::unique_ptr<Shader>(Shader::FromTextFiles(
         "../Sandbox/assets/shaders/shader.vert.glsl",
         "../Sandbox/assets/shaders/shader.frag.glsl"
     ));
 
     float vertices[] = {
-        -1.0f, -1.0f, 0.0f,
-         1.0f, -1.0f, 0.0f,
-         0.0f,  1.0f, 0.0f
+        -0.5f, -0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+         0.0f,  0.75f, 0.0f
     };
 
     m_Shader->Bind();
@@ -55,7 +56,7 @@ void Sandbox::Run()
 
     while (m_Running)
     {
-        glClearColor(1.0f, 0.2f, 0.8f, 1.0f);
+        glClearColor(0.075f, 0.075f, 0.075f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         glBindVertexArray(vao);
