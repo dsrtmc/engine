@@ -26,44 +26,20 @@ void Sandbox::Run()
     std::string version = std::string((const char *)glGetString(GL_VERSION));
     ENG_INFO("OpenGL version: {0}", version);
 
+    ENG_INFO("Current directory: {0}", __FILE__);
+    // Filepaths are relative from /build/
+    m_Shader = std::unique_ptr<Engine::Shader>(Engine::Shader::FromTextFiles(
+        "../Sandbox/assets/shaders/shader.vert.glsl",
+        "../Sandbox/assets/shaders/shader.frag.glsl"
+    ));
+
     float vertices[] = {
         -1.0f, -1.0f, 0.0f,
          1.0f, -1.0f, 0.0f,
          0.0f,  1.0f, 0.0f
     };
 
-    Engine::Shader();
-
-    const char *vertexShaderSource = "#version 330 core\n"
-                                     "layout (location = 0) in vec3 aPos;\n"
-                                     "void main()\n"
-                                     "{\n"
-                                     "   gl_Position = vec4(aPos, 1.0);\n"
-                                     "}\0";
-
-    const char *fragmentShaderSource = "#version 330 core\n"
-                                       "out vec4 FragColor;\n"
-                                       "void main()\n"
-                                       "{\n"
-                                       "   FragColor = vec4(0.0f, 0.0f, 0.0f, 0.0f);\n"
-                                       "}\n\0";
-
-    GLuint vshader;
-    vshader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vshader, 1, &vertexShaderSource, nullptr);
-    glCompileShader(vshader);
-    GLuint fshader;
-    fshader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fshader, 1, &fragmentShaderSource, nullptr);
-    glCompileShader(fshader);
-    GLuint shaderProgram;
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vshader);
-    glAttachShader(shaderProgram, fshader);
-    glLinkProgram(shaderProgram);
-    glUseProgram(shaderProgram);
-    glDeleteShader(vshader);
-    glDeleteShader(fshader);
+    m_Shader->Bind();
 
     GLuint vao;
     glGenVertexArrays(1, &vao);
@@ -82,7 +58,6 @@ void Sandbox::Run()
         glClearColor(1.0f, 0.2f, 0.8f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shaderProgram);
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         m_Window->OnUpdate();

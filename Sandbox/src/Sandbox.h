@@ -1,5 +1,7 @@
 #include "Engine.h"
 
+#include <memory>
+
 class Sandbox : public Engine::Application
 {
 public:
@@ -9,8 +11,9 @@ public:
     void Run() override;
 
 private:
-    Engine::Window *m_Window;
     bool m_Running = true;
+    Engine::Window *m_Window;
+    std::unique_ptr<Engine::Shader> m_Shader;
 };
 
 
