@@ -4,6 +4,8 @@
 #include "Engine/Window.h"
 #include "Engine/Log.h"
 
+#include "OpenGL/Shader.h"
+
 // -- entry point --
 #include "Engine/EntryPoint.h"
 // -----------------

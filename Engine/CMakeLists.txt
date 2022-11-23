@@ -8,9 +8,15 @@ enable_testing()
 add_library(${PROJECT_NAME}
     src/Engine/Window.cpp
     src/Engine/Log.cpp
+
+    src/OpenGL/Shader.cpp
+
+    src/Engine.h
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC src/)
+target_include_directories(${PROJECT_NAME} PUBLIC src/Engine/)
+target_include_directories(${PROJECT_NAME} PUBLIC src/OpenGL/)
 
 # spdlog setup
 set(spdlog_DIR vendor/spdlog/build/)

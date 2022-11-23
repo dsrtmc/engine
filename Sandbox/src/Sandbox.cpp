@@ -32,6 +32,7 @@ void Sandbox::Run()
          0.0f,  1.0f, 0.0f
     };
 
+    Engine::Shader();
 
     const char *vertexShaderSource = "#version 330 core\n"
                                      "layout (location = 0) in vec3 aPos;\n"
