@@ -12,6 +12,9 @@ namespace Engine
         virtual void Run() = 0;
 
     private:
+        virtual void EventCallback() = 0; 
+
+    private:
         Window *m_Window;
         bool m_Running = true;
     };

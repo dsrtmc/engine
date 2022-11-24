@@ -9,6 +9,8 @@ namespace Engine
 {
     static bool s_GLFWInitialized = false;
 
+    typedef void (*EventCallbackFn)();
+
     struct WindowProps
     {
         std::string Title;
@@ -23,21 +25,27 @@ namespace Engine
     class Window
     {
     public:
-        Window(const WindowProps &props);
+        Window(EventCallbackFn eventCallback, const WindowProps &props);
         ~Window();
 
-        unsigned int GetWidth() const;
+        unsigned int GetWidth()  const;
         unsigned int GetHeight() const;
-        GLFWwindow *GetWindow() const;
+        GLFWwindow *GetWindow()  const;
 
-        void Init(const WindowProps &props);
+        void SetEventCallback(EventCallbackFn eventCallback);
+        EventCallbackFn GetEventCallback() const;
+
+        void Init(EventCallbackFn eventCallback, const WindowProps &props);
         void Shutdown();
         void OnUpdate();
 
-        static Window *Create(const WindowProps &props = WindowProps());
+        static Window *Create(
+            EventCallbackFn eventCallback = nullptr, const WindowProps &props = WindowProps()
+        );
 
     private:
         GLFWwindow *m_Window;
         WindowProps m_Data;
+        EventCallbackFn m_EventCallback;
     };
 };

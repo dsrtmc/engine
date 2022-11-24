@@ -11,8 +11,8 @@ public:
     void Run() override;
 
 private:
+    void EventCallback() override;
     void Initialize();
-    void ProcessInput();
 
 private:
     bool m_Running = true;

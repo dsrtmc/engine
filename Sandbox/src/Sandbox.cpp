@@ -3,6 +3,14 @@
 
 using namespace Engine;
 
+void Sandbox::EventCallback()
+{
+    if (glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    {
+        m_Running = false;
+    }
+}
+
 Sandbox::Sandbox()
 {
     m_Window = Window::Create();
@@ -15,6 +23,7 @@ Sandbox::~Sandbox()
 
 void Sandbox::Initialize()
 {
+    m_Window->SetEventCallback((EventCallbackFn)&Sandbox::EventCallback);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         ENG_ERROR("Failed to initialize GLAD");
@@ -22,14 +31,6 @@ void Sandbox::Initialize()
 
     std::string version = std::string((const char *)glGetString(GL_VERSION));
     ENG_INFO("OpenGL version: {0}", version);
-}
-
-void Sandbox::ProcessInput()
-{
-    if (glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
-        m_Running = false;
-    }
 }
 
 // Main app logic
@@ -75,7 +76,8 @@ void Sandbox::Run()
 
     while (m_Running)
     {
-        ProcessInput();
+        EventCallback();
+
         glClearColor(0.075f, 0.075f, 0.075f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 

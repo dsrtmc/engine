@@ -2,14 +2,14 @@
 
 namespace Engine
 {
-    Window *Window::Create(const WindowProps &props)
+    Window *Window::Create(EventCallbackFn eventCallback, const WindowProps &props)
     {
-        return new Window(props);
+        return new Window(eventCallback, props);
     }
 
-    Window::Window(const WindowProps &props)
+    Window::Window(EventCallbackFn eventCallback, const WindowProps &props)
     {
-        Init(props);
+        Init(eventCallback, props);
     }
 
     Window::~Window()
@@ -17,11 +17,13 @@ namespace Engine
         Shutdown();
     }
 
-    void Window::Init(const WindowProps &props)
+    void Window::Init(EventCallbackFn eventCallback, const WindowProps &props)
     {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        
+        SetEventCallback(eventCallback);
 
         m_Data.Title = props.Title;
         m_Data.Width = props.Width;
@@ -60,5 +62,15 @@ namespace Engine
     GLFWwindow *Window::GetWindow() const
     {
         return m_Window;
+    }
+
+    void Window::SetEventCallback(EventCallbackFn eventCallback)
+    {
+        m_EventCallback = eventCallback;
+    }
+
+    EventCallbackFn Window::GetEventCallback() const
+    {
+        return m_EventCallback;
     }
 };
