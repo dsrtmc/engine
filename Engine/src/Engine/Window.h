@@ -39,6 +39,5 @@ namespace Engine
     private:
         GLFWwindow *m_Window;
         WindowProps m_Data;
-        EventCallbackFn m_EventCallback;
     };
 };
