@@ -11,6 +11,10 @@ public:
     void Run() override;
 
 private:
+    void Initialize();
+    void ProcessInput();
+
+private:
     bool m_Running = true;
     Engine::Window *m_Window;
     std::unique_ptr<Engine::Shader> m_Shader;

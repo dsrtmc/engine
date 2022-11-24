@@ -13,8 +13,7 @@ Sandbox::~Sandbox()
     m_Window->Shutdown();
 }
 
-// Main app logic
-void Sandbox::Run()
+void Sandbox::Initialize()
 {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -27,12 +26,27 @@ void Sandbox::Run()
 
     std::string version = std::string((const char *)glGetString(GL_VERSION));
     ENG_INFO("OpenGL version: {0}", version);
+}
+
+void Sandbox::ProcessInput()
+{
+    if (glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    {
+        m_Running = false;
+    }
+}
+
+// Main app logic
+void Sandbox::Run()
+{
+    Initialize();
 
     // Filepaths are relative from /build/
     m_Shader = std::unique_ptr<Shader>(Shader::FromTextFiles(
         "../Sandbox/assets/shaders/shader.vert.glsl",
         "../Sandbox/assets/shaders/shader.frag.glsl"
     ));
+    m_Shader->Bind();
 
     float vertices[] = {
         -0.5f, -0.5f, 0.0f,
@@ -45,8 +59,6 @@ void Sandbox::Run()
         0, 1, 2,
         2, 3, 0
     };
-
-    m_Shader->Bind();
 
     GLuint vao;
     glGenVertexArrays(1, &vao);
@@ -67,6 +79,7 @@ void Sandbox::Run()
 
     while (m_Running)
     {
+        ProcessInput();
         glClearColor(0.075f, 0.075f, 0.075f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 

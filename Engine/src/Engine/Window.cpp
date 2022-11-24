@@ -52,4 +52,9 @@ namespace Engine
     {
         return m_Data.Height;
     }
+
+    GLFWwindow *Window::GetWindow() const
+    {
+        return m_Window;
+    }
 };
