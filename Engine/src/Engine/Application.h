@@ -12,7 +12,7 @@ namespace Engine
         virtual void Run() = 0;
 
     private:
-        virtual void EventCallback() = 0; 
+        virtual void PollEvents() = 0; 
 
     private:
         Window *m_Window;

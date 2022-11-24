@@ -3,7 +3,7 @@
 
 using namespace Engine;
 
-void Sandbox::EventCallback()
+void Sandbox::PollEvents()
 {
     if (glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
@@ -23,7 +23,7 @@ Sandbox::~Sandbox()
 
 void Sandbox::Initialize()
 {
-    m_Window->SetEventCallback((EventCallbackFn)&Sandbox::EventCallback);
+    // m_Window->SetEventCallback((EventCallbackFn)&Sandbox::EventCallback);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         ENG_ERROR("Failed to initialize GLAD");
@@ -76,7 +76,7 @@ void Sandbox::Run()
 
     while (m_Running)
     {
-        EventCallback();
+        PollEvents();
 
         glClearColor(0.075f, 0.075f, 0.075f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);

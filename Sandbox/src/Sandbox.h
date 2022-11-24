@@ -11,7 +11,7 @@ public:
     void Run() override;
 
 private:
-    void EventCallback() override;
+    void PollEvents() override;
     void Initialize();
 
 private:
