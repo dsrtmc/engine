@@ -61,15 +61,11 @@ void Sandbox::Run()
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
-    GLuint vbo;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    VertexBuffer vbo(vertices, sizeof(vertices));
+    vbo.Bind();
 
-    GLuint ibo;
-    glGenBuffers(1, &ibo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    IndexBuffer ibo(indices, 6);
+    ibo.Bind();
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (const void *)0);
     glEnableVertexAttribArray(0);

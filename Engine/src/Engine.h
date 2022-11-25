@@ -6,6 +6,7 @@
 
 #include "OpenGL/Shader.h"
 #include "OpenGL/Renderer.h"
+#include "OpenGL/Buffer.h"
 
 // -- entry point --
 #include "Engine/EntryPoint.h"
