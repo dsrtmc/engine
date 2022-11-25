@@ -1,7 +1,5 @@
 #include "Buffer.h"
 
-#include "Log.h"
-
 namespace Engine
 {
     VertexBuffer::VertexBuffer(const void *data, unsigned int size)

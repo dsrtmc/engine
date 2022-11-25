@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 extern Engine::Application *Engine::CreateApplication();
 
 int main(void)

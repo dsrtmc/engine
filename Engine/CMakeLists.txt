@@ -21,6 +21,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC src/)
 target_include_directories(${PROJECT_NAME} PUBLIC src/Engine/)
 target_include_directories(${PROJECT_NAME} PUBLIC src/OpenGL/)
 
+target_precompile_headers(${PROJECT_NAME} PUBLIC src/enpch.h)
+
 # spdlog setup
 set(spdlog_DIR vendor/spdlog/build/)
 if (NOT TARGET spdlog)

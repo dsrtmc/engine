@@ -1,8 +1,6 @@
 #pragma once
 
-#include <glad/glad.h>
 #include "Buffer.h"
-#include <memory>
 
 namespace Engine
 {

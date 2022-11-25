@@ -1,7 +1,3 @@
-#include "Log.h"
-
-#include <string>
-
 #include "spdlog/sinks/stdout_color_sinks.h"
 
 namespace Engine

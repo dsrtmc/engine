@@ -2,8 +2,6 @@
 
 #include <glad/glad.h>
 
-#include <vector>
-
 namespace Engine
 {
     struct BufferElement

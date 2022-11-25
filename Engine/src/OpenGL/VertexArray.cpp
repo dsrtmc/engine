@@ -1,7 +1,5 @@
 #include "VertexArray.h"
 
-#include "Log.h"
-
 namespace Engine
 {
     VertexArray::VertexArray()

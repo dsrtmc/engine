@@ -2,9 +2,6 @@
 
 #include <glad/glad.h>
 
-#include <string>
-#include <memory>
-
 namespace Engine
 {
     class Shader
