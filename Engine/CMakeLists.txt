@@ -44,7 +44,7 @@ add_subdirectory(vendor/glad)
 target_link_libraries(${PROJECT_NAME} glad)
 target_include_directories(${PROJECT_NAME} PUBLIC vendor/glad/include/)
 
-# not sure if needed, TODO: read docs
-# set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-# set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-# include(CPack)
+# stb image setup
+add_subdirectory(vendor/stb_image)
+target_link_libraries(${PROJECT_NAME} stb_image)
+target_include_directories(${PROJECT_NAME} PUBLIC vendor/stb_image)
