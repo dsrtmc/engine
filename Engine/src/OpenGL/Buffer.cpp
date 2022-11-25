@@ -22,6 +22,16 @@ namespace Engine
         glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
     }
 
+    void VertexBuffer::SetLayout(const BufferLayout &layout)
+    {
+        m_Layout = layout;
+    }
+
+    BufferLayout VertexBuffer::GetLayout() const
+    {
+        return m_Layout;
+    }
+
     void VertexBuffer::Bind() const
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);

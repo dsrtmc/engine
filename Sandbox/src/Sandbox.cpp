@@ -57,27 +57,28 @@ void Sandbox::Run()
         2, 3, 0
     };
 
-    GLuint vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    VertexArray vao;
+    vao.Bind();
 
     VertexBuffer vbo(vertices, sizeof(vertices));
     vbo.Bind();
+    BufferLayout layout;
+    layout.Push(3);
+    vbo.SetLayout(layout);
 
     IndexBuffer ibo(indices, 6);
     ibo.Bind();
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (const void *)0);
-    glEnableVertexAttribArray(0);
+    vao.SetVertexBuffer(vbo);
+    vao.SetIndexBuffer(ibo);
 
     while (m_Running)
     {
         PollEvents();
         Renderer::Clear();
         glClearColor(0.075f, 0.075f, 0.075f, 1.0f);
-        // glClear(GL_COLOR_BUFFER_BIT);
 
-        glBindVertexArray(vao);
+        vao.Bind();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
         m_Window->OnUpdate();
     }
