@@ -45,17 +45,21 @@ void Sandbox::Run()
     ));
     m_Shader->Bind();
 
+    Texture container("../Sandbox/assets/textures/container.jpg");
+    container.Bind(0);
+
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.5f,  0.5f, 0.0f,
-        -0.5f,  0.5f, 0.0f
+        -0.5f, -0.5f, 0.0f, -1.0f, -1.0f,
+         0.5f, -0.5f, 0.0f,  1.0f, -1.0f,
+         0.5f,  0.5f, 0.0f,  1.0f,  1.0f,
+        -0.5f,  0.5f, 0.0f, -1.0f,  1.0f
     };
 
     GLuint indices[] = {
         0, 1, 2,
         2, 3, 0
     };
+
 
     // Create a vertex array object
     VertexArray vao;
@@ -65,6 +69,7 @@ void Sandbox::Run()
     BufferLayout layout;
     // 3 coordinates per attribute => one Push() call == one attribute
     layout.Push(3);
+    layout.Push(2);
 
     // Create a vertex buffer object and bind it to the specified layout
     VertexBuffer vbo(vertices, sizeof(vertices));

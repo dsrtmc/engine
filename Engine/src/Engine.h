@@ -8,6 +8,7 @@
 #include "OpenGL/Renderer.h"
 #include "OpenGL/Buffer.h"
 #include "OpenGL/VertexArray.h"
+#include "OpenGL/Texture.h"
 
 // -- entry point --
 #include "Engine/EntryPoint.h"
