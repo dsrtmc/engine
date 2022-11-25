@@ -35,7 +35,7 @@ namespace Engine
         std::vector<BufferElement> GetElements() const { return m_Elements; };
         GLsizei GetStride() const { return m_Stride; };
 
-        // For now it supports only floats, TODO: other types
+        // Add an attribute to the layout with *count* coordinates
         void Push(GLint count)
         {
             m_Elements.push_back((BufferElement){ count, GL_FLOAT, GL_FALSE });

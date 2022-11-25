@@ -57,21 +57,28 @@ void Sandbox::Run()
         2, 3, 0
     };
 
+    // Create a vertex array object
     VertexArray vao;
     vao.Bind();
 
-    VertexBuffer vbo(vertices, sizeof(vertices));
-    vbo.Bind();
+    // Specify a layout of our vertices
     BufferLayout layout;
+    // 3 coordinates per attribute => one Push() call == one attribute
     layout.Push(3);
+
+    // Create a vertex buffer object and bind it to the specified layout
+    VertexBuffer vbo(vertices, sizeof(vertices));
     vbo.SetLayout(layout);
 
+    // Create an index buffer object 
     IndexBuffer ibo(indices, 6);
     ibo.Bind();
 
+    // Make the buffers the vertex array's private members, not used yet
     vao.SetVertexBuffer(vbo);
     vao.SetIndexBuffer(ibo);
 
+    // Main app loop
     while (m_Running)
     {
         PollEvents();
