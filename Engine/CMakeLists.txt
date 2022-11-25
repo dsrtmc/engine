@@ -10,6 +10,7 @@ add_library(${PROJECT_NAME}
     src/Engine/Log.cpp
 
     src/OpenGL/Shader.cpp
+    src/OpenGL/Renderer.cpp
 
     src/Engine.h
 )

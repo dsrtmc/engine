@@ -5,6 +5,7 @@
 #include "Engine/Log.h"
 
 #include "OpenGL/Shader.h"
+#include "OpenGL/Renderer.h"
 
 // -- entry point --
 #include "Engine/EntryPoint.h"
