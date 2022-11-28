@@ -76,8 +76,10 @@ namespace Engine
 
         void Bind() const;
         void Unbind() const;
+        inline unsigned int GetCount() { return m_Count; };
 
     private:
         GLuint m_RendererID;
+        unsigned int m_Count;
     };
 }

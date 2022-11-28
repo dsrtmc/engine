@@ -91,7 +91,7 @@ void Sandbox::Run()
         glClearColor(0.075f, 0.075f, 0.075f, 1.0f);
 
         vao.Bind();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        Renderer::Draw(ibo.GetCount());
         m_Window->OnUpdate();
     }
 }

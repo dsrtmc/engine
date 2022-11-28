@@ -7,7 +7,8 @@ namespace Engine
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
-    void Renderer::Draw()
+    void Renderer::Draw(unsigned int count)
     {
+        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
     }
 }
