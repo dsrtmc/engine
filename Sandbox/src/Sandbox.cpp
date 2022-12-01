@@ -1,5 +1,4 @@
 #include "Sandbox.h"
-#include <string>
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -7,22 +6,20 @@
 
 using namespace Engine;
 
-void Sandbox::PollEvents()
-{
-    if (glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
-        m_Running = false;
-    }
-}
-
 Sandbox::Sandbox()
 {
     m_Window = Window::Create();
+    UILayer *ui = new UILayer;
+    m_Layers.push_back(ui);
 }
 
 Sandbox::~Sandbox()
 {
     m_Window->Shutdown();
+    for (auto *layer : m_Layers)
+    {
+        delete layer;
+    }
 }
 
 void Sandbox::Initialize()
@@ -37,11 +34,18 @@ void Sandbox::Initialize()
     ENG_INFO("OpenGL version: {0}", version);
 }
 
+void Sandbox::PollEvents()
+{
+    if (glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    {
+        m_Running = false;
+    }
+}
+
 // Main app logic
 void Sandbox::Run()
 {
     Initialize();
-
     // Filepaths are relative from /build/
     m_Shader = std::unique_ptr<Shader>(Shader::FromTextFiles(
         "../Sandbox/assets/shaders/shader.vert.glsl",
@@ -126,8 +130,12 @@ void Sandbox::Run()
         vao.Bind();
         Renderer::Draw(ibo.GetCount());
 
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        // ImGui::Render();
+        // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        for (auto *layer : m_Layers)
+        {
+            layer->OnUpdate();
+        }
         m_Window->OnUpdate();
     }
     ImGui_ImplOpenGL3_Shutdown();

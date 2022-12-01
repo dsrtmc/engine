@@ -41,6 +41,7 @@ namespace Engine
         glfwDestroyWindow(m_Window);
     }
 
+    // GLFW swap buffers and poll events
     void Window::OnUpdate()
     {
         glfwSwapBuffers(m_Window);

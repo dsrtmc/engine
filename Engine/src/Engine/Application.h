@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Window.h"
+#include "Layer.h"
 
 namespace Engine
 {
@@ -14,9 +15,10 @@ namespace Engine
     private:
         virtual void PollEvents() = 0; 
 
-    private:
+    protected:
         Window *m_Window;
         bool m_Running = true;
+        std::vector<Layer *> m_Layers;
     };
 
     Application *CreateApplication();

@@ -3,6 +3,9 @@
 #include "Engine/Application.h"
 #include "Engine/Window.h"
 #include "Engine/Log.h"
+#include "Engine/Layer.h"
+
+#include "Engine/UI/UILayer.h"
 
 #include "OpenGL/Shader.h"
 #include "OpenGL/Renderer.h"
