@@ -1,6 +1,10 @@
 #include "Sandbox.h"
 #include <string>
 
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 using namespace Engine;
 
 void Sandbox::PollEvents()
@@ -83,6 +87,13 @@ void Sandbox::Run()
     vao.SetVertexBuffer(vbo);
     vao.SetIndexBuffer(ibo);
 
+    ImGui::CreateContext();
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(m_Window->GetWindow(), true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+    bool show_demo_window = true;
+    bool show_another_window = false;
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     // Main app loop
     while (m_Running)
     {
@@ -90,8 +101,21 @@ void Sandbox::Run()
         Renderer::Clear();
         glClearColor(0.075f, 0.075f, 0.075f, 1.0f);
 
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+        ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+        ImGui::End();
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         vao.Bind();
         Renderer::Draw(ibo.GetCount());
         m_Window->OnUpdate();
     }
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 }

@@ -49,3 +49,14 @@ target_include_directories(${PROJECT_NAME} PUBLIC vendor/glad/include/)
 add_subdirectory(vendor/stb_image)
 target_link_libraries(${PROJECT_NAME} stb_image)
 target_include_directories(${PROJECT_NAME} PUBLIC vendor/stb_image)
+
+# imgui setup
+set(imgui_PATH vendor/imgui)
+file(GLOB imgui_SOURCES
+    ${imgui_PATH}/*.cpp
+    ${imgui_PATH}/backends/imgui_impl_glfw.cpp
+    ${imgui_PATH}/backends/imgui_impl_opengl3.cpp
+)
+add_library(imgui STATIC ${imgui_SOURCES})
+target_include_directories(imgui PUBLIC ${imgui_PATH}/ ${imgui_PATH}/backends/)
+target_link_libraries(${PROJECT_NAME} imgui)
