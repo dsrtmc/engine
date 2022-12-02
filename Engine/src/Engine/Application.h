@@ -10,13 +10,13 @@ namespace Engine
     public:
         Application() {}
         virtual ~Application() {}
+
         virtual void Run() = 0;
 
     private:
         virtual void PollEvents() = 0; 
 
     protected:
-        Window *m_Window;
         bool m_Running = true;
         std::vector<Layer *> m_Layers;
     };

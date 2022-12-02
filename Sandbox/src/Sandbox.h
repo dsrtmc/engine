@@ -8,6 +8,8 @@ public:
     Sandbox();
     ~Sandbox() override;
 
+    inline Engine::Window *GetWindow() { return m_Window; };
+
     void Run() override;
 
 private:
@@ -15,6 +17,7 @@ private:
     void Initialize();
 
 private:
+    Engine::Window *m_Window;
     std::unique_ptr<Engine::Shader> m_Shader;
 };
 

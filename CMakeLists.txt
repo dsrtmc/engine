@@ -15,6 +15,9 @@ include(CPack)
 add_subdirectory(Engine)
 target_link_libraries(${PROJECT_NAME} engine)
 
+# add_subdirectory(Sandbox)
+# target_link_libraries(${PROJECT_NAME} sandbox)
+
 # GLFW setup
 # set(OpenGL_GL_PREFERENCE GLVND)
 # add_subdirectory(Engine/vendor/glfw)

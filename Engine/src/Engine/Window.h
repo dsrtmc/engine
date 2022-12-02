@@ -26,7 +26,7 @@ namespace Engine
 
         unsigned int GetWidth()  const;
         unsigned int GetHeight() const;
-        GLFWwindow *GetWindow()  const;
+        GLFWwindow *GetGLFWwindow()  const;
 
         void Init(const WindowProps &props);
         void Shutdown();

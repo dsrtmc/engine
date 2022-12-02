@@ -8,7 +8,9 @@ using namespace Engine;
 
 Sandbox::Sandbox()
 {
-    m_Window = Window::Create();
+    ENG_INFO("Created a sandbox");
+    m_Window = Window::Create({ "Engine", 1440, 900 });
+    // generally we should have a function PushLayer() that also calls layer's OnAttach()
     UILayer *ui = new UILayer;
     m_Layers.push_back(ui);
 }
@@ -24,7 +26,6 @@ Sandbox::~Sandbox()
 
 void Sandbox::Initialize()
 {
-    // m_Window->SetEventCallback((EventCallbackFn)&Sandbox::EventCallback);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         ENG_ERROR("Failed to initialize GLAD");
@@ -36,7 +37,7 @@ void Sandbox::Initialize()
 
 void Sandbox::PollEvents()
 {
-    if (glfwGetKey(m_Window->GetWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if (glfwGetKey(m_Window->GetGLFWwindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
         m_Running = false;
     }
@@ -47,8 +48,7 @@ void Sandbox::Run()
 {
     Initialize();
     // Filepaths are relative from /build/
-    m_Shader = std::unique_ptr<Shader>(Shader::FromTextFiles(
-        "../Sandbox/assets/shaders/shader.vert.glsl",
+    m_Shader = std::unique_ptr<Shader>(Shader::FromTextFiles( "../Sandbox/assets/shaders/shader.vert.glsl",
         "../Sandbox/assets/shaders/shader.frag.glsl"
     ));
     m_Shader->Bind();
@@ -67,7 +67,6 @@ void Sandbox::Run()
         0, 1, 2,
         2, 3, 0
     };
-
 
     // Create a vertex array object
     VertexArray vao;
@@ -93,7 +92,7 @@ void Sandbox::Run()
 
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(m_Window->GetWindow(), true);
+    ImGui_ImplGlfw_InitForOpenGL(m_Window->GetGLFWwindow(), true);
     ImGui_ImplOpenGL3_Init("#version 330");
     bool show_demo_window = true;
     bool show_another_window = false;
@@ -130,12 +129,11 @@ void Sandbox::Run()
         vao.Bind();
         Renderer::Draw(ibo.GetCount());
 
-        // ImGui::Render();
-        // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         for (auto *layer : m_Layers)
         {
             layer->OnUpdate();
         }
+
         m_Window->OnUpdate();
     }
     ImGui_ImplOpenGL3_Shutdown();
