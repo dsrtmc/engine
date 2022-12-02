@@ -2,7 +2,6 @@
 
 Test2D::Test2D()
 {
-    ENG_TRACE("test");
 }
 
 Test2D::~Test2D()
