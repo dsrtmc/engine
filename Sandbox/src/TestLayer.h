@@ -12,5 +12,8 @@ public:
     void OnUpdate() override;
 
 private:
-    // VertexArray *m_VertexArray;
+    std::shared_ptr<Engine::VertexArray> m_VertexArray;
+    std::shared_ptr<Engine::VertexBuffer> m_VertexBuffer;
+    std::shared_ptr<Engine::IndexBuffer> m_IndexBuffer;
+    Engine::Texture *m_Texture;
 };

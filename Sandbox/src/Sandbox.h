@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "EntryPoint.h"
 
 #include <memory>
 

@@ -11,6 +11,11 @@ namespace Engine
         stbi_set_flip_vertically_on_load(true);
         m_Data = stbi_load(filepath.c_str(), &m_Width, &m_Height, &m_BPP, 0);
 
+        if (!m_Data)
+        {
+            ENG_WARN("Failed to load texture: {0}", filepath);
+        }
+
         glGenTextures(1, &m_RendererID);
         glBindTexture(GL_TEXTURE_2D, m_RendererID);
 

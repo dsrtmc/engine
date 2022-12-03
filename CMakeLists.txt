@@ -7,4 +7,4 @@ enable_testing()
 add_subdirectory(Engine)
 add_subdirectory(Sandbox)
 
-add_executable(${PROJECT_NAME} Sandbox/src/Sandbox.cpp)
+# add_executable(${PROJECT_NAME} IMPORTED sandbox)

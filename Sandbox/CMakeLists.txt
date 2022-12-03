@@ -3,9 +3,8 @@ project(sandbox VERSION 0.1.0)
 
 add_executable(${PROJECT_NAME}
     src/Sandbox.cpp
-    # TODO: figure out a way to include stuff here
-    # src/TestLayer.cpp
+    src/TestLayer.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} engine)
-target_include_directories(${PROJECT_NAME} PUBLIC src/tests/)
+target_include_directories(${PROJECT_NAME} PUBLIC . src/tests/)

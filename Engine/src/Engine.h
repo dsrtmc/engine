@@ -13,6 +13,9 @@
 #include "OpenGL/VertexArray.h"
 #include "OpenGL/Texture.h"
 
-// -- entry point --
+/*
+-- Entry point --
+Should be included only in the app that's going to use the Engine
+e.g. Sandbox/src/Sandbox.*
 #include "Engine/EntryPoint.h"
-// -----------------
+*/
