@@ -58,7 +58,7 @@ namespace Engine
         return m_Data.Height;
     }
 
-    GLFWwindow *Window::GetGLFWwindow() const
+    GLFWwindow *Window::GetNativeWindow() const
     {
         return m_Window;
     }

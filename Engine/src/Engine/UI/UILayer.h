@@ -10,6 +10,7 @@ namespace Engine
         UILayer();
         ~UILayer();
 
-        void OnUpdate();
+        void Begin();
+        void End();
     };
 }

@@ -9,8 +9,6 @@ using namespace Engine;
 TestLayer::TestLayer()
     : Layer("Test layer")
 {
-    ENG_TRACE("Created Test layer");
-
     // Filepaths are relative from /build/
     m_Shader = Shader::FromTextFiles(
         "../Sandbox/assets/shaders/shader.vert.glsl",
@@ -56,6 +54,8 @@ TestLayer::TestLayer()
     // Make the buffers the vertex array's private members, not used yet
     vao->SetVertexBuffer(vbo);
     vao->SetIndexBuffer(ibo);
+
+    ENG_TRACE("Created Test layer");
 }
 
 TestLayer::~TestLayer()
@@ -67,15 +67,4 @@ void TestLayer::OnUpdate()
 {
     m_VertexArray->Bind();
     Renderer::Draw(m_VertexArray->GetIndexBuffer()->GetCount());
-}
-
-void TestLayer::OnImGuiRender()
-{
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
-    ImGui::Begin("Info");
-    ImGui::Text("This is rendered from OnImGuiRender()");               // Display some text (you can use a format strings too)
-    ImGui::End();
 }

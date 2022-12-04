@@ -8,7 +8,6 @@ public:
     TestLayer();
     ~TestLayer();
 
-    void OnImGuiRender();
     void OnUpdate() override;
 
 private:

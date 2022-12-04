@@ -2,6 +2,7 @@
 
 #include "Window.h"
 #include "Layer.h"
+#include "UILayer.h"
 
 namespace Engine
 {
@@ -18,6 +19,7 @@ namespace Engine
 
     protected:
         bool m_Running = true;
+        std::unique_ptr<UILayer> m_UILayer;
         std::vector<Layer *> m_Layers;
     };
 

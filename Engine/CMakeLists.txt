@@ -23,6 +23,7 @@ add_library(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME} PUBLIC src/)
 target_include_directories(${PROJECT_NAME} PUBLIC src/Engine/)
+target_include_directories(${PROJECT_NAME} PUBLIC src/Engine/UI/)
 target_include_directories(${PROJECT_NAME} PUBLIC src/OpenGL/)
 
 target_precompile_headers(${PROJECT_NAME} PUBLIC src/enpch.h)
