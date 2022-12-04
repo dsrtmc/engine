@@ -24,7 +24,7 @@ namespace Engine
             style.WindowRounding = 10.0f;
         }
         // Filepath relative from /build/
-        io.Fonts->AddFontFromFileTTF("../Sandbox/assets/fonts/SFProDisplay/SFPRODISPLAYMEDIUM.OTF", 15);
+        io.Fonts->AddFontFromFileTTF("../Sandbox/assets/fonts/opensans/OpenSans-Regular.ttf", 16.5);
 
         ImGui_ImplOpenGL3_Init("#version 330");
     }

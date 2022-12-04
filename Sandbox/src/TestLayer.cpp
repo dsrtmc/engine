@@ -65,6 +65,7 @@ TestLayer::~TestLayer()
 
 void TestLayer::OnUpdate()
 {
+    Renderer::Clear();
     m_VertexArray->Bind();
     Renderer::Draw(m_VertexArray->GetIndexBuffer()->GetCount());
 }

@@ -66,7 +66,6 @@ void Sandbox::Run()
     while (m_Running)
     {
         PollEvents();
-        Renderer::Clear();
         glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 
         for (Layer *layer : m_Layers)
