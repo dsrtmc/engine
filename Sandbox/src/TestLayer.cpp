@@ -1,8 +1,8 @@
 #include "TestLayer.h"
 
-// #include "imgui.h"
-// #include "imgui_impl_glfw.h"
-// #include "imgui_impl_opengl3.h"
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 using namespace Engine;
 
@@ -11,7 +11,14 @@ TestLayer::TestLayer()
 {
     ENG_TRACE("Created Test layer");
 
-    Texture *container = new Texture("../Sandbox/assets/textures/container.jpg");
+    // Filepaths are relative from /build/
+    m_Shader = Shader::FromTextFiles(
+        "../Sandbox/assets/shaders/shader.vert.glsl",
+        "../Sandbox/assets/shaders/shader.frag.glsl"
+    );
+    m_Shader->Bind();
+
+    std::shared_ptr<Texture> container = std::make_unique<Texture>("../Sandbox/assets/textures/container.jpg");
     m_Texture = container;
     m_Texture->Bind(0);
 
@@ -41,16 +48,14 @@ TestLayer::TestLayer()
     // Create a vertex buffer object and bind it to the specified layout
     std::shared_ptr<VertexBuffer> vbo = std::make_shared<VertexBuffer>(vertices, sizeof(vertices));
     vbo->SetLayout(layout);
-    m_VertexBuffer = vbo;
 
     // Create an index buffer object 
     std::shared_ptr<IndexBuffer> ibo = std::make_shared<IndexBuffer>(indices, 6);
     ibo->Bind();
-    m_IndexBuffer = ibo;
 
     // Make the buffers the vertex array's private members, not used yet
-    vao->SetVertexBuffer(*vbo);
-    vao->SetIndexBuffer(*ibo);
+    vao->SetVertexBuffer(vbo);
+    vao->SetIndexBuffer(ibo);
 }
 
 TestLayer::~TestLayer()
@@ -61,12 +66,16 @@ TestLayer::~TestLayer()
 void TestLayer::OnUpdate()
 {
     m_VertexArray->Bind();
-    Renderer::Draw(m_IndexBuffer->GetCount());
+    Renderer::Draw(m_VertexArray->GetIndexBuffer()->GetCount());
 }
 
 void TestLayer::OnImGuiRender()
 {
-    // ImGui::Begin("Settings");
-    // ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-    // ImGui::End();
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    ImGui::Begin("Info");
+    ImGui::Text("This is rendered from OnImGuiRender()");               // Display some text (you can use a format strings too)
+    ImGui::End();
 }

@@ -19,7 +19,7 @@ namespace Engine
         ENG_TRACE("Destroyed UI layer");
     }
 
-    // Render ImGui data
+    // Renders ImGui data
     void UILayer::OnUpdate()
     {
         ImGui::Render();

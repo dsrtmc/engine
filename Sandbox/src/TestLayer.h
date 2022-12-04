@@ -13,7 +13,6 @@ public:
 
 private:
     std::shared_ptr<Engine::VertexArray> m_VertexArray;
-    std::shared_ptr<Engine::VertexBuffer> m_VertexBuffer;
-    std::shared_ptr<Engine::IndexBuffer> m_IndexBuffer;
-    Engine::Texture *m_Texture;
+    std::shared_ptr<Engine::Texture> m_Texture;
+    std::unique_ptr<Engine::Shader> m_Shader;
 };

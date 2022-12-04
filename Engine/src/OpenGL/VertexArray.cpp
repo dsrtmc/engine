@@ -12,12 +12,12 @@ namespace Engine
         glDeleteVertexArrays(1, &m_RendererID);
     }
 
-    void VertexArray::SetVertexBuffer(const VertexBuffer &vbo)
+    void VertexArray::SetVertexBuffer(const std::shared_ptr<VertexBuffer> &vbo)
     {
         this->Bind();
-        vbo.Bind();
+        vbo->Bind();
 
-        BufferLayout layout = vbo.GetLayout();
+        BufferLayout layout = vbo->GetLayout();
 
         const auto &elements = layout.GetElements();
         GLsizei stride = layout.GetStride();
@@ -31,16 +31,18 @@ namespace Engine
                                                         stride, (const void *)offset);
             offset += element.count * element.GetSizeOfType(element.type);
         }
-        m_VertexBuffer = std::make_unique<VertexBuffer>(vbo);
+        // m_VertexBuffer = std::make_shared<VertexBuffer>(vbo);
+        m_VertexBuffer = vbo;
     }
 
-    void VertexArray::SetIndexBuffer(const IndexBuffer &ibo)
+    void VertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer> &ibo)
     {
         this->Bind();
-        ibo.Bind();
-        m_IndexBuffer = std::make_unique<IndexBuffer>(ibo);
+        ibo->Bind();
+        // m_IndexBuffer = std::make_shared<IndexBuffer>(ibo);
+        m_IndexBuffer = ibo;
     }
-
+    
     void VertexArray::Bind() const
     {
         glBindVertexArray(m_RendererID);
