@@ -19,7 +19,6 @@ private:
 
 private:
     Engine::Window *m_Window;
-    std::unique_ptr<Engine::Shader> m_Shader;
 };
 
 

@@ -16,6 +16,8 @@ TestLayer::TestLayer()
     );
     m_Shader->Bind();
 
+    m_Shader->SetUniform1i("u_useTexture", true);
+
     std::shared_ptr<Texture> container = std::make_shared<Texture>("../Sandbox/assets/textures/container.jpg");
     m_Texture = container;
     m_Texture->Bind(0);

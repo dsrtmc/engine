@@ -21,7 +21,18 @@ namespace Engine
 
         GLint GetUniformLocation(const std::string &name);
 
-        void SetUniformMatrix4fv(const std::string &name, glm::mat4 matrix);
+        void SetUniform1i(const std::string &name, bool value);
+        void SetUniform1i(const std::string &name, GLint value);
+        void SetUniform1f(const std::string &name, GLfloat value);
+        void SetUniform2f(const std::string &name, GLfloat v0, GLfloat v1);
+        void SetUniform2fv(const std::string &name, const glm::vec2 &vector);
+        void SetUniform3f(const std::string &name, GLfloat v0, GLfloat v1, GLfloat v2);
+        void SetUniform3fv(const std::string &name, const glm::vec3 &vector);
+        void SetUniform4f(const std::string &name, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
+        void SetUniform4fv(const std::string &name, const glm::vec4 &vector);
+        void SetUniformMatrix2fv(const std::string &name, const glm::mat4 &matrix);
+        void SetUniformMatrix3fv(const std::string &name, const glm::mat4 &matrix);
+        void SetUniformMatrix4fv(const std::string &name, const glm::mat4 &matrix);
 
         void Bind() const;
         void Unbind() const;
