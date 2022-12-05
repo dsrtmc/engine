@@ -48,7 +48,7 @@ TestLayer::TestLayer()
     vbo->SetLayout(layout);
 
     // Create an index buffer object 
-    std::shared_ptr<IndexBuffer> ibo = std::make_shared<IndexBuffer>(indices, 6);
+    std::shared_ptr<IndexBuffer> ibo = std::make_shared<IndexBuffer>(indices, sizeof(indices) / sizeof(GLuint));
     ibo->Bind();
 
     // Make the buffers the vertex array's private members, not used yet

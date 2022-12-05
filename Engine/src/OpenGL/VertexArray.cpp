@@ -4,7 +4,7 @@ namespace Engine
 {
     VertexArray::VertexArray()
     {
-        glGenVertexArrays(1, &m_RendererID);
+        glCreateVertexArrays(1, &m_RendererID);
     }
 
     VertexArray::~VertexArray()

@@ -16,7 +16,7 @@ namespace Engine
             ENG_WARN("Failed to load texture: {0}", filepath);
         }
 
-        glGenTextures(1, &m_RendererID);
+        glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
         glBindTexture(GL_TEXTURE_2D, m_RendererID);
 
         // Texture filtering for magnifying/minifying operations
