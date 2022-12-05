@@ -1,6 +1,8 @@
 #pragma once
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.inl>
 
 namespace Engine
 {
@@ -16,6 +18,10 @@ namespace Engine
         ~Shader();
 
         static std::unique_ptr<Shader> FromTextFiles(const std::string &vertexShaderPath, const std::string &fragmentShaderPath);
+
+        GLint GetUniformLocation(const std::string &name);
+
+        void SetUniformMatrix4fv(const std::string &name, glm::mat4 matrix);
 
         void Bind() const;
         void Unbind() const;

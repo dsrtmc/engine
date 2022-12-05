@@ -49,6 +49,14 @@ add_subdirectory(vendor/glad)
 target_link_libraries(${PROJECT_NAME} glad)
 target_include_directories(${PROJECT_NAME} PUBLIC vendor/glad/include/)
 
+# glm setup
+add_subdirectory(vendor/glm)
+target_link_libraries(${PROJECT_NAME} glm)
+target_include_directories(${PROJECT_NAME} PUBLIC
+    vendor/glm/glm/
+    vendor/glm/glm/gtc/
+)
+
 # stb image setup
 add_subdirectory(vendor/stb_image)
 target_link_libraries(${PROJECT_NAME} stb_image)

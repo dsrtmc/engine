@@ -84,6 +84,21 @@ namespace Engine
         return shader;
     }
 
+    void Shader::SetUniformMatrix4fv(const std::string &name, glm::mat4 matrix)
+    {
+        glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+
+    GLint Shader::GetUniformLocation(const std::string &name)
+    {
+        GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+        if (location == -1)
+        {
+            ENG_WARN("Uniform \"{0}\" not found or unused.", name);
+        }
+        return location;
+    }
+
     void Shader::Bind() const
     {
         glUseProgram(m_RendererID);
