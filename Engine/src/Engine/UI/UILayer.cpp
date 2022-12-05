@@ -21,7 +21,7 @@ namespace Engine
         ImGuiStyle &style = ImGui::GetStyle();
         if (io.ConfigFlags)
         {
-            style.WindowRounding = 10.0f;
+            style.WindowRounding = 0.0f;
         }
         // Filepath relative from /build/
         io.Fonts->AddFontFromFileTTF("../Sandbox/assets/fonts/opensans/OpenSans-Regular.ttf", 16.5);
