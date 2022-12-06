@@ -4,6 +4,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 using namespace Engine;
 
 TestLayer::TestLayer()
@@ -79,6 +81,7 @@ void TestLayer::OnImGuiUpdate()
     ImGui::ColorEdit3("Triangle color", glm::value_ptr(m_TriangleColor));
     m_Shader->SetUniform3fv("u_Color", m_TriangleColor);
 
+    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     ImGui::End();
 }
 
@@ -86,5 +89,18 @@ void TestLayer::OnUpdate()
 {
     Renderer::Clear();
     m_VertexArray->Bind();
-    Renderer::Draw(m_VertexArray->GetIndexBuffer()->GetCount());
+
+    for (int row = 0; row < 5; row++)
+    {
+        for (int col = 0; col < 5; col++)
+        {
+            glm::vec3 pos(row * 0.22f, col * 0.32f, 0.0f);
+            glm::mat4 transform = glm::mat4(1.0f);
+            transform = glm::translate(transform, glm::vec3(-0.45f, -0.6f, 0.0f));
+            transform = glm::translate(transform, pos) * glm::scale(glm::mat4(1.0f), glm::vec3(0.2f, 0.3f, 1.0f));
+            m_Shader->SetUniformMatrix4fv("u_Transform", transform);
+
+            Renderer::Submit(m_VertexArray, m_Shader);
+        }
+    }
 }

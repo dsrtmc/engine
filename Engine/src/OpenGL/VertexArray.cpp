@@ -27,8 +27,9 @@ namespace Engine
         {
             const auto &element = elements[i];
             glEnableVertexAttribArray(i);
+            // Do a double cast to ignore the compiler warning: -W-int-to-void-pointer-cast
             glVertexAttribPointer(i, element.count, element.type, element.normalized,
-                                                        stride, (const void *)offset);
+                                                        stride, (const void *)(uintptr_t)offset);
             offset += element.count * element.GetSizeOfType(element.type);
         }
         // m_VertexBuffer = std::make_shared<VertexBuffer>(vbo);
