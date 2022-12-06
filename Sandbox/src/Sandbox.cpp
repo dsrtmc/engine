@@ -18,8 +18,7 @@ Sandbox::Sandbox()
     m_UILayer = std::make_unique<UILayer>();
 
     // Ideally, we should have a function like PushLayer() that also calls layer's OnAttach()
-    TestLayer *testLayer = new TestLayer;
-    m_Layers.push_back(testLayer);
+    m_Layers.push_back(new TestLayer);
 
     ENG_INFO("Created sandbox");
 }
@@ -61,25 +60,22 @@ void Sandbox::Run()
     // we don't have accesss to Window inside that class
     ImGui_ImplGlfw_InitForOpenGL(m_Window->GetNativeWindow(), true);
 
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     // Main app loop
     while (m_Running)
     {
         PollEvents();
-        glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+        glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
 
         for (Layer *layer : m_Layers)
         {
             layer->OnUpdate();
         }
 
-        // Write ImGui inbetween Begin() and End() tags
         m_UILayer->Begin();
-        ImGui::Begin("Hello, world!");                               // Create a window called "Hello, world!" and append into it.
-            ImGui::Text("This is some useful text.");                // Display some text (you can use a format strings too)
-            ImGui::ColorEdit3("clear color", (float *)&clear_color); // Edit 3 floats representing a color
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-        ImGui::End();
+        for (Layer *layer : m_Layers)
+        {
+            layer->OnImGuiUpdate();
+        }
         m_UILayer->End();
 
         m_Window->OnUpdate();

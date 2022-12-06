@@ -16,7 +16,8 @@ TestLayer::TestLayer()
     );
     m_Shader->Bind();
 
-    m_Shader->SetUniform1i("u_useTexture", true);
+    m_Shader->SetUniform1i("u_UseTexture", m_UseTexture);
+    m_Shader->SetUniform3fv("u_Color", m_TriangleColor);
 
     std::shared_ptr<Texture> container = std::make_shared<Texture>("../Sandbox/assets/textures/container.jpg");
     m_Texture = container;
@@ -63,6 +64,22 @@ TestLayer::TestLayer()
 TestLayer::~TestLayer()
 {
     ENG_TRACE("Destroyed Test layer");
+}
+
+// Write Layer-specific ImGui code here
+void TestLayer::OnImGuiUpdate()
+{
+    ImGui::Begin("Test window");
+
+    ImGui::Text("that is test text lol");
+
+    ImGui::Checkbox("Use texture", &m_UseTexture);
+    m_Shader->SetUniform1f("u_UseTexture", m_UseTexture);
+
+    ImGui::ColorEdit3("Triangle color", glm::value_ptr(m_TriangleColor));
+    m_Shader->SetUniform3fv("u_Color", m_TriangleColor);
+
+    ImGui::End();
 }
 
 void TestLayer::OnUpdate()

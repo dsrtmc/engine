@@ -10,6 +10,8 @@ namespace Engine
         UILayer();
         ~UILayer();
 
+        void OnImGuiUpdate() override;
+
         void Begin();
         void End();
     };

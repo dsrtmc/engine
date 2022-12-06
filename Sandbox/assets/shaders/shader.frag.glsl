@@ -5,16 +5,17 @@ in vec2 TexCoord;
 out vec4 color;
 
 uniform sampler2D myTexture;
-uniform bool u_useTexture;
+uniform bool u_UseTexture;
+uniform vec3 u_Color;
 
 void main()
 {
-    if (u_useTexture)
+    if (u_UseTexture)
     {
-        color = texture(myTexture, TexCoord);
+        color = texture(myTexture, TexCoord) * vec4(u_Color, 1.0f);
     }
     else
     {
-        color = vec4(0.2f, 0.3f, 0.4f, 1.0f);
+        color = vec4(u_Color, 1.0f);
     }
 }

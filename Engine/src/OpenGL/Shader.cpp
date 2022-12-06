@@ -136,7 +136,7 @@ namespace Engine
 
     void Shader::SetUniform3fv(const std::string &name, const glm::vec3 &vector)
     {
-        glUniform2fv(GetUniformLocation(name), 1, glm::value_ptr(vector));
+        glUniform3fv(GetUniformLocation(name), 1, glm::value_ptr(vector));
     }
 
     void Shader::SetUniform4f(const std::string &name, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3)
@@ -146,17 +146,17 @@ namespace Engine
     
     void Shader::SetUniform4fv(const std::string &name, const glm::vec4 &vector)
     {
-        glUniform2fv(GetUniformLocation(name), 1, glm::value_ptr(vector));
+        glUniform4fv(GetUniformLocation(name), 1, glm::value_ptr(vector));
     }
 
     void Shader::SetUniformMatrix2fv(const std::string &name, const glm::mat4 &matrix)
     {
-        glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
+        glUniformMatrix2fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
     }
 
     void Shader::SetUniformMatrix3fv(const std::string &name, const glm::mat4 &matrix)
     {
-        glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
+        glUniformMatrix3fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
     }
 
     void Shader::SetUniformMatrix4fv(const std::string &name, const glm::mat4 &matrix)

@@ -8,7 +8,6 @@ enable_testing()
 add_library(${PROJECT_NAME}
     src/Engine/Window.cpp
     src/Engine/Log.cpp
-    src/Engine/Layer.cpp
 
     src/Engine/UI/UILayer.cpp
 

@@ -37,12 +37,12 @@ namespace Engine
         ENG_TRACE("Destroyed UI layer");
     }
 
-    // // Renders ImGui data
-    // void UILayer::OnUpdate()
-    // {
-    //     ImGui::Render();
-    //     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    // }
+    void UILayer::OnImGuiUpdate()
+    {
+        ImGui::Begin("main UI window");
+        ImGui::Text("that is text from the main ui");
+        ImGui::End();
+    }
 
     void UILayer::Begin()
     {
