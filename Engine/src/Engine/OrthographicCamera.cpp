@@ -4,17 +4,17 @@
 
 namespace Engine
 {
-    OrthographicCamera::OrthographicCamera(unsigned int width, unsigned int height)
-        : m_Position(glm::vec3(0.0f, 0.0f, 1.0f)), m_Width(width), m_Height(height),
-        m_ProjectionMatrix(glm::mat4(1.0f))
+    OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top)
+        : m_ProjectionMatrix(glm::mat4(1.0f)),
+        m_Position(glm::vec3(0.0f, 0.0f, 0.0f))
     {
         UpdateViewMatrix();
-        ENG_TRACE("Created orthographic camera");
+        ENG_TRACE("Created Orthographic Camera");
     }
 
     OrthographicCamera::~OrthographicCamera()
     {
-        ENG_TRACE("Destroyed orthographic camera");
+        ENG_TRACE("Destroyed Orthographic Camera");
     }
 
     void OrthographicCamera::SetPosition(const glm::vec3 &position)
@@ -25,6 +25,11 @@ namespace Engine
 
     void OrthographicCamera::UpdateViewMatrix()
     {
-        m_ViewMatrix = glm::translate(glm::mat4(1.0f), -m_Position);
+        m_ViewMatrix = glm::inverse(glm::translate(glm::mat4(1.0f), m_Position));
+    }
+
+    // TODO: implement after implementing an event system
+    void OrthographicCamera::OnUpdate()
+    {
     }
 }

@@ -7,8 +7,10 @@ namespace Engine
     class OrthographicCamera
     {
     public:
-        OrthographicCamera(unsigned int width, unsigned int height);
+        OrthographicCamera(float left, float right, float bottom, float top);
         ~OrthographicCamera();
+
+        void OnUpdate();
 
         const glm::vec3 &GetPosition() const { return m_Position; }
         const glm::mat4 &GetViewMatrix() const { return m_ViewMatrix; }
@@ -20,8 +22,6 @@ namespace Engine
         void UpdateViewMatrix();
 
     private:
-        unsigned int m_Width;
-        unsigned int m_Height;
         glm::vec3 m_Position;
         glm::mat4 m_ViewMatrix;
         glm::mat4 m_ProjectionMatrix;

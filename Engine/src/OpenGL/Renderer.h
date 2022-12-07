@@ -10,8 +10,8 @@ namespace Engine
 {
     class Renderer
     {
-    typedef std::shared_ptr<Engine::VertexArray> RefVAO;
-    typedef std::shared_ptr<Engine::Shader> RefShader;
+    typedef std::shared_ptr<VertexArray> RefVAO;
+    typedef std::shared_ptr<Shader> RefShader;
     public:
         Renderer(const Renderer &) = delete;
 

@@ -22,7 +22,7 @@ TestLayer::TestLayer()
     m_Shader->SetUniform3fv("u_Color", m_TriangleColor);
 
     // Create view and projection matrices
-    m_Camera = std::make_shared<OrthographicCamera>(1440, 900);
+    m_Camera = std::make_shared<OrthographicCamera>(0.0f, 1440.0f, 0.0f, 900.0f);
 
     // Load a texture from a file then bind it to the first slot
     std::shared_ptr<Texture> container = std::make_shared<Texture>("../Sandbox/assets/textures/container.jpg");
@@ -30,7 +30,7 @@ TestLayer::TestLayer()
     m_Texture->Bind(0);
 
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f, -1.0f, -1.0f,
+        -0.5f, -0.5f, 0.0f, -1.0f, -1.0f, 
          0.5f, -0.5f, 0.0f,  1.0f, -1.0f,
          0.5f,  0.5f, 0.0f,  1.0f,  1.0f,
         -0.5f,  0.5f, 0.0f, -1.0f,  1.0f
@@ -48,9 +48,8 @@ TestLayer::TestLayer()
 
     // Specify a layout of our vertices
     BufferLayout layout;
-    // 3 coordinates per attribute => one Push() call == one attribute
-    layout.Push(3);
-    layout.Push(2);
+    layout.Push(3); // vertex positions
+    layout.Push(2); // texture coordinates
 
     // Create a vertex buffer object and bind it to the specified layout
     std::shared_ptr<VertexBuffer> vbo = std::make_shared<VertexBuffer>(vertices, sizeof(vertices));
@@ -91,12 +90,9 @@ void TestLayer::OnImGuiUpdate()
     ImGui::Begin("Camera");
 
     glm::vec3 position = m_Camera->GetPosition();
-    float positionX = position.x;
-    float positionY = position.y;
-
-    ImGui::SliderFloat("CameraX:", &positionX, -1.0f, 1.0f);
-    ImGui::SliderFloat("CameraY:", &positionY, -1.0f, 1.0f);
-    m_Camera->SetPosition(glm::vec3(positionX, positionY, position.z));
+    ImGui::SliderFloat("Camera X:", &position.x, -1.0f, 1.0f);
+    ImGui::SliderFloat("Camera Y:", &position.y, -1.0f, 1.0f);
+    m_Camera->SetPosition(position);
 
     if (ImGui::Button("Reset"))
         m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -109,6 +105,7 @@ void TestLayer::OnImGuiUpdate()
 void TestLayer::OnUpdate()
 {
     Renderer::Clear();
+
     // Draw a grid of textured quads
     for (int row = 0; row < 5; row++)
     {
