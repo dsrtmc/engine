@@ -21,6 +21,10 @@ TestLayer::TestLayer()
     m_Shader->SetUniform1i("u_UseTexture", m_UseTexture);
     m_Shader->SetUniform3fv("u_Color", m_TriangleColor);
 
+    // Create view and projection matrices
+    m_Camera = std::make_shared<OrthographicCamera>(1440, 900);
+
+    // Load a texture from a file then bind it to the first slot
     std::shared_ptr<Texture> container = std::make_shared<Texture>("../Sandbox/assets/textures/container.jpg");
     m_Texture = container;
     m_Texture->Bind(0);
@@ -71,9 +75,8 @@ TestLayer::~TestLayer()
 // Write Layer-specific ImGui code here
 void TestLayer::OnImGuiUpdate()
 {
-    ImGui::Begin("Test window");
-
-    ImGui::Text("that is test text lol");
+    // General settings
+    ImGui::Begin("Settings");
 
     ImGui::Checkbox("Use texture", &m_UseTexture);
     m_Shader->SetUniform1f("u_UseTexture", m_UseTexture);
@@ -83,13 +86,30 @@ void TestLayer::OnImGuiUpdate()
 
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     ImGui::End();
+
+    // Camera settings
+    ImGui::Begin("Camera");
+
+    glm::vec3 position = m_Camera->GetPosition();
+    float positionX = position.x;
+    float positionY = position.y;
+
+    ImGui::SliderFloat("CameraX:", &positionX, -1.0f, 1.0f);
+    ImGui::SliderFloat("CameraY:", &positionY, -1.0f, 1.0f);
+    m_Camera->SetPosition(glm::vec3(positionX, positionY, position.z));
+
+    if (ImGui::Button("Reset"))
+        m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
+    m_Shader->SetUniformMatrix4fv("u_VP", m_Camera->GetProjectionMatrix() * m_Camera->GetViewMatrix());
+
+    ImGui::End();
 }
 
 void TestLayer::OnUpdate()
 {
     Renderer::Clear();
-    m_VertexArray->Bind();
-
+    // Draw a grid of textured quads
     for (int row = 0; row < 5; row++)
     {
         for (int col = 0; col < 5; col++)

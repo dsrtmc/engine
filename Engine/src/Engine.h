@@ -4,6 +4,7 @@
 #include "Engine/Window.h"
 #include "Engine/Log.h"
 #include "Engine/Layer.h"
+#include "OrthographicCamera.h"
 
 #include "Engine/UI/UILayer.h"
 
