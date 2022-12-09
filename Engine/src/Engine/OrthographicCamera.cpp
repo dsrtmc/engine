@@ -32,4 +32,8 @@ namespace Engine
     void OrthographicCamera::OnUpdate()
     {
     }
+
+    void OrthographicCamera::OnEvent(Event &event)
+    {
+    }
 }

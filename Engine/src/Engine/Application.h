@@ -6,16 +6,17 @@
 
 namespace Engine
 {
+    // TODO: make it a singleton or whatever, this class is ridiculously bad
     class Application
     {
     public:
         Application() {}
         virtual ~Application() {}
 
-        virtual void Run() = 0;
+        virtual Window *GetWindow() = 0;
 
-    private:
-        virtual void PollEvents() = 0; 
+        virtual void Run() = 0;
+        virtual void OnEvent(Event &event) = 0;
 
     protected:
         bool m_Running = true;

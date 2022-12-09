@@ -1,5 +1,8 @@
 #include "Window.h"
 
+#include "ApplicationEvent.h"
+#include "KeyEvent.h"
+
 namespace Engine
 {
     Window *Window::Create(const WindowProps &props)
@@ -17,6 +20,11 @@ namespace Engine
         Shutdown();
     }
 
+    void Window::SetEventCallback(const EventCallbackFunction &callback)
+    {
+        m_Data.EventCallback = callback;
+    }
+
     void Window::Init(const WindowProps &props)
     {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -29,11 +37,58 @@ namespace Engine
         if (!s_GLFWInitialized)
         {
             glfwInit();
-            // ASSERT(glfwInit(), "errro messge");
+            // TODO: ASSERT(glfwInit(), "errro messge");
             s_GLFWInitialized = true;
         }
         m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
+        // Allows us to put any kind of data we want into the window
+        glfwSetWindowUserPointer(m_Window, &m_Data);
+
+        // Set GLFW callbacks
+        glfwSetWindowSizeCallback(m_Window, [](GLFWwindow *window, int width, int height)
+        {
+            WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+            data.Width = width;
+            data.Height = height;
+
+            WindowResizeEvent event(width, height);
+            data.EventCallback(event);
+        });
+
+        glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window)
+        {
+            WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+            WindowCloseEvent event;
+            data.EventCallback(event);
+        });
+
+        // TODO: Have own keycodes, not GLFW keycodes (?)
+        glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int scancode, int action, int modes)
+        {
+            WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+            switch (action)
+            {
+                case GLFW_PRESS:
+                {
+                    KeyPressedEvent event(key, false);
+                    data.EventCallback(event);
+                    break;
+                }
+                case GLFW_RELEASE:
+                {
+                    KeyReleasedEvent event(key);
+                    data.EventCallback(event);
+                    break;
+                }
+                case GLFW_REPEAT:
+                {
+                    KeyPressedEvent event(key, true);
+                    data.EventCallback(event);
+                    break;
+                }
+            }
+        });
     }
 
     void Window::Shutdown()

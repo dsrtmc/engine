@@ -7,14 +7,15 @@ class Sandbox : public Engine::Application
 {
 public:
     Sandbox();
-    ~Sandbox() override;
+    virtual ~Sandbox() override;
 
     inline Engine::Window *GetWindow() { return m_Window; };
 
-    void Run() override;
+    virtual void Run() override;
+
+    virtual void OnEvent(Engine::Event &event) override;
 
 private:
-    void PollEvents() override;
     void Initialize();
 
 private:

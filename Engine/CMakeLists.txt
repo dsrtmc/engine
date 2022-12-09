@@ -9,6 +9,11 @@ add_library(${PROJECT_NAME}
     src/Engine/Window.cpp
     src/Engine/Log.cpp
     src/Engine/OrthographicCamera.cpp
+    src/Engine/Input.cpp
+
+    src/Engine/Events/Event.h
+    src/Engine/Events/KeyEvent.h
+    src/Engine/Events/ApplicationEvent.h
 
     src/Engine/UI/UILayer.cpp
 
@@ -23,6 +28,7 @@ add_library(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME} PUBLIC src/)
 target_include_directories(${PROJECT_NAME} PUBLIC src/Engine/)
+target_include_directories(${PROJECT_NAME} PUBLIC src/Engine/Events/)
 target_include_directories(${PROJECT_NAME} PUBLIC src/Engine/UI/)
 target_include_directories(${PROJECT_NAME} PUBLIC src/OpenGL/)
 

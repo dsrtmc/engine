@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Event.h"
+#include "KeyEvent.h"
+
 #include <glm/glm.hpp>
 
 namespace Engine
@@ -11,6 +14,7 @@ namespace Engine
         ~OrthographicCamera();
 
         void OnUpdate();
+        void OnEvent(Event &event);
 
         const glm::vec3 &GetPosition() const { return m_Position; }
         const glm::mat4 &GetViewMatrix() const { return m_ViewMatrix; }

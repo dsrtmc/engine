@@ -4,7 +4,13 @@
 #include "Engine/Window.h"
 #include "Engine/Log.h"
 #include "Engine/Layer.h"
-#include "OrthographicCamera.h"
+#include "Engine/OrthographicCamera.h"
+#include "Engine/Input.h"
+#include "Engine/KeyCodes.h"
+
+#include "Engine/Events/Event.h"
+#include "Engine/Events/KeyEvent.h"
+#include "Engine/Events/ApplicationEvent.h"
 
 #include "Engine/UI/UILayer.h"
 

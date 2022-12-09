@@ -11,8 +11,13 @@ using namespace Engine;
 
 Sandbox::Sandbox()
 {
-    // Create a window and initialize GLAD
+    // Create a window, set its event callbacks
     m_Window = Window::Create({ "Engine", 1440, 900 });
+
+    // The window's event callback now becomes Sandbox's OnEvent() function
+    m_Window->SetEventCallback([&](Event &e){ return OnEvent(e); });
+
+    // Initialize GLAD, log OpenGL version
     Initialize();
 
     m_UILayer = std::make_unique<UILayer>();
@@ -27,13 +32,23 @@ Sandbox::~Sandbox()
 {
     m_Window->Shutdown();
 
-    // Ideally do that inside a LayerStack
+    // Ideally do that for a LayerStack
     for (Layer *layer : m_Layers)
     {
         delete layer;
     }
 }
 
+// App's event callback
+void Sandbox::OnEvent(Event &e)
+{
+    if (Input::IsKeyPressed(*this, ENG_KEY_ESCAPE))
+    {
+        m_Running = false;
+    }
+}
+
+// Initialize GLAD, log OpenGL version
 void Sandbox::Initialize()
 {
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -43,14 +58,6 @@ void Sandbox::Initialize()
 
     std::string version = std::string((const char *)glGetString(GL_VERSION));
     ENG_INFO("OpenGL version: {0}", version);
-}
-
-void Sandbox::PollEvents()
-{
-    if (glfwGetKey(m_Window->GetNativeWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
-        m_Running = false;
-    }
 }
 
 // Main app logic
@@ -63,7 +70,6 @@ void Sandbox::Run()
     // Main app loop
     while (m_Running)
     {
-        PollEvents();
         glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
 
         for (Layer *layer : m_Layers)
