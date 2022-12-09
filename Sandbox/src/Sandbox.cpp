@@ -11,6 +11,9 @@ using namespace Engine;
 
 Sandbox::Sandbox()
 {
+    // Required to make this the main application instance
+    s_Instance = this;
+
     // Create a window, set its event callbacks
     m_Window = Window::Create({ "Engine", 1440, 900 });
 
@@ -42,7 +45,7 @@ Sandbox::~Sandbox()
 // App's event callback
 void Sandbox::OnEvent(Event &e)
 {
-    if (Input::IsKeyPressed(*this, ENG_KEY_ESCAPE))
+    if (Input::IsKeyPressed(ENG_KEY_ESCAPE))
     {
         m_Running = false;
     }
