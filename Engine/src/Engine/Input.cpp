@@ -1,5 +1,7 @@
 #include "Input.h"
 
+#include "Application.h"
+
 #include <GLFW/glfw3.h>
 
 namespace Engine
@@ -7,16 +9,16 @@ namespace Engine
     // Instantiate the singleton
     Input *Input::s_Instance;
 
-    bool Input::IsKeyPressedInternal(Application &app, int keycode)
+    bool Input::IsKeyPressedInternal(int keycode)
     {
-        auto window = app.GetWindow()->GetNativeWindow();
+        auto window = Application::Get()->GetWindow()->GetNativeWindow();
         auto state = glfwGetKey(window, keycode);
         return state == GLFW_PRESS || state == GLFW_REPEAT;
     }
 
-    bool Input::IsMouseButtonPressedInternal(Application &app, int button)
+    bool Input::IsMouseButtonPressedInternal(int button)
     {
-        auto window = app.GetWindow()->GetNativeWindow();
+        auto window = Application::Get()->GetWindow()->GetNativeWindow();
         auto state = glfwGetMouseButton(window, button);
         return state == GLFW_PRESS;
     }

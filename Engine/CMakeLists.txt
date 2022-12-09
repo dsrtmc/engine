@@ -9,7 +9,9 @@ add_library(${PROJECT_NAME}
     src/Engine/Window.cpp
     src/Engine/Log.cpp
     src/Engine/OrthographicCamera.cpp
+    src/Engine/OrthographicCameraController.cpp
     src/Engine/Input.cpp
+    src/Engine/Application.cpp
 
     src/Engine/Events/Event.h
     src/Engine/Events/KeyEvent.h

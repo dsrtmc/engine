@@ -10,12 +10,13 @@ public:
 
     void OnImGuiUpdate() override;
     void OnUpdate() override;
+    void OnEvent(Engine::Event &event) override;
 
 private:
-    std::shared_ptr<Engine::OrthographicCamera> m_Camera;
     std::shared_ptr<Engine::VertexArray> m_VertexArray;
     std::shared_ptr<Engine::Texture> m_Texture;
     std::shared_ptr<Engine::Shader> m_Shader;
+    Engine::OrthographicCameraController m_CameraController;
 
 private:
     bool m_UseTexture = true;

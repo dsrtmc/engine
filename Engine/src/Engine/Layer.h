@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Event.h"
+
 namespace Engine
 {
     class Layer
@@ -10,6 +12,7 @@ namespace Engine
 
         virtual void OnImGuiUpdate() {}
         virtual void OnUpdate() {}
+        virtual void OnEvent(Event &event) {}
         inline std::string GetName() { return m_Name; };
 
     private:

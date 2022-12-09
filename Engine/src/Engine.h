@@ -5,6 +5,7 @@
 #include "Engine/Log.h"
 #include "Engine/Layer.h"
 #include "Engine/OrthographicCamera.h"
+#include "Engine/OrthographicCameraController.h"
 #include "Engine/Input.h"
 #include "Engine/KeyCodes.h"
 

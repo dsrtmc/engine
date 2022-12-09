@@ -28,7 +28,7 @@ Sandbox::Sandbox()
     // Ideally, we should have a function like PushLayer() that also calls layer's OnAttach()
     m_Layers.push_back(new TestLayer);
 
-    ENG_INFO("Created sandbox");
+    ENG_INFO("Created Sandbox");
 }
 
 Sandbox::~Sandbox()
@@ -45,6 +45,12 @@ Sandbox::~Sandbox()
 // App's event callback
 void Sandbox::OnEvent(Event &e)
 {
+    for (Layer *layer : m_Layers)
+    {
+        layer->OnEvent(e);
+    }
+
+    // Write Sandbox specific events here
     if (Input::IsKeyPressed(ENG_KEY_ESCAPE))
     {
         m_Running = false;
@@ -66,11 +72,6 @@ void Sandbox::Initialize()
 // Main app logic
 void Sandbox::Run()
 {
-    // TODO: Move that to UILayer class, can't do that now because
-    // we don't have accesss to Window inside that class
-    ImGui_ImplGlfw_InitForOpenGL(m_Window->GetNativeWindow(), true);
-
-    // Main app loop
     while (m_Running)
     {
         glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
