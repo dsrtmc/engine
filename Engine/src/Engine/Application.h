@@ -6,7 +6,6 @@
 
 namespace Engine
 {
-    // TODO: make it a singleton or whatever, this class is ridiculously bad
     class Application
     {
     public:

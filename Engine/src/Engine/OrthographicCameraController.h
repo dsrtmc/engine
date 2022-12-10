@@ -2,6 +2,7 @@
 
 #include "OrthographicCamera.h"
 #include "Event.h"
+#include "MouseEvent.h"
 
 #include <glm/glm.hpp>
 
@@ -13,7 +14,7 @@ namespace Engine
         OrthographicCameraController(float aspectRatio);
         ~OrthographicCameraController();
 
-        const OrthographicCamera &GetCamera() const { return m_Camera; }
+        const std::shared_ptr<OrthographicCamera> GetCamera() const { return m_Camera; }
         const glm::vec3 &GetCameraPosition() const { return m_CameraPosition; }
         float GetCameraRotation() const { return m_CameraRotation; }
 
@@ -33,6 +34,6 @@ namespace Engine
         float m_MovementSpeed;
         float m_AspectRatio;
         float m_ZoomLevel = 1.0f;
-        OrthographicCamera m_Camera;
+        std::shared_ptr<OrthographicCamera> m_Camera;
     };
 }

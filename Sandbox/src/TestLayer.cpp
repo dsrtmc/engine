@@ -9,7 +9,7 @@
 using namespace Engine;
 
 TestLayer::TestLayer()
-    : Layer("Test layer"), m_CameraController(1440.0 / 900.0)
+    : Layer("Test layer"), m_CameraController(1440.0f / 900.0f)
 {
     // Filepaths are relative from /build/
     m_Shader = Shader::FromTextFiles(
@@ -20,9 +20,6 @@ TestLayer::TestLayer()
 
     m_Shader->SetUniform1i("u_UseTexture", m_UseTexture);
     m_Shader->SetUniform3fv("u_Color", m_TriangleColor);
-
-    // Create view and projection matrices
-    // m_Camera = std::make_shared<OrthographicCamera>(0.0f, 1440.0f, 0.0f, 900.0f);
 
     // Load a texture from a file then bind it to the first slot
     std::shared_ptr<Texture> container = std::make_shared<Texture>("../Sandbox/assets/textures/container.jpg");
@@ -87,7 +84,7 @@ void TestLayer::OnImGuiUpdate()
     ImGui::End();
 
     // Camera settings
-    OrthographicCamera camera = m_CameraController.GetCamera();
+    auto camera = m_CameraController.GetCamera();
     ImGui::Begin("Camera");
 
     glm::vec3 position = m_CameraController.GetCameraPosition();
@@ -96,12 +93,12 @@ void TestLayer::OnImGuiUpdate()
     ImGui::SliderFloat("Camera Y:", &position.y, -1.0f, 1.0f);
 
     m_CameraController.SetCameraPosition(position);
-    camera.SetPosition(position);
+    camera->SetPosition(position);
 
     if (ImGui::Button("Reset"))
         m_CameraController.SetCameraPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
-    m_Shader->SetUniformMatrix4fv("u_VP", camera.GetProjectionMatrix() * camera.GetViewMatrix());
+    m_Shader->SetUniformMatrix4fv("u_VP", camera->GetProjectionMatrix() * camera->GetViewMatrix());
 
     ImGui::End();
 }

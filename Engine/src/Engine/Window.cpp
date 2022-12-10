@@ -37,8 +37,8 @@ namespace Engine
         m_Data.Height = props.Height;
         if (!s_GLFWInitialized)
         {
-            glfwInit();
-            // TODO: ASSERT(glfwInit(), "errro messge");
+            if (glfwInit() == GL_FALSE)
+                ENG_ERROR("Failed to initialize GLFW");
             s_GLFWInitialized = true;
         }
         m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);

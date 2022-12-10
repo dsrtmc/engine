@@ -2,13 +2,15 @@
 
 #include "Input.h"
 #include "KeyCodes.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Engine
 {
     // Width and height used for creating a camera and setting its aspect ratio
     OrthographicCameraController::OrthographicCameraController(float aspectRatio)
-        : m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel),
+        : m_AspectRatio(aspectRatio),
+        m_Camera(std::make_shared<OrthographicCamera>(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel)),
         m_CameraPosition(glm::vec3(0.0f, 0.0f, 0.0f))
     {
         ENG_TRACE("Created Orthographic Camera Controller");
@@ -22,13 +24,13 @@ namespace Engine
     void OrthographicCameraController::SetCameraPosition(const glm::vec3 &position)
     {
         m_CameraPosition = position;
-        m_Camera.SetPosition(m_CameraPosition);
+        m_Camera->SetPosition(m_CameraPosition);
     }
 
     void OrthographicCameraController::SetCameraRotation(float rotation)
     {
         m_CameraRotation = rotation;
-        m_Camera.SetRotation(m_CameraRotation);
+        m_Camera->SetRotation(m_CameraRotation);
     }
 
     void OrthographicCameraController::OnUpdate(float timestep)
@@ -57,8 +59,6 @@ namespace Engine
     {
         if (event.GetType() == EventType::KeyPressed)
             OnKeyPressed();
-        if (event.GetType() == EventType::MouseScrolled)
-            OnMouseScrolled();
     }
 
     void OrthographicCameraController::OnKeyPressed()
@@ -72,6 +72,5 @@ namespace Engine
 
     void OrthographicCameraController::OnMouseScrolled()
     {
-        ENG_INFO("Mouse scrolled");
     }
 }

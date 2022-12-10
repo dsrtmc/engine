@@ -38,6 +38,8 @@ Sandbox::~Sandbox()
     // Ideally do that for a LayerStack
     for (Layer *layer : m_Layers)
         delete layer;
+
+    ENG_INFO("Destroyed Sandbox");
 }
 
 // App's event callback

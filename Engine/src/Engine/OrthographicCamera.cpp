@@ -14,7 +14,7 @@ namespace Engine
 
     OrthographicCamera::~OrthographicCamera()
     {
-        // ENG_TRACE("Destroyed Orthographic Camera");
+        ENG_TRACE("Destroyed Orthographic Camera");
     }
 
     void OrthographicCamera::SetPosition(const glm::vec3 &position)
@@ -34,14 +34,5 @@ namespace Engine
         // Rotation disabled for now, since I have no idea how to fix it
         // m_ViewMatrix = glm::inverse(glm::translate(glm::mat4(1.0f), m_Position) * glm::rotate(glm::mat4(1.0f), glm::radians(m_Rotation), glm::vec3(0.0f, 0.0f, 1.0f)));
         m_ViewMatrix = glm::inverse(glm::translate(glm::mat4(1.0f), m_Position));
-    }
-
-    // TODO: implement after implementing an event system
-    void OrthographicCamera::OnUpdate()
-    {
-    }
-
-    void OrthographicCamera::OnEvent(Event &event)
-    {
     }
 }
