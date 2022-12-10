@@ -17,9 +17,11 @@ namespace Engine
         const std::shared_ptr<OrthographicCamera> GetCamera() const { return m_Camera; }
         const glm::vec3 &GetCameraPosition() const { return m_CameraPosition; }
         float GetCameraRotation() const { return m_CameraRotation; }
+        float GetZoomLevel() const { return m_ZoomLevel; }
 
         void SetCameraPosition(const glm::vec3 &position);
         void SetCameraRotation(float rotation);
+        void SetZoomLevel(float level);
 
         void OnUpdate(float timestep);
         void OnEvent(Event &event);

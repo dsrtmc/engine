@@ -17,6 +17,11 @@ namespace Engine
         ENG_TRACE("Destroyed Orthographic Camera");
     }
 
+    void OrthographicCamera::SetProjectionMatrix(const glm::mat4 &projection)
+    {
+        m_ProjectionMatrix = projection;
+    }
+
     void OrthographicCamera::SetPosition(const glm::vec3 &position)
     {
         m_Position = position;

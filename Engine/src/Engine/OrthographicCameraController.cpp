@@ -33,6 +33,16 @@ namespace Engine
         m_Camera->SetRotation(m_CameraRotation);
     }
 
+    void OrthographicCameraController::SetZoomLevel(float level)
+    {
+        m_ZoomLevel = level;
+        if (m_ZoomLevel < 0.1f)
+            m_ZoomLevel = 0.1f;
+        if (m_ZoomLevel > 8.0f)
+            m_ZoomLevel = 8.0f;
+        m_Camera->SetProjectionMatrix(glm::ortho(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel, -1.0f, 1.0f));
+    }
+
     void OrthographicCameraController::OnUpdate(float timestep)
     {
         // Multiply by 1000 to compensate for really low timestep values

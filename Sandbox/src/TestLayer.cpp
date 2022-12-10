@@ -87,6 +87,7 @@ void TestLayer::OnImGuiUpdate()
     auto camera = m_CameraController.GetCamera();
     ImGui::Begin("Camera");
 
+    // Camera position
     glm::vec3 position = m_CameraController.GetCameraPosition();
     float bound = ((float)1440 / (float)900) * 1.0f;
     ImGui::SliderFloat("Camera X:", &position.x, -bound, bound);
@@ -97,6 +98,12 @@ void TestLayer::OnImGuiUpdate()
 
     if (ImGui::Button("Reset"))
         m_CameraController.SetCameraPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    
+    // Camera zoom
+    // glm::vec3 zoom = m_CameraController.GetCamera()->
+    float zoom = m_CameraController.GetZoomLevel();
+    ImGui::SliderFloat("Zoom level:", &zoom, -5.0f, 10.0f);
+    m_CameraController.SetZoomLevel(zoom);
 
     m_Shader->SetUniformMatrix4fv("u_VP", camera->GetProjectionMatrix() * camera->GetViewMatrix());
 
