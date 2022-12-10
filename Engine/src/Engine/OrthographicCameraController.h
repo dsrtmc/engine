@@ -14,15 +14,19 @@ namespace Engine
         ~OrthographicCameraController();
 
         const OrthographicCamera &GetCamera() const { return m_Camera; }
-        const glm::vec3 &GetPosition() const { return m_Position; }
+        const glm::vec3 &GetCameraPosition() const { return m_CameraPosition; }
+        float GetCameraRotation() const { return m_CameraRotation; }
 
-        void SetPosition(const glm::vec3 &position);
+        void SetCameraPosition(const glm::vec3 &position);
+        void SetCameraRotation(float rotation);
 
-        void OnUpdate();
+        void OnUpdate(float timestep);
         void OnEvent(Event &event);
 
     private:
         OrthographicCamera m_Camera;
-        glm::vec3 m_Position;
+        glm::vec3 m_CameraPosition;
+        float m_CameraRotation;
+        float m_MovementSpeed;
     };
 }

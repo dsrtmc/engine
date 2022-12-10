@@ -30,10 +30,10 @@ TestLayer::TestLayer()
     m_Texture->Bind(0);
 
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f, -1.0f, -1.0f, 
-         0.5f, -0.5f, 0.0f,  1.0f, -1.0f,
-         0.5f,  0.5f, 0.0f,  1.0f,  1.0f,
-        -0.5f,  0.5f, 0.0f, -1.0f,  1.0f
+        520.0f, 250.0f, 0.0f, -1.0f, -1.0f, 
+         920.0f, 250.0f, 0.0f,  1.0f, -1.0f,
+         920.0f,  650.0f, 0.0f,  1.0f,  1.0f,
+        520.0f,  650.0f, 0.0f, -1.0f,  1.0f
     };
 
     GLuint indices[] = {
@@ -90,37 +90,37 @@ void TestLayer::OnImGuiUpdate()
     OrthographicCamera camera = m_CameraController.GetCamera();
     ImGui::Begin("Camera");
 
-    glm::vec3 position = m_CameraController.GetPosition();
-    ImGui::SliderFloat("Camera X:", &position.x, -1.0f, 1.0f);
-    ImGui::SliderFloat("Camera Y:", &position.y, -1.0f, 1.0f);
+    glm::vec3 position = m_CameraController.GetCameraPosition();
+    ImGui::SliderFloat("Camera X:", &position.x, -720.0f, 720.0f);
+    ImGui::SliderFloat("Camera Y:", &position.y, -450.0f, 450.0f);
 
-    m_CameraController.SetPosition(position);
+    m_CameraController.SetCameraPosition(position);
     camera.SetPosition(position);
 
     if (ImGui::Button("Reset"))
-        m_CameraController.SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+        m_CameraController.SetCameraPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
     m_Shader->SetUniformMatrix4fv("u_VP", camera.GetProjectionMatrix() * camera.GetViewMatrix());
 
     ImGui::End();
 }
 
-void TestLayer::OnUpdate()
+void TestLayer::OnUpdate(float timestep)
 {
     Renderer::Clear();
 
     // Place it in OnUpdate() for smooth camera movement, OnEvent() would treat is as press/repeat only
-    m_CameraController.OnUpdate();
+    m_CameraController.OnUpdate(timestep);
 
+    // m_Shader->SetUniformMatrix4fv("u_Transform", glm::mat4(1.0f));
+    // Renderer::Submit(m_VertexArray, m_Shader);
     // Draw a grid of textured quads
     for (int row = 0; row < 5; row++)
     {
         for (int col = 0; col < 5; col++)
         {
-            glm::vec3 pos(row * 0.22f, col * 0.32f, 0.0f);
-            glm::mat4 transform = glm::mat4(1.0f);
-            transform = glm::translate(transform, glm::vec3(-0.45f, -0.6f, 0.0f));
-            transform = glm::translate(transform, pos) * glm::scale(glm::mat4(1.0f), glm::vec3(0.2f, 0.3f, 1.0f));
+            glm::vec3 pos(row * 150.0f, col * 150.0f, 0.0f);
+            glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * glm::scale(glm::mat4(1.0f), glm::vec3(0.35f, 0.35f, 1.0f));
             m_Shader->SetUniformMatrix4fv("u_Transform", transform);
 
             Renderer::Submit(m_VertexArray, m_Shader);

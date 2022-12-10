@@ -11,7 +11,7 @@ namespace Engine
         virtual ~Layer() {}
 
         virtual void OnImGuiUpdate() {}
-        virtual void OnUpdate() {}
+        virtual void OnUpdate(float timestep) {}
         virtual void OnEvent(Event &event) {}
         inline std::string GetName() { return m_Name; };
 

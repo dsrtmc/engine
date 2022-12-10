@@ -20,6 +20,7 @@ private:
 
 private:
     Engine::Window *m_Window;
+    float m_LastFrameTime = 0.0f;
 };
 
 

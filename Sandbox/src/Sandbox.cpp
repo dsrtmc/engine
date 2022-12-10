@@ -57,9 +57,7 @@ void Sandbox::OnEvent(Event &e)
 void Sandbox::Initialize()
 {
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
         ENG_ERROR("Failed to initialize GLAD");
-    }
 
     std::string version = std::string((const char *)glGetString(GL_VERSION));
     ENG_INFO("OpenGL version: {0}", version);
@@ -72,8 +70,13 @@ void Sandbox::Run()
     {
         glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
 
+        // Calculate the timestep for OnUpdate() methods
+        float time = glfwGetTime();
+        float timestep = time - m_LastFrameTime;
+        m_LastFrameTime = time;
+
         for (Layer *layer : m_Layers)
-            layer->OnUpdate();
+            layer->OnUpdate(timestep);
 
         m_UILayer->Begin();
         for (Layer *layer : m_Layers)

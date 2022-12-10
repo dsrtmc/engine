@@ -9,7 +9,7 @@ public:
     ~TestLayer();
 
     void OnImGuiUpdate() override;
-    void OnUpdate() override;
+    void OnUpdate(float timestep) override;
     void OnEvent(Engine::Event &event) override;
 
 private:
