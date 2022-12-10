@@ -24,7 +24,7 @@ namespace Engine
         m_Camera.SetPosition(m_Position);
     }
 
-    void OrthographicCameraController::OnEvent(Event &event)
+    void OrthographicCameraController::OnUpdate()
     {
         if (Input::IsKeyPressed(ENG_KEY_W))
             SetPosition(m_Position + glm::vec3(0.0f, 0.025f, 0.0f));
@@ -34,5 +34,11 @@ namespace Engine
             SetPosition(m_Position + glm::vec3(-0.025f, 0.0f, 0.0f));
         if (Input::IsKeyPressed(ENG_KEY_D))
             SetPosition(m_Position + glm::vec3(0.025f, 0.0f, 0.0f));
+    }
+
+    void OrthographicCameraController::OnEvent(Event &event)
+    {
+        if (Input::IsKeyPressed(ENG_KEY_R))
+            SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     }
 }

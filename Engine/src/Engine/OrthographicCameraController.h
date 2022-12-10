@@ -18,6 +18,7 @@ namespace Engine
 
         void SetPosition(const glm::vec3 &position);
 
+        void OnUpdate();
         void OnEvent(Event &event);
 
     private:

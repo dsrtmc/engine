@@ -19,10 +19,7 @@ namespace Engine
         ImGuiIO &io = ImGui::GetIO();
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         ImGuiStyle &style = ImGui::GetStyle();
-        if (io.ConfigFlags)
-        {
-            style.WindowRounding = 0.0f;
-        }
+
         // Filepath relative from /build/
         io.Fonts->AddFontFromFileTTF("../Sandbox/assets/fonts/opensans/OpenSans-Regular.ttf", 16.5);
 

@@ -12,9 +12,7 @@ namespace Engine
         m_Data = stbi_load(filepath.c_str(), &m_Width, &m_Height, &m_BPP, 0);
 
         if (!m_Data)
-        {
             ENG_WARN("Failed to load texture: {0}", filepath);
-        }
 
         glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
         glBindTexture(GL_TEXTURE_2D, m_RendererID);

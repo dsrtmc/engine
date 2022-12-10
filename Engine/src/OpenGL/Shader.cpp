@@ -14,9 +14,7 @@ namespace Engine
         std::string line;
         std::stringstream ss;
         while (std::getline(file, line))
-        {
             ss << line << '\n';
-        }
         return ss.str();
     }
 
@@ -32,13 +30,9 @@ namespace Engine
         std::string vertexSource = ParseShader(vertexShaderPath);
         std::string fragmentSource = ParseShader(fragmentShaderPath);
         if (vertexSource == "")
-        {
             ENG_WARN("Vertex shader not found");
-        }
         if (fragmentSource == "")
-        {
             ENG_WARN("Fragment shader not found");
-        }
 
         GLuint vs = CreateShader(vertexSource, GL_VERTEX_SHADER);
         GLuint fs = CreateShader(fragmentSource, GL_FRAGMENT_SHADER);
@@ -88,9 +82,7 @@ namespace Engine
     {
         GLint location = glGetUniformLocation(m_RendererID, name.c_str());
         if (location == -1)
-        {
             ENG_WARN("Uniform \"{0}\" not found or unused.", name);
-        }
         return location;
     }
 

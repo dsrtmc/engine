@@ -109,6 +109,9 @@ void TestLayer::OnUpdate()
 {
     Renderer::Clear();
 
+    // Place it in OnUpdate() for smooth camera movement, OnEvent() would treat is as press/repeat only
+    m_CameraController.OnUpdate();
+
     // Draw a grid of textured quads
     for (int row = 0; row < 5; row++)
     {

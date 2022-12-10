@@ -15,9 +15,8 @@ namespace Engine
     std::shared_ptr<spdlog::logger> &Log::GetLogger()
     {
         if (!s_Logger)
-        {
             Init();
-        }
+
         return s_Logger;
     }
 }

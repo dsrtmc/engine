@@ -37,24 +37,20 @@ Sandbox::~Sandbox()
 
     // Ideally do that for a LayerStack
     for (Layer *layer : m_Layers)
-    {
         delete layer;
-    }
 }
 
 // App's event callback
 void Sandbox::OnEvent(Event &e)
 {
     for (Layer *layer : m_Layers)
-    {
         layer->OnEvent(e);
-    }
 
     // Write Sandbox specific events here
-    if (Input::IsKeyPressed(ENG_KEY_ESCAPE))
-    {
+    if (e.GetType() == EventType::WindowClosed)
         m_Running = false;
-    }
+    if (Input::IsKeyPressed(ENG_KEY_ESCAPE))
+        m_Running = false;
 }
 
 // Initialize GLAD, log OpenGL version
@@ -77,15 +73,11 @@ void Sandbox::Run()
         glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
 
         for (Layer *layer : m_Layers)
-        {
             layer->OnUpdate();
-        }
 
         m_UILayer->Begin();
         for (Layer *layer : m_Layers)
-        {
             layer->OnImGuiUpdate();
-        }
         m_UILayer->End();
 
         m_Window->OnUpdate();
