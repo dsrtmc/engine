@@ -2,6 +2,7 @@
 
 #include "ApplicationEvent.h"
 #include "KeyEvent.h"
+#include "MouseEvent.h"
 
 namespace Engine
 {
@@ -42,7 +43,6 @@ namespace Engine
         }
         m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
-        // Allows us to put any kind of data we want into the window
         glfwSetWindowUserPointer(m_Window, &m_Data);
 
         // Set GLFW callbacks
@@ -63,7 +63,6 @@ namespace Engine
             data.EventCallback(event);
         });
 
-        // TODO: Have own keycodes, not GLFW keycodes (?)
         glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int scancode, int action, int modes)
         {
             WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
@@ -88,6 +87,13 @@ namespace Engine
                     break;
                 }
             }
+        });
+
+        glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xoffset, double yoffset)
+        {
+            WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+            MouseScrolledEvent event(xoffset, yoffset);
+            data.EventCallback(event);
         });
     }
 

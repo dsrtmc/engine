@@ -7,6 +7,7 @@ namespace Engine
     class KeyEvent : public Event
     {
     public:
+        // should probably be int since we're using GLFW unknown key that's -1
         KeyEvent(unsigned int Keycode)
             : m_Keycode(Keycode) {}
 

@@ -19,6 +19,6 @@ private:
     Engine::OrthographicCameraController m_CameraController;
 
 private:
-    bool m_UseTexture = true;
+    bool m_UseTexture = false;
     glm::vec3 m_TriangleColor = glm::vec3(0.8f, 0.2f, 0.2f);
 };

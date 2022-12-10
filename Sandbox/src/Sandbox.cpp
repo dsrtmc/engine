@@ -41,16 +41,20 @@ Sandbox::~Sandbox()
 }
 
 // App's event callback
-void Sandbox::OnEvent(Event &e)
+void Sandbox::OnEvent(Event &event)
 {
     for (Layer *layer : m_Layers)
-        layer->OnEvent(e);
+        layer->OnEvent(event);
 
-    // Write Sandbox specific events here
-    if (e.GetType() == EventType::WindowClosed)
+    // Write Sandbox specific events below
+    EventType type = event.GetType();
+    if (type == EventType::WindowClosed)
         m_Running = false;
-    if (Input::IsKeyPressed(ENG_KEY_ESCAPE))
-        m_Running = false;
+    if (type == EventType::KeyPressed)
+    {
+        if (Input::IsKeyPressed(ENG_KEY_ESCAPE))
+            m_Running = false;
+    }
 }
 
 // Initialize GLAD, log OpenGL version

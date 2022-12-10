@@ -11,6 +11,7 @@ namespace Engine
     {
         None = 0,
         KeyPressed, KeyReleased,
+        MouseButtonPressed, MouseButtonReleased, MouseScrolled,
         WindowResized, WindowClosed
     };
 
