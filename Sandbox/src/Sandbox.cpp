@@ -52,10 +52,19 @@ void Sandbox::OnEvent(Event &event)
     EventType type = event.GetType();
     if (type == EventType::WindowClosed)
         m_Running = false;
+
     if (type == EventType::KeyPressed)
     {
         if (Input::IsKeyPressed(ENG_KEY_ESCAPE))
             m_Running = false;
+    }
+
+    // Update the viewport on window resize
+    if (type == EventType::WindowResized)
+    {
+        int width, height;
+        glfwGetFramebufferSize(m_Window->GetNativeWindow(), &width, &height);
+        glViewport(0, 0, width, height);
     }
 }
 

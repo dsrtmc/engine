@@ -4,6 +4,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 using namespace Engine;
@@ -134,4 +135,15 @@ void TestLayer::OnUpdate(float timestep)
 void TestLayer::OnEvent(Event &event)
 {
     m_CameraController.OnEvent(event);
+
+    if (event.GetType() == EventType::WindowResized)
+    {
+        auto &re = (WindowResizeEvent &)event;
+        float aspectRatio = (float) re.GetWidth() / (float) re.GetHeight();
+        float zoomLevel = m_CameraController.GetZoomLevel();
+        // I don't think it works as intended as of right now
+        m_CameraController.GetCamera()->SetProjectionMatrix(glm::ortho(-aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel, -1.0f, 1.0f));
+    }
 }
+
+    

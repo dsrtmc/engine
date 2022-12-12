@@ -45,8 +45,9 @@ namespace Engine
 
     void OrthographicCameraController::OnUpdate(float timestep)
     {
-        // Multiply by 1000 to compensate for really low timestep values
-        m_MovementSpeed = 0.25f * 1000.0f;
+        // * 1000 to compensate for really low timestep values
+        // * m_ZoomLevel (where 0.1 is zoomed far in) to move faster when zoomed out and slower when zoomed in
+        m_MovementSpeed = 0.25f * 1000.0f * m_ZoomLevel;
         if (Input::IsKeyPressed(ENG_KEY_W))
             m_CameraPosition.y += 0.01f * m_MovementSpeed * timestep;
         if (Input::IsKeyPressed(ENG_KEY_S))

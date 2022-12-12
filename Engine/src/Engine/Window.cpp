@@ -95,6 +95,13 @@ namespace Engine
             MouseScrolledEvent event(xoffset, yoffset);
             data.EventCallback(event);
         });
+
+        glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow *window, int width, int height)
+        {
+            WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+            WindowResizeEvent event(width, height);
+            data.EventCallback(event);
+        });
     }
 
     void Window::Shutdown()
