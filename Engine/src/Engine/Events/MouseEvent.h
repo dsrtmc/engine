@@ -36,8 +36,8 @@ namespace Engine
         MouseScrolledEvent(double xoffset, double yoffset)
             : m_OffsetX(xoffset), m_OffsetY(yoffset) {}
         
-        float GetXOffset() { return m_OffsetX; }
-        float GetYOffset() { return m_OffsetY; }
+        double GetXOffset() { return m_OffsetX; }
+        double GetYOffset() { return m_OffsetY; }
 
         EVENT_GET_TYPE_NAME(MouseScrolled);
 

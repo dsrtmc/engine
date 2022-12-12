@@ -27,8 +27,8 @@ namespace Engine
         void OnEvent(Event &event);
 
     private:
-        void OnKeyPressed();
-        void OnMouseScrolled();
+        void OnKeyPressed(KeyPressedEvent &event);
+        void OnMouseScrolled(MouseScrolledEvent &event);
 
     private:
         glm::vec3 m_CameraPosition;

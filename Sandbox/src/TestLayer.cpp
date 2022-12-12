@@ -17,6 +17,13 @@ TestLayer::TestLayer()
         "../Sandbox/assets/shaders/shader.vert.glsl",
         "../Sandbox/assets/shaders/shader.frag.glsl"
     );
+    m_TriangleShader = Shader::FromTextFiles(
+        "../Sandbox/assets/shaders/shader.vert.glsl",
+        "../Sandbox/assets/shaders/triangle.frag.glsl"
+    );
+
+    m_TriangleShader->Bind();
+    m_TriangleShader->SetUniformMatrix4fv("u_Transform", glm::mat4(1.0f));
     m_Shader->Bind();
 
     m_Shader->SetUniform1i("u_UseTexture", m_UseTexture);
@@ -61,6 +68,20 @@ TestLayer::TestLayer()
     vao->SetVertexBuffer(vbo);
     vao->SetIndexBuffer(ibo);
 
+    std::shared_ptr<VertexArray> triangleVAO = std::make_shared<VertexArray>();
+    triangleVAO->Bind();
+    BufferLayout triangleLayout;
+    triangleLayout.Push(3);
+    triangleLayout.Push(2);
+    std::shared_ptr<VertexBuffer> triangleVBO = std::make_shared<VertexBuffer>(vertices, sizeof(vertices));
+    triangleVBO->SetLayout(triangleLayout);
+    std::shared_ptr<IndexBuffer> triangleIBO = std::make_shared<IndexBuffer>(indices, sizeof(indices) / sizeof(GLuint));
+    ibo->Bind();
+    triangleVAO->SetVertexBuffer(triangleVBO);
+    triangleVAO->SetIndexBuffer(triangleIBO);
+
+    m_TriangleVAO = triangleVAO;
+
     ENG_TRACE("Created Test layer");
 }
 
@@ -88,7 +109,6 @@ void TestLayer::OnImGuiUpdate()
     auto camera = m_CameraController.GetCamera();
     ImGui::Begin("Camera");
 
-    // Camera position
     glm::vec3 position = m_CameraController.GetCameraPosition();
     float bound = ((float)1440 / (float)900) * 1.0f;
     ImGui::SliderFloat("Camera X:", &position.x, -bound, bound);
@@ -100,19 +120,19 @@ void TestLayer::OnImGuiUpdate()
     if (ImGui::Button("Reset"))
         m_CameraController.SetCameraPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     
-    // Camera zoom
-    // glm::vec3 zoom = m_CameraController.GetCamera()->
     float zoom = m_CameraController.GetZoomLevel();
     ImGui::SliderFloat("Zoom level:", &zoom, -5.0f, 10.0f);
     m_CameraController.SetZoomLevel(zoom);
 
     m_Shader->SetUniformMatrix4fv("u_VP", camera->GetProjectionMatrix() * camera->GetViewMatrix());
+    m_TriangleShader->SetUniformMatrix4fv("u_VP", camera->GetProjectionMatrix() * camera->GetViewMatrix());
 
     ImGui::End();
 }
 
 void TestLayer::OnUpdate(float timestep)
 {
+    glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
     Renderer::Clear();
 
     // Place it in OnUpdate() for smooth camera movement, OnEvent() would treat is as press/repeat only
@@ -125,11 +145,14 @@ void TestLayer::OnUpdate(float timestep)
         {
             glm::vec3 pos(row * 0.11f, col * 0.11f, 0.0f);
             glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f));
+            m_Shader->Bind();
             m_Shader->SetUniformMatrix4fv("u_Transform", transform);
 
             Renderer::Submit(m_VertexArray, m_Shader);
         }
     }
+    // TODO: figure out why binding TriangleShader breaks rendering of the grid
+    Renderer::Submit(m_TriangleVAO, m_TriangleShader);
 }
 
 void TestLayer::OnEvent(Event &event)
@@ -137,13 +160,20 @@ void TestLayer::OnEvent(Event &event)
     m_CameraController.OnEvent(event);
 
     if (event.GetType() == EventType::WindowResized)
-    {
-        auto &re = (WindowResizeEvent &)event;
-        float aspectRatio = (float) re.GetWidth() / (float) re.GetHeight();
-        float zoomLevel = m_CameraController.GetZoomLevel();
-        // I don't think it works as intended as of right now
-        m_CameraController.GetCamera()->SetProjectionMatrix(glm::ortho(-aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel, -1.0f, 1.0f));
-    }
+        OnWindowResized((WindowResizeEvent &)event);
+
+    if (event.GetType() == EventType::KeyPressed)
+        OnKeyPressed((KeyPressedEvent &)event);
 }
 
-    
+void TestLayer::OnKeyPressed(Engine::KeyPressedEvent &event)
+{
+}
+
+void TestLayer::OnWindowResized(Engine::WindowResizeEvent &event)
+{
+    float aspectRatio = (float) event.GetWidth() / (float) event.GetHeight();
+    float zoomLevel = m_CameraController.GetZoomLevel();
+    // I don't think it works as intended as of right now
+    m_CameraController.GetCamera()->SetProjectionMatrix(glm::ortho(-aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel, -1.0f, 1.0f));
+}

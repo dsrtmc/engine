@@ -83,8 +83,6 @@ void Sandbox::Run()
 {
     while (m_Running)
     {
-        glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
-
         // Calculate the timestep for OnUpdate() methods
         float time = glfwGetTime();
         float timestep = time - m_LastFrameTime;

@@ -69,10 +69,13 @@ namespace Engine
     void OrthographicCameraController::OnEvent(Event &event)
     {
         if (event.GetType() == EventType::KeyPressed)
-            OnKeyPressed();
+            OnKeyPressed((KeyPressedEvent &)event);
+
+        if (event.GetType() == EventType::MouseScrolled)
+            OnMouseScrolled((MouseScrolledEvent &)event);
     }
 
-    void OrthographicCameraController::OnKeyPressed()
+    void OrthographicCameraController::OnKeyPressed(KeyPressedEvent &event)
     {
         if (Input::IsKeyPressed(ENG_KEY_R))
         {
@@ -81,7 +84,10 @@ namespace Engine
         }
     }
 
-    void OrthographicCameraController::OnMouseScrolled()
+    void OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent &event)
     {
+        // Oddly enough, camera moves back whenever you try to zoom in past the limit while moving, TODO: investigate and fix
+        m_ZoomLevel -= event.GetYOffset() * 0.1f;
+        m_Camera->SetProjectionMatrix(glm::ortho(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel));
     }
 }
