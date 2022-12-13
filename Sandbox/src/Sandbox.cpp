@@ -76,6 +76,35 @@ void Sandbox::Initialize()
 
     std::string version = std::string((const char *)glGetString(GL_VERSION));
     ENG_INFO("OpenGL version: {0}", version);
+
+    // Set up logging for OpenGL debug messages
+    glEnable(GL_DEBUG_OUTPUT);
+    glDebugMessageCallback([](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, const void *userParam)
+    {
+        switch (severity)
+        {
+            case (GL_DEBUG_SEVERITY_NOTIFICATION):
+            {
+                // ENG_TRACE("OpenGL notification ({0}): {1}", id, message);
+                break;
+            }
+            case (GL_DEBUG_SEVERITY_LOW):
+            {
+                ENG_ERROR("OpenGL info ({0}): {1}", id, message);
+                break;
+            }
+            case (GL_DEBUG_SEVERITY_MEDIUM):
+            {
+                ENG_ERROR("OpenGL warning ({0}): {1}", id, message);
+                break;
+            }
+            case (GL_DEBUG_SEVERITY_HIGH):
+            {
+                ENG_ERROR("OpenGL error ({0}): {1}", id, message);
+                break;
+            }
+        }
+    }, nullptr);
 }
 
 // Main app logic

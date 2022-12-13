@@ -7,5 +7,5 @@ out vec4 color;
 
 void main()
 {
-    color = v_Color * vec4(0.8f, 0.1f, 0.6f, 1.0f);
+    color = vec4(0.5 - (v_Color * vec4(1.0f)).rgb, 1.0);
 }

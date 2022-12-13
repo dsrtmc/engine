@@ -12,6 +12,7 @@ using namespace Engine;
 TestLayer::TestLayer()
     : Layer("Test layer"), m_CameraController(1440.0f / 900.0f)
 {
+    // typedef void (APIENTRY *GLDEBUGPROC)(GLenum source,GLenum type,GLuint id,GLenum severity,GLsizei length,const GLchar *message,const void *userParam);
     // Filepaths are relative from /build/
     m_Shader = Shader::FromTextFiles(
         "../Sandbox/assets/shaders/shader.vert.glsl",
@@ -24,7 +25,9 @@ TestLayer::TestLayer()
 
     m_TriangleShader->Bind();
     m_TriangleShader->SetUniformMatrix4fv("u_Transform", glm::mat4(1.0f));
+
     m_Shader->Bind();
+    m_Shader->SetUniformMatrix4fv("u_Transform", glm::mat4(1.0f));
 
     m_Shader->SetUniform1i("u_UseTexture", m_UseTexture);
     m_Shader->SetUniform3fv("u_Color", m_TriangleColor);
@@ -68,6 +71,7 @@ TestLayer::TestLayer()
     vao->SetVertexBuffer(vbo);
     vao->SetIndexBuffer(ibo);
 
+    // Single quad data
     std::shared_ptr<VertexArray> triangleVAO = std::make_shared<VertexArray>();
     triangleVAO->Bind();
     BufferLayout triangleLayout;
@@ -96,6 +100,7 @@ void TestLayer::OnImGuiUpdate()
     // General settings
     ImGui::Begin("Settings");
 
+    m_Shader->Bind();
     ImGui::Checkbox("Use texture", &m_UseTexture);
     m_Shader->SetUniform1f("u_UseTexture", m_UseTexture);
 
@@ -115,7 +120,6 @@ void TestLayer::OnImGuiUpdate()
     ImGui::SliderFloat("Camera Y:", &position.y, -1.0f, 1.0f);
 
     m_CameraController.SetCameraPosition(position);
-    camera->SetPosition(position);
 
     if (ImGui::Button("Reset"))
         m_CameraController.SetCameraPosition(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -124,8 +128,10 @@ void TestLayer::OnImGuiUpdate()
     ImGui::SliderFloat("Zoom level:", &zoom, -5.0f, 10.0f);
     m_CameraController.SetZoomLevel(zoom);
 
-    m_Shader->SetUniformMatrix4fv("u_VP", camera->GetProjectionMatrix() * camera->GetViewMatrix());
-    m_TriangleShader->SetUniformMatrix4fv("u_VP", camera->GetProjectionMatrix() * camera->GetViewMatrix());
+    glm::mat4 VP = camera->GetProjectionMatrix() * camera->GetViewMatrix();
+    m_Shader->SetUniformMatrix4fv("u_VP", VP);
+    m_TriangleShader->Bind();
+    m_TriangleShader->SetUniformMatrix4fv("u_VP", VP);
 
     ImGui::End();
 }
@@ -139,7 +145,7 @@ void TestLayer::OnUpdate(float timestep)
     m_CameraController.OnUpdate(timestep);
 
     // Draw a grid of textured quads
-    for (int col = 0; col < 10; col++)
+    for (int col = 0; col < 12; col++)
     {
         for (int row = 0; row < 12; row++)
         {
@@ -151,7 +157,6 @@ void TestLayer::OnUpdate(float timestep)
             Renderer::Submit(m_VertexArray, m_Shader);
         }
     }
-    // TODO: figure out why binding TriangleShader breaks rendering of the grid
     Renderer::Submit(m_TriangleVAO, m_TriangleShader);
 }
 
