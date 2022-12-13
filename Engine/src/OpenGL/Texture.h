@@ -17,7 +17,7 @@ namespace Engine
         unsigned char *m_Data;
         int m_Width;
         int m_Height;
-        int m_BPP;
+        int m_Channels;
         std::string m_Filepath;
         GLuint m_RendererID;
     };
