@@ -8,10 +8,8 @@ namespace Engine
 {
     class Shader
     {
-    /*
-        Can't have a private constructor with make_unique(), so we make it public and require
-        a non-public tag type as a parameter.
-    */ 
+    /* Can't have a private constructor with make_unique(), so we make it public and require
+     * a non-public tag type as a parameter. */ 
     struct _tag {};
     public:
         Shader(_tag) {}

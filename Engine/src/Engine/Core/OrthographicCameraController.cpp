@@ -57,13 +57,13 @@ namespace Engine
         if (Input::IsKeyPressed(ENG_KEY_D))
             m_CameraPosition.x += 0.01f * m_MovementSpeed * timestep;
         // Rotation disabled for now
-        // if (Input::IsKeyPressed(ENG_KEY_Q))
-        //     m_CameraRotation += 1.0f;
-        // if (Input::IsKeyPressed(ENG_KEY_E))
-        //     m_CameraRotation -= 1.0f;
+        if (Input::IsKeyPressed(ENG_KEY_Q))
+            m_CameraRotation += 1.0f;
+        if (Input::IsKeyPressed(ENG_KEY_E))
+            m_CameraRotation -= 1.0f;
 
         SetCameraPosition(m_CameraPosition);
-        // SetCameraRotation(m_CameraRotation);
+        SetCameraRotation(m_CameraRotation);
     }
 
     void OrthographicCameraController::OnEvent(Event &event)
@@ -86,8 +86,6 @@ namespace Engine
 
     void OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent &event)
     {
-        // Oddly enough, camera moves back whenever you try to zoom in past the limit while moving, TODO: investigate and fix
-        m_ZoomLevel -= event.GetYOffset() * 0.1f;
-        m_Camera->SetProjectionMatrix(glm::ortho(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel));
+        SetZoomLevel(m_ZoomLevel - event.GetYOffset() * 0.1f);
     }
 }

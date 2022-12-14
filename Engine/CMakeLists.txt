@@ -6,12 +6,12 @@ enable_testing()
 
 # Main library
 add_library(${PROJECT_NAME}
-    src/Engine/Window.cpp
-    src/Engine/Log.cpp
-    src/Engine/OrthographicCamera.cpp
-    src/Engine/OrthographicCameraController.cpp
-    src/Engine/Input.cpp
-    src/Engine/Application.cpp
+    src/Engine/Core/Application.cpp
+    src/Engine/Core/Input.cpp
+    src/Engine/Core/Log.cpp
+    src/Engine/Core/OrthographicCamera.cpp
+    src/Engine/Core/OrthographicCameraController.cpp
+    src/Engine/Core/Window.cpp
 
     src/Engine/Events/Event.h
     src/Engine/Events/KeyEvent.h
@@ -30,6 +30,7 @@ add_library(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME} PUBLIC src/)
 target_include_directories(${PROJECT_NAME} PUBLIC src/Engine/)
+target_include_directories(${PROJECT_NAME} PUBLIC src/Engine/Core/)
 target_include_directories(${PROJECT_NAME} PUBLIC src/Engine/Events/)
 target_include_directories(${PROJECT_NAME} PUBLIC src/Engine/UI/)
 target_include_directories(${PROJECT_NAME} PUBLIC src/OpenGL/)

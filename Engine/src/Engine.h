@@ -1,29 +1,26 @@
 #pragma once
 
-#include "Engine/Application.h"
-#include "Engine/Window.h"
-#include "Engine/Log.h"
-#include "Engine/Layer.h"
-#include "Engine/OrthographicCamera.h"
-#include "Engine/OrthographicCameraController.h"
-#include "Engine/Input.h"
-#include "Engine/KeyCodes.h"
+// Engine core parts
+#include "Engine/Core/Application.h"
+#include "Engine/Core/Input.h"
+#include "Engine/Core/KeyCodes.h"
+#include "Engine/Core/Layer.h"
+#include "Engine/Core/Log.h"
+#include "Engine/Core/OrthographicCamera.h"
+#include "Engine/Core/OrthographicCameraController.h"
+#include "Engine/Core/Window.h"
 
+// Engine events
 #include "Engine/Events/Event.h"
-#include "Engine/Events/KeyEvent.h"
 #include "Engine/Events/ApplicationEvent.h"
+#include "Engine/Events/KeyEvent.h"
 
+// Engine specific layers
 #include "Engine/UI/UILayer.h"
 
-#include "OpenGL/Shader.h"
-#include "OpenGL/Renderer.h"
+// OpenGL specific API
 #include "OpenGL/Buffer.h"
-#include "OpenGL/VertexArray.h"
+#include "OpenGL/Renderer.h"
+#include "OpenGL/Shader.h"
 #include "OpenGL/Texture.h"
-
-/*
--- Entry point --
-Should be included only in the app that's going to use the Engine
-e.g. Sandbox/src/Sandbox.*
-#include "Engine/EntryPoint.h"
-*/
+#include "OpenGL/VertexArray.h"

@@ -9,7 +9,6 @@ namespace Engine
     public:
         Input(const Input &) = delete;
 
-        // definitely needs to be fixed but my Application is not a singleton yet
         inline static bool IsKeyPressed(int keycode) { return s_Instance->IsKeyPressedInternal(keycode); }
         inline static bool IsMouseButtonPressed(int button) { return s_Instance->IsMouseButtonPressedInternal(button); }
 

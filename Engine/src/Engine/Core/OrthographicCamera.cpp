@@ -36,8 +36,6 @@ namespace Engine
 
     void OrthographicCamera::UpdateViewMatrix()
     {
-        // Rotation disabled for now, since I have no idea how to fix it
-        // m_ViewMatrix = glm::inverse(glm::translate(glm::mat4(1.0f), m_Position) * glm::rotate(glm::mat4(1.0f), glm::radians(m_Rotation), glm::vec3(0.0f, 0.0f, 1.0f)));
-        m_ViewMatrix = glm::inverse(glm::translate(glm::mat4(1.0f), m_Position));
+        m_ViewMatrix = glm::inverse(glm::translate(glm::mat4(1.0f), m_Position) * glm::rotate(glm::mat4(1.0f), glm::radians(m_Rotation), glm::vec3(0.0f, 0.0f, 1.0f)));
     }
 }

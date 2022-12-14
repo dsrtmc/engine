@@ -67,10 +67,8 @@ namespace Engine
     class IndexBuffer
     {
     public:
-        /*
-            Not sure why, but having size as a parameter behaves weird,
-            sizeof(indices) (GLuint[6]) returns 8 here, but 24 in the app itself
-        */
+        /* Not sure why, but having size as a parameter behaves weird,
+         * sizeof(indices) (GLuint[6]) returns 8 here, but 24 in the app itself */
         IndexBuffer(const void *indices, unsigned int count);
         ~IndexBuffer();
 
