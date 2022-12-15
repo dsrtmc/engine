@@ -97,6 +97,7 @@ TestLayer::~TestLayer()
 // Write Layer-specific ImGui code here
 void TestLayer::OnImGuiUpdate()
 {
+    Timer timer;
     // General settings
     ImGui::Begin("Settings");
 
@@ -132,6 +133,10 @@ void TestLayer::OnImGuiUpdate()
     m_Shader->SetUniformMatrix4fv("u_VP", VP);
     m_TriangleShader->Bind();
     m_TriangleShader->SetUniformMatrix4fv("u_VP", VP);
+
+    // A very basic way to count how long it took to render one ImGui frame
+    auto [microseconds, milliseconds] = timer.GetDuration();
+    ImGui::Text("frame µs: %f", microseconds);
 
     ImGui::End();
 }

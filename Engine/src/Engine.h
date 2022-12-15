@@ -8,6 +8,7 @@
 #include "Engine/Core/Log.h"
 #include "Engine/Core/OrthographicCamera.h"
 #include "Engine/Core/OrthographicCameraController.h"
+#include "Engine/Core/Timer.h"
 #include "Engine/Core/Window.h"
 
 // Engine events

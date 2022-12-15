@@ -11,6 +11,7 @@ add_library(${PROJECT_NAME}
     src/Engine/Core/Log.cpp
     src/Engine/Core/OrthographicCamera.cpp
     src/Engine/Core/OrthographicCameraController.cpp
+    src/Engine/Core/Timer.cpp
     src/Engine/Core/Window.cpp
 
     src/Engine/Events/Event.h
