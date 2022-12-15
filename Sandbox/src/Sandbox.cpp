@@ -33,12 +33,11 @@ Sandbox::Sandbox()
 
 Sandbox::~Sandbox()
 {
-    m_Window->Shutdown();
-
     // Ideally do that for a LayerStack
     for (Layer *layer : m_Layers)
         delete layer;
 
+    delete m_Window;
     ENG_INFO("Destroyed Sandbox");
 }
 
