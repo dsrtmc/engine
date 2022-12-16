@@ -22,6 +22,7 @@
 // OpenGL specific API
 #include "OpenGL/Buffer.h"
 #include "OpenGL/Renderer.h"
+#include "OpenGL/Renderer2D.h"
 #include "OpenGL/Shader.h"
 #include "OpenGL/Texture.h"
 #include "OpenGL/VertexArray.h"

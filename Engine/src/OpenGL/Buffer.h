@@ -34,6 +34,7 @@ namespace Engine
         GLsizei GetStride() const { return m_Stride; };
 
         // Add an attribute to the layout with *count* coordinates
+        // TODO: parameterize buffer element type
         void Push(GLint count)
         {
             m_Elements.push_back((BufferElement){ count, GL_FLOAT, GL_FALSE });
@@ -69,15 +70,15 @@ namespace Engine
     public:
         /* Not sure why, but having size as a parameter behaves weird,
          * sizeof(indices) (GLuint[6]) returns 8 here, but 24 in the app itself */
-        IndexBuffer(const void *indices, unsigned int count);
+        IndexBuffer(const void *indices, GLsizei count);
         ~IndexBuffer();
 
         void Bind() const;
         void Unbind() const;
-        inline unsigned int GetCount() { return m_Count; };
+        inline GLsizei GetCount() { return m_Count; };
 
     private:
         GLuint m_RendererID;
-        unsigned int m_Count;
+        GLsizei m_Count;
     };
 }

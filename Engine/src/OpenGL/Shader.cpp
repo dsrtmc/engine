@@ -68,8 +68,8 @@ namespace Engine
             char message[length];
             glGetShaderInfoLog(shader, length, &length, message);
 
-            ENG_ERROR("Failed to compile {0} shader.", (type == GL_VERTEX_SHADER ? "vertex" : "fragment"));
-            ENG_ERROR("{0}", std::string(message));
+            ENG_ERROR("(GLSL) Failed to compile {0} shader.", (type == GL_VERTEX_SHADER ? "vertex" : "fragment"));
+            ENG_ERROR("(GLSL) {0}", std::string(message));
 
             glDeleteShader(shader);
             return 0;

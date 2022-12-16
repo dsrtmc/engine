@@ -41,14 +41,14 @@ namespace Engine
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    IndexBuffer::IndexBuffer(const void *indices, unsigned int count)
+    IndexBuffer::IndexBuffer(const void *indices, GLsizei count)
         : m_Count(count)
     {
         glCreateBuffers(1, &m_RendererID);
 
         // Binding to GL_ARRAY_BUFFER apparently prevents an error in case of an unbound VAO
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-        glBufferData(GL_ARRAY_BUFFER, count * sizeof(GLuint), indices, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, count * sizeof(GLsizei), indices, GL_STATIC_DRAW);
     }
 
     IndexBuffer::~IndexBuffer()
