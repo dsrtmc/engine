@@ -12,8 +12,8 @@ namespace Engine
         ~VertexArray();
 
         // void SetVertexBuffer(const VertexBuffer &vbo);
-        void SetVertexBuffer(const std::shared_ptr<VertexBuffer> &vbo);
-        void SetIndexBuffer(const std::shared_ptr<IndexBuffer> &ibo);
+        void SetVertexBuffer(std::shared_ptr<VertexBuffer> vbo);
+        void SetIndexBuffer(std::shared_ptr<IndexBuffer> ibo);
 
         std::shared_ptr<VertexBuffer> GetVertexBuffer() const { return m_VertexBuffer; }
         std::shared_ptr<IndexBuffer> GetIndexBuffer() const { return m_IndexBuffer; }

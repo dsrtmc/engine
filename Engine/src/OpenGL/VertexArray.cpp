@@ -12,7 +12,7 @@ namespace Engine
         glDeleteVertexArrays(1, &m_RendererID);
     }
 
-    void VertexArray::SetVertexBuffer(const std::shared_ptr<VertexBuffer> &vbo)
+    void VertexArray::SetVertexBuffer(std::shared_ptr<VertexBuffer> vbo)
     {
         this->Bind();
         vbo->Bind();
@@ -32,15 +32,13 @@ namespace Engine
                                                         stride, (const void *)(uintptr_t)offset);
             offset += element.count * element.GetSizeOfType(element.type);
         }
-        // m_VertexBuffer = std::make_shared<VertexBuffer>(vbo);
         m_VertexBuffer = vbo;
     }
 
-    void VertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer> &ibo)
+    void VertexArray::SetIndexBuffer(std::shared_ptr<IndexBuffer> ibo)
     {
         this->Bind();
         ibo->Bind();
-        // m_IndexBuffer = std::make_shared<IndexBuffer>(ibo);
         m_IndexBuffer = ibo;
     }
     

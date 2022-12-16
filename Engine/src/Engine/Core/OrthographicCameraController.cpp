@@ -11,7 +11,7 @@ namespace Engine
     OrthographicCameraController::OrthographicCameraController(float aspectRatio)
         : m_AspectRatio(aspectRatio),
         m_Camera(std::make_shared<OrthographicCamera>(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel)),
-        m_CameraPosition(glm::vec3(0.0f, 0.0f, 0.0f))
+        m_CameraPosition(glm::vec3(0.0f, 0.0f, 0.0f)), m_CameraRotation(0.0f)
     {
         ENG_TRACE("Created Orthographic Camera Controller");
     }

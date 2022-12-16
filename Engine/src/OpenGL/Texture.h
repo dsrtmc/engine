@@ -23,7 +23,6 @@ namespace Engine
         int m_Channels;
         GLenum m_DataFormat;
         GLenum m_InternalFormat;
-        std::string m_Filepath;
         GLuint m_RendererID;
     };
 }

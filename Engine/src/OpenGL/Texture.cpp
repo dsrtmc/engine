@@ -8,8 +8,8 @@ namespace Engine
         : m_Data(nullptr), m_Width(width), m_Height(height),
         m_Channels(0), m_RendererID(0), m_DataFormat(0), m_InternalFormat(0)
     {
-        m_DataFormat = GL_RGB;
-        m_InternalFormat = GL_RGB8;
+        m_DataFormat = GL_RGBA;
+        m_InternalFormat = GL_RGBA8;
 
         glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
         glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
@@ -25,7 +25,7 @@ namespace Engine
 
     Texture2D::Texture2D(const std::string &filepath)
         : m_Data(nullptr), m_Width(0), m_Height(0),
-        m_Channels(0), m_Filepath(filepath), m_RendererID(0),
+        m_Channels(0), m_RendererID(0),
         m_DataFormat(0), m_InternalFormat(0)
     {
         stbi_set_flip_vertically_on_load(true);
@@ -77,7 +77,7 @@ namespace Engine
     {
         unsigned int bpp = m_DataFormat == GL_RGB ? 3 : 4;
         if (bpp * m_Width * m_Height != size)
-            ENG_WARN("Invalid texture (size != w * h * bpp)");
+            ENG_WARN("Invalid texture format (size != w * h * bpp)");
         glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
     }
 
