@@ -35,13 +35,6 @@ namespace Engine
         ENG_TRACE("Destroyed UI layer");
     }
 
-    void UILayer::OnImGuiUpdate()
-    {
-        ImGui::Begin("main UI window");
-        ImGui::Text("that is text from the main ui");
-        ImGui::End();
-    }
-
     void UILayer::Begin()
     {
         ImGui_ImplOpenGL3_NewFrame();

@@ -79,30 +79,23 @@ void Sandbox::Initialize()
     // TODO: make engine specific not app specific i guess?
     // Set up logging for OpenGL debug messages
     glEnable(GL_DEBUG_OUTPUT);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback([](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, const void *userParam)
     {
         switch (severity)
         {
-            case (GL_DEBUG_SEVERITY_NOTIFICATION):
-            {
+            case GL_DEBUG_SEVERITY_NOTIFICATION:
                 // ENG_TRACE("OpenGL notification ({0}): {1}", id, message);
                 break;
-            }
-            case (GL_DEBUG_SEVERITY_LOW):
-            {
-                ENG_INFO("(OpenGL) {0} info: {1}", id, message);
+            case GL_DEBUG_SEVERITY_LOW:
+                ENG_INFO("(OpenGL) info {0}: {1}", id, message);
                 break;
-            }
-            case (GL_DEBUG_SEVERITY_MEDIUM):
-            {
-                ENG_WARN("(OpenGL) {0} warning: {1}", id, message);
+            case GL_DEBUG_SEVERITY_MEDIUM:
+                ENG_WARN("(OpenGL) warning {0}: {1}", id, message);
                 break;
-            }
-            case (GL_DEBUG_SEVERITY_HIGH):
-            {
-                ENG_ERROR("(OpenGL) {0} error: {1}", id, message);
+            case GL_DEBUG_SEVERITY_HIGH:
+                ENG_ERROR("(OpenGL) error {0}: {1}", id, message);
                 break;
-            }
         }
     }, nullptr);
 }
