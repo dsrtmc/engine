@@ -17,9 +17,16 @@ public:
 
 private:
     std::shared_ptr<Engine::VertexArray> m_VertexArray;
-    std::shared_ptr<Engine::Texture2D> m_Texture;
-    std::shared_ptr<Engine::Shader> m_Shader;
+    std::shared_ptr<Engine::Texture2D> m_ContainerTexture;
     Engine::OrthographicCameraController m_CameraController;
+
+    struct ProfilingResult
+    {
+        std::string name;
+        double duration;
+    };
+
+    std::vector<ProfilingResult> m_ProfilingResults;
 
 private:
     glm::vec3 m_TriangleColor = glm::vec3(0.8f, 0.2f, 0.2f);

@@ -1,22 +1,19 @@
 #pragma once
 
-struct TimeFormat
-{
-    double microseconds;
-    double milliseconds;
-};
-
 namespace Engine
 {
     class Timer
     {
     public:
-        Timer();
+        Timer(const std::string &name);
         ~Timer();
 
-        TimeFormat GetDuration();
+        inline const std::string &GetName() const { return m_Name; }
+
+        double GetDuration() const;
 
     private:
+        std::string m_Name;
         std::chrono::time_point<std::chrono::high_resolution_clock> m_Start;
     };
 }

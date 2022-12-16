@@ -2,7 +2,8 @@
 
 namespace Engine
 {
-    Timer::Timer()
+    Timer::Timer(const std::string &name)
+        : m_Name(name)
     {
         m_Start = std::chrono::high_resolution_clock::now();
     }
@@ -11,7 +12,7 @@ namespace Engine
     {
     }
 
-    TimeFormat Timer::GetDuration()
+    double Timer::GetDuration() const
     {
         auto now = std::chrono::high_resolution_clock::now();
 
@@ -21,6 +22,6 @@ namespace Engine
         auto duration = end - start;
         auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
 
-        return (TimeFormat){ (double)duration.count(), (double)duration.count() * 0.001 };
+        return duration.count();
     }
 }
