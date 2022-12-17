@@ -35,10 +35,10 @@ namespace Engine
 
         float vertices[4 * 5] = {
             // vertex position //  texture  //
-            -0.5f, -0.5f, 0.0f, -1.0f, -1.0f, // bottom left
-             0.5f, -0.5f, 0.0f,  1.0f, -1.0f, // bottom right
+            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
+             0.5f, -0.5f, 0.0f,  1.0f, 0.0f, // bottom right
              0.5f,  0.5f, 0.0f,  1.0f,  1.0f, // top right
-            -0.5f,  0.5f, 0.0f, -1.0f,  1.0f  // top left
+            -0.5f,  0.5f, 0.0f, 0.0f,  1.0f  // top left
         };
 
         GLuint indices[2 * 3] = {
@@ -102,16 +102,43 @@ namespace Engine
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
     }
 
-    void Renderer2D::DrawQuad(const glm::vec3 &position, const glm::vec2 &size, std::shared_ptr<Texture2D> texture)
+    void Renderer2D::DrawQuad(const glm::vec3 &position, const glm::vec2 &size, std::shared_ptr<Texture2D> texture, const glm::vec4 &tintColor)
     {
         GLsizei count = s_Data->QuadVertexArray->GetIndexBuffer()->GetCount();
 
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
-        s_Data->QuadShader->SetUniform4fv("u_Color", glm::vec4(1.0f));
+        s_Data->QuadShader->SetUniform4fv("u_Color", tintColor);
         s_Data->QuadShader->SetUniformMatrix4fv("u_Transform", transform);
         texture->Bind(0);
 
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
     }
-    // TODO: Allow drawing textured quads with a tint color
+
+    void Renderer2D::DrawRotatedQuad(const glm::vec3 &position, const glm::vec2 &size, float rotation, const glm::vec4 &color)
+    {
+        GLsizei count = s_Data->QuadVertexArray->GetIndexBuffer()->GetCount();
+
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
+                              glm::rotate(glm::mat4(1.0f), glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f)) * 
+                              glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
+        s_Data->QuadShader->SetUniform4fv("u_Color", color);
+        s_Data->QuadShader->SetUniformMatrix4fv("u_Transform", transform);
+        s_Data->QuadWhiteTexture->Bind(0);
+
+        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+    }
+
+    void Renderer2D::DrawRotatedQuad(const glm::vec3 &position, const glm::vec2 &size, float rotation, std::shared_ptr<Texture2D> texture, const glm::vec4 &tintColor)
+    {
+        GLsizei count = s_Data->QuadVertexArray->GetIndexBuffer()->GetCount();
+
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
+                              glm::rotate(glm::mat4(1.0f), glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f)) * 
+                              glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
+        s_Data->QuadShader->SetUniform4fv("u_Color", tintColor);
+        s_Data->QuadShader->SetUniformMatrix4fv("u_Transform", transform);
+        texture->Bind(0);
+
+        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+    }
 }

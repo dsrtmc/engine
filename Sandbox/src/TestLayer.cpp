@@ -18,6 +18,7 @@ TestLayer::TestLayer()
     : Layer("Test layer"), m_CameraController(1440.0f / 900.0f)
 {
     m_ContainerTexture = std::make_shared<Texture2D>("../Sandbox/assets/textures/container.jpg");
+    m_GridColor = glm::vec4(0.8f, 0.3f, 0.5f, 1.0f);
     Renderer2D::Initialize();
     ENG_TRACE("Created Test layer");
 }
@@ -34,6 +35,7 @@ void TestLayer::OnImGuiUpdate()
     // General settings
     ImGui::Begin("Settings");
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    ImGui::ColorEdit3("Grid color:", glm::value_ptr(m_GridColor));
     ImGui::End();
 
     // Camera settings
@@ -77,7 +79,8 @@ void TestLayer::OnUpdate(float timestep)
     m_CameraController.OnUpdate(timestep);
 
     Renderer2D::BeginScene(m_CameraController.GetCamera());
-    Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, m_ContainerTexture);
+    Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, m_ContainerTexture, { 0.2f, 0.6f, 0.8f, 1.0f });
+    Renderer2D::DrawQuad({ -1.0f, 1.0f, 0.0f }, { 0.5f, 0.5f }, { 0.3f, 0.8f, 0.7f, 1.0f });
     Renderer2D::EndScene();
 
     // Draw a grid of quads
@@ -89,14 +92,14 @@ void TestLayer::OnUpdate(float timestep)
             for (int row = 0; row < 12; row++)
             {
                 glm::vec3 pos(row * 0.11f, col * 0.11f, 0.0f);
-                Renderer2D::DrawQuad(pos, { 0.1f, 0.1f }, { 0.8f, 0.3f, 0.5f, 1.0f });
+                Renderer2D::DrawQuad(pos, { 0.1f, 0.1f }, m_GridColor);
             }
         }
         Renderer2D::EndScene();
     }
-
     Renderer2D::BeginScene(m_CameraController.GetCamera());
-    Renderer2D::DrawQuad({ -1.0f, 1.0f, 0.0f }, { 0.5f, 0.5f }, { 0.3f, 0.8f, 0.7f, 1.0f });
+    Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 0.0f }, { 0.5f, 0.5f }, 45.0f, { 0.6f, 0.8f, 0.2f, 1.0f });
+    Renderer2D::DrawRotatedQuad({ -1.0f, 1.0f, 0.0f }, { 0.5f, 0.5f }, 45.0f, { 0.1f, 0.5f, 0.4f, 1.0f });
     Renderer2D::EndScene();
 }
 

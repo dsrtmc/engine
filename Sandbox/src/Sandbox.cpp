@@ -2,6 +2,7 @@
 
 // #include "Test2D.h"
 #include "TestLayer.h"
+#include "GameLayer.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -27,6 +28,7 @@ Sandbox::Sandbox()
 
     // Ideally, we should have a function like PushLayer() that also calls layer's OnAttach()
     m_Layers.push_back(new TestLayer);
+    // m_Layers.push_back(new GameLayer);
 
     ENG_INFO("Created Sandbox");
 }
@@ -75,6 +77,11 @@ void Sandbox::Initialize()
 
     std::string version = std::string((const char *)glGetString(GL_VERSION));
     ENG_INFO("OpenGL version: {0}", version);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // glEnable(GL_DEPTH_TEST);
 
     // TODO: make engine specific not app specific i guess?
     // Set up logging for OpenGL debug messages

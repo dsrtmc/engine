@@ -4,7 +4,7 @@ namespace Engine
 {
     void Renderer::Clear()
     {
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     void Renderer::Submit(const RefVAO &vao, const RefShader &shader)
