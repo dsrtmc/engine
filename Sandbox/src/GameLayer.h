@@ -1,0 +1,33 @@
+#pragma once
+
+#include "Engine.h"
+#include "Player.h"
+#include "Level.h"
+
+class GameLayer : public Engine::Layer
+{
+public:
+    GameLayer();
+    ~GameLayer();
+
+    void OnImGuiUpdate() override;
+    void OnUpdate(float timestep) override;
+
+    void OnEvent(Engine::Event &event) override;
+    void OnKeyPressed(Engine::KeyPressedEvent &event);
+    void OnWindowResized(Engine::WindowResizeEvent &event);
+
+private:
+    std::shared_ptr<Engine::Texture2D> m_PirateTexture;
+    Engine::OrthographicCameraController m_CameraController;
+    Level *m_Level;
+    Player m_Player;
+
+    // Profiling should not be here as well
+    struct ProfilingResult
+    {
+        std::string name;
+        double duration;
+    };
+    std::vector<ProfilingResult> m_ProfilingResults;
+};

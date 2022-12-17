@@ -12,6 +12,8 @@ namespace Engine
         ~Texture2D();
 
         void SetData(const void *data, unsigned int size);
+        inline int GetWidth() const { return m_Width; }
+        inline int GetHeight() const { return m_Height; }
 
         void Bind(unsigned int slot) const;
         void Unbind() const;
