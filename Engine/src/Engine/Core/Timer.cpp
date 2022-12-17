@@ -2,17 +2,19 @@
 
 namespace Engine
 {
-    Timer::Timer(const std::string &name)
-        : m_Name(name)
+    Timer::Timer(const std::string &name, const UpdateFunction &lambda)
+        : m_Name(name), m_Lambda(lambda)
     {
         m_Start = std::chrono::high_resolution_clock::now();
     }
 
     Timer::~Timer()
     {
+        if (!m_Stopped)
+            Stop();
     }
 
-    double Timer::GetDuration() const
+    void Timer::Stop()
     {
         auto now = std::chrono::high_resolution_clock::now();
 
@@ -20,8 +22,8 @@ namespace Engine
         auto end = std::chrono::time_point_cast<std::chrono::microseconds>(now).time_since_epoch();
 
         auto duration = end - start;
-        auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
 
-        return duration.count();
+        m_Lambda(m_Name, duration.count());
+        m_Stopped = true;
     }
 }

@@ -9,6 +9,11 @@
 
 using namespace Engine;
 
+// Create a timer and add the profiling result to the other results once the scope ends
+#define PROFILING_SCOPE(tname) Timer timer__LINE__(tname, [&](const std::string &name, double duration)\
+    { m_ProfilingResults.push_back({ name, duration });\
+})
+
 TestLayer::TestLayer()
     : Layer("Test layer"), m_CameraController(1440.0f / 900.0f)
 {
@@ -65,7 +70,7 @@ void TestLayer::OnImGuiUpdate()
 
 void TestLayer::OnUpdate(float timestep)
 {
-    Timer timer("TestLayer::OnUpdate");
+    PROFILING_SCOPE("TestLayer::OnUpdate");
     glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
     Renderer::Clear();
 
@@ -77,7 +82,7 @@ void TestLayer::OnUpdate(float timestep)
 
     // Draw a grid of quads
     {
-        Timer timer("Renderer2D 144 draw calls");
+        PROFILING_SCOPE("Renderer2D 144 draw calls");
         Renderer2D::BeginScene(m_CameraController.GetCamera());
         for (int col = 0; col < 12; col++)
         {
@@ -88,13 +93,11 @@ void TestLayer::OnUpdate(float timestep)
             }
         }
         Renderer2D::EndScene();
-        m_ProfilingResults.push_back({ timer.GetName(), timer.GetDuration() });
     }
 
     Renderer2D::BeginScene(m_CameraController.GetCamera());
     Renderer2D::DrawQuad({ -1.0f, 1.0f, 0.0f }, { 0.5f, 0.5f }, { 0.3f, 0.8f, 0.7f, 1.0f });
     Renderer2D::EndScene();
-    m_ProfilingResults.push_back({ timer.GetName(), timer.GetDuration() });
 }
 
 void TestLayer::OnEvent(Event &event)
