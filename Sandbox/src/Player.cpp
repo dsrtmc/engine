@@ -1,7 +1,7 @@
 #include "Player.h"
 
-Player::Player(const glm::vec3 &position, Level *level)
-    : m_Position(position), m_Level(level)
+Player::Player(const glm::vec3 &position, const glm::vec2 &size, Level *level)
+    : m_Position(position), m_Size(size), m_Level(level)
 {
     m_Texture = std::make_shared<Engine::Texture2D>("../Sandbox/assets/textures/pirate.png");
 
@@ -28,19 +28,38 @@ void Player::OnUpdate(float timestep)
 {
     glm::vec3 position = m_Position;
     if (Engine::Input::IsKeyPressed(ENG_KEY_W))
-        position.y += 1.5f * timestep;
+    {
+        glm::vec3 npos = position;
+        npos.y += 1.5f * timestep;
+        if (!m_Level->TestCollision(npos, m_Size))
+            position.y = npos.y;
+    }
     if (Engine::Input::IsKeyPressed(ENG_KEY_S))
-        position.y -= 1.5f * timestep;
+    {
+        glm::vec3 npos = position;
+        npos.y -= 1.5f * timestep;
+        if (!m_Level->TestCollision(npos, m_Size))
+            position.y = npos.y;
+    }
     if (Engine::Input::IsKeyPressed(ENG_KEY_A))
-        position.x -= 1.5f * timestep;
+    {
+        glm::vec3 npos = position;
+        npos.x -= 1.5f * timestep;
+        if (!m_Level->TestCollision(npos, m_Size))
+            position.x = npos.x;
+    }
     if (Engine::Input::IsKeyPressed(ENG_KEY_D))
-        position.x += 1.5f * timestep;
+    {
+        glm::vec3 npos = position;
+        npos.x += 1.5f * timestep;
+        if (!m_Level->TestCollision(npos, m_Size))
+            position.x = npos.x;
+    }
 
-    if (!m_Level->TestCollision(position))
-        m_Position = position;
+    // NOTE: kinda dependent on the framerate right now, no idea how to fix as of yet
+    m_Position = position;
 
-    float aspectRatio = (float)m_Texture->GetWidth() / (float)m_Texture->GetHeight();
-    Engine::Renderer2D::DrawQuad(m_Position, { 0.25f * aspectRatio, 0.25f }, m_Texture);
+    Engine::Renderer2D::DrawQuad(m_Position, m_Size, m_Texture);
 
     std::vector<glm::vec3> defaultVertices = {
         { -0.5f, -0.5f, 0.0f },

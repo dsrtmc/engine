@@ -16,7 +16,7 @@ using namespace Engine;
 
 GameLayer::GameLayer()
     : Layer("Game layer"), m_CameraController(1440.0f / 900.0f), m_Level(new Level("Main Level")),
-    m_Player(m_CameraController.GetCameraPosition(), m_Level)
+    m_Player(m_CameraController.GetCameraPosition(), { 0.25f, 0.25f }, m_Level)
 {
     m_PirateTexture = std::make_shared<Texture2D>("../Sandbox/assets/textures/guppy.png");
     Renderer2D::Initialize();
