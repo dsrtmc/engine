@@ -20,7 +20,7 @@ public:
 private:
     Engine::OrthographicCameraController m_CameraController;
     Level *m_Level;
-    Player m_Player;
+    Player *m_Player;
 
     // Profiling should not be here as well
     struct ProfilingResult

@@ -10,7 +10,8 @@ public:
 
     ~Rock() {}
 
-    void OnUpdate(float timestep)
+    void OnUpdate(float timestep) {}
+    void OnRender()
     {
         Engine::Renderer2D::DrawQuad(m_Position, { 1.0f, 0.5f }, { 0.2f, 0.2f, 0.2f, 1.0f });
     }
@@ -29,6 +30,7 @@ public:
     ~Level();
 
     void OnUpdate(float timestep);
+    void OnRender();
     glm::vec2 TestCollision(const glm::vec3 &position, const glm::vec2 &entitySize);
 
 private:

@@ -17,8 +17,12 @@ Level::~Level()
 
 void Level::OnUpdate(float timestep)
 {
+}
+
+void Level::OnRender()
+{
     for (auto rock : m_Rocks)
-        rock.OnUpdate(timestep);
+        rock.OnRender();
 
     Engine::Renderer2D::DrawQuad({ -1.0f, 0.0f, 0.0f }, { 1.5f, 1.0f }, { 0.5f, 0.6f, 0.5f, 1.0f });
     Engine::Renderer2D::DrawQuad({ 0.0f, -1.0f, 0.0f }, { 2.0f, 1.0f }, { 0.2f, 0.3f, 0.8f, 1.0f });

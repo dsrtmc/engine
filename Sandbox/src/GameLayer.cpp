@@ -18,7 +18,7 @@ using namespace Engine;
 
 GameLayer::GameLayer()
     : Layer("Game layer"), m_CameraController(1440.0f / 900.0f), m_Level(new Level("Main Level")),
-    m_Player(m_CameraController.GetCameraPosition(), { 0.25f, 0.25f }, m_Level)
+    m_Player(new Player(m_CameraController.GetCameraPosition(), { 0.25f, 0.25f }, m_Level))
 {
     Renderer2D::Initialize();
     ENG_TRACE("Created Game layer");
@@ -27,6 +27,8 @@ GameLayer::GameLayer()
 GameLayer::~GameLayer()
 {
     Renderer2D::Shutdown();
+    delete m_Level;
+    delete m_Player;
     ENG_TRACE("Destroyed Game layer");
 }
 
@@ -50,18 +52,19 @@ void GameLayer::OnUpdate(float timestep)
     glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
     Renderer::Clear();
 
-    m_Player.OnUpdate(timestep);
-    m_CameraController.SetCameraPosition(m_Player.GetPosition());
+    m_Level->OnUpdate(timestep);
+    m_Player->OnUpdate(timestep);
+    m_CameraController.SetCameraPosition(m_Player->GetPosition());
 
     Renderer2D::BeginScene(m_CameraController.GetCamera());
-    m_Level->OnUpdate(timestep);
-    m_Player.OnRender();
+    m_Level->OnRender();
+    m_Player->OnRender();
     Renderer2D::EndScene();
 }
 
 void GameLayer::OnEvent(Event &event)
 {
-    m_Player.OnEvent(event);
+    m_Player->OnEvent(event);
 
     if (event.GetType() == EventType::WindowResized)
         OnWindowResized((WindowResizeEvent &)event);
