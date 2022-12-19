@@ -18,7 +18,6 @@ public:
     void OnWindowResized(Engine::WindowResizeEvent &event);
 
 private:
-    std::shared_ptr<Engine::Texture2D> m_PirateTexture;
     Engine::OrthographicCameraController m_CameraController;
     Level *m_Level;
     Player m_Player;

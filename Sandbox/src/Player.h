@@ -12,6 +12,7 @@ public:
     ~Player();
 
     void OnUpdate(float timestep);
+    void OnRender();
     void OnEvent(Engine::Event &event);
 
     void OnKeyPressed(Engine::KeyPressedEvent &event);

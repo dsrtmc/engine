@@ -7,6 +7,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <unistd.h>
+
 using namespace Engine;
 
 // Create a timer and add the profiling result to the other results once the scope ends
@@ -18,7 +20,6 @@ GameLayer::GameLayer()
     : Layer("Game layer"), m_CameraController(1440.0f / 900.0f), m_Level(new Level("Main Level")),
     m_Player(m_CameraController.GetCameraPosition(), { 0.25f, 0.25f }, m_Level)
 {
-    m_PirateTexture = std::make_shared<Texture2D>("../Sandbox/assets/textures/guppy.png");
     Renderer2D::Initialize();
     ENG_TRACE("Created Game layer");
 }
@@ -49,14 +50,13 @@ void GameLayer::OnUpdate(float timestep)
     glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
     Renderer::Clear();
 
-    // TODO: fix the jitter while moving player
+    m_Player.OnUpdate(timestep);
+    m_CameraController.SetCameraPosition(m_Player.GetPosition());
 
     Renderer2D::BeginScene(m_CameraController.GetCamera());
     m_Level->OnUpdate(timestep);
-    m_Player.OnUpdate(timestep);
-    m_CameraController.SetCameraPosition(m_Player.GetPosition());
+    m_Player.OnRender();
     Renderer2D::EndScene();
-
 }
 
 void GameLayer::OnEvent(Event &event)

@@ -29,7 +29,7 @@ public:
     ~Level();
 
     void OnUpdate(float timestep);
-    bool TestCollision(const glm::vec3 &position, const glm::vec2 &entitySize);
+    glm::vec2 TestCollision(const glm::vec3 &position, const glm::vec2 &entitySize);
 
 private:
     std::string m_Name;
