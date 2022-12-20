@@ -11,7 +11,7 @@
 
 using namespace Engine;
 
-// Create a timer and add the profiling result to the other results once the scope ends
+/* Create a timer and add the profiling result to the other results once the scope ends */
 #define PROFILING_SCOPE(tname) Timer timer__LINE__(tname, [&](const std::string &name, double duration)\
     { m_ProfilingResults.push_back({ name, duration });\
 })
@@ -55,6 +55,7 @@ void GameLayer::OnUpdate(float timestep)
     m_Level->OnUpdate(timestep);
     m_Player->OnUpdate(timestep);
     m_CameraController.SetCameraPosition(m_Player->GetPosition());
+
 
     Renderer2D::BeginScene(m_CameraController.GetCamera());
     m_Level->OnRender();

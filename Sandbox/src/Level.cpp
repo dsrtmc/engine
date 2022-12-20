@@ -28,7 +28,7 @@ void Level::OnRender()
     Engine::Renderer2D::DrawQuad({ 0.0f, -1.0f, 0.0f }, { 2.0f, 1.0f }, { 0.2f, 0.3f, 0.8f, 1.0f });
 }
 
-// Returns { -1, -1 } if there's a collision on the specified location, otherwise returns distance required to create a collision
+/* Returns { -1, -1 } if there's a collision on the specified location, otherwise returns distance required to create a collision */
 glm::vec2 Level::TestCollision(const glm::vec3 &position, const glm::vec2 &entitySize)
 {
     glm::vec2 closestRock = { 0.0f, 0.0f };
@@ -57,6 +57,7 @@ glm::vec2 Level::TestCollision(const glm::vec3 &position, const glm::vec2 &entit
         }
     }
 
+    Engine::Renderer2D::DrawLine(position, glm::vec3(closestRock, 1.0f), { 1.0f, 0.2f, 0.3f, 1.0f });
     // No collision
     return { -1, -1 };
 }

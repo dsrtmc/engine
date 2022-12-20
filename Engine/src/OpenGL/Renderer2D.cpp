@@ -14,6 +14,10 @@ namespace Engine
         std::shared_ptr<VertexArray> QuadVertexArray;
         std::shared_ptr<Shader> QuadShader;
         std::shared_ptr<Texture2D> QuadWhiteTexture;
+        std::shared_ptr<VertexArray> LineVertexArray;
+        std::shared_ptr<VertexBuffer> LineVertexBuffer;
+        std::shared_ptr<Shader> LineShader;
+        std::shared_ptr<Texture2D> LineWhiteTexture;
     };
 
     static RenderData *s_Data;
@@ -22,6 +26,7 @@ namespace Engine
     {
         s_Data = new RenderData;
 
+        // Quad data
         s_Data->QuadShader = Shader::FromTextFiles(
             "../Sandbox/assets/shaders/quad.vert.glsl",
             "../Sandbox/assets/shaders/quad.frag.glsl"
@@ -32,6 +37,11 @@ namespace Engine
         s_Data->QuadWhiteTexture = std::make_shared<Texture2D>(1, 1);
         s_Data->QuadWhiteTexture->SetData(&white, sizeof(unsigned int));
         s_Data->QuadWhiteTexture->Bind(0);
+
+        unsigned int white1 = 0xffffffff;
+        s_Data->LineWhiteTexture = std::make_shared<Texture2D>(1, 1);
+        s_Data->LineWhiteTexture->SetData(&white1, sizeof(unsigned int));
+        s_Data->LineWhiteTexture->Bind(0);
 
         float vertices[4 * 5] = {
             // vertex position //  texture  //
@@ -68,6 +78,34 @@ namespace Engine
         vao->SetIndexBuffer(ibo);
 
         s_Data->QuadVertexArray = vao;
+        
+        // ------------------------------------------
+        // Line data
+        s_Data->LineShader = Shader::FromTextFiles(
+            "../Sandbox/assets/shaders/line.vert.glsl",
+            "../Sandbox/assets/shaders/line.frag.glsl"
+        );
+        float lineVertices[] = {
+             -5.5f, 0.0f, 0.5f,
+              0.5f, 0.0f, 0.5f,
+        };
+        std::shared_ptr<VertexArray> lineVao = std::make_shared<VertexArray>();
+
+        BufferLayout lineLayout;
+        lineLayout.Push(3); // vertex positions
+
+        std::shared_ptr<VertexBuffer> lineVbo = std::make_shared<VertexBuffer>(lineVertices, sizeof(lineVertices));
+        lineVbo->SetLayout(lineLayout);
+
+        lineVao->SetVertexBuffer(lineVbo);
+
+        s_Data->LineVertexArray = lineVao;
+        s_Data->LineVertexBuffer = lineVbo;
+
+        // s_Data->QuadShader->SetUniform4fv("u_Color", glm::vec4(1.0f));
+        // s_Data->QuadShader->SetUniformMatrix4fv("u_Transform", glm::mat4(1.0f));
+        // s_Data->LineShader->SetUniform4fv("u_Color", glm::vec4(1.0f));
+        // s_Data->LineShader->SetUniformMatrix4fv("u_Transform", glm::mat4(1.0f));
     }
 
     void Renderer2D::Shutdown()
@@ -77,6 +115,8 @@ namespace Engine
 
     void Renderer2D::BeginScene(std::shared_ptr<const OrthographicCamera> camera)
     {
+        s_Data->LineShader->Bind();
+        s_Data->LineShader->SetUniformMatrix4fv("u_VP", camera->GetProjectionMatrix() * camera->GetViewMatrix());
         s_Data->QuadVertexArray->Bind();
         s_Data->QuadShader->Bind();
         s_Data->QuadShader->SetUniformMatrix4fv("u_VP", camera->GetProjectionMatrix() * camera->GetViewMatrix());
@@ -140,5 +180,25 @@ namespace Engine
         texture->Bind(0);
 
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+    }
+
+    /* Meant for debug, bad performance if used for many draw calls, since
+     * we're binding the shader for every drawn line */
+    void Renderer2D::DrawLine(const glm::vec3 &positionA, const glm::vec3 &positionB, const glm::vec4 &color)
+    {
+        float vertices[] = {
+            positionA.x, positionA.y, positionA.z,
+            positionB.x, positionB.y, positionB.z 
+        };
+
+        s_Data->LineVertexArray->Bind();
+        s_Data->LineVertexArray->SetVertexBuffer(s_Data->LineVertexBuffer);
+        s_Data->LineVertexBuffer->SetData(vertices, sizeof(vertices));
+
+        s_Data->LineShader->Bind();
+        s_Data->LineShader->SetUniform4fv("u_Color", color);
+        s_Data->LineShader->SetUniformMatrix4fv("u_Transform", glm::mat4(1.0f));
+        
+        glDrawArrays(GL_LINES, 0, 2);
     }
 }
