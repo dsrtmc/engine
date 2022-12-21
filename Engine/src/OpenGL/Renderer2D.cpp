@@ -9,103 +9,92 @@
 
 namespace Engine
 {
+    struct QuadVertex
+    {
+        glm::vec3 Position;
+        glm::vec4 Color;
+        glm::vec2 TextureCoordinates;
+    };
+
     struct RenderData
     {
+        const unsigned int MaxQuads = 5000;
+        const unsigned int MaxVertices = MaxQuads * 4;
+        const unsigned int MaxIndices = MaxQuads * 6;
+
+        /* Whenever we call BeginScene(camera), we want to:
+         * Initialize/clear the VertexBuffer to be empty (probably via something like BeginBatch()),
+         * Do the same with the IndexBuffer */
+
+        /* Whenever we call DrawQuad(props), we want to:
+         * Add the quad to the current QuadVertexBuffer, thus also adjust the buffer's pointer,
+         * Adjust the index buffer using a loop */
+
+        /* Calling EndScene() will: 
+         * Execute the draw call on the currently bound VertexBuffer and IndexBuffer */
+
+        // Quad
         std::shared_ptr<VertexArray> QuadVertexArray;
+        std::shared_ptr<VertexBuffer> QuadVertexBuffer;
         std::shared_ptr<Shader> QuadShader;
-        std::shared_ptr<Texture2D> QuadWhiteTexture;
+
+        unsigned int QuadIndexCount = 0;
+        QuadVertex *QuadVertexBufferBatch = nullptr;
+        QuadVertex *QuadVertexBufferCursor = nullptr;
+
+        // Line
         std::shared_ptr<VertexArray> LineVertexArray;
         std::shared_ptr<VertexBuffer> LineVertexBuffer;
         std::shared_ptr<Shader> LineShader;
-        std::shared_ptr<Texture2D> LineWhiteTexture;
+
+        // General
+        std::shared_ptr<Texture2D> WhiteTexture;
     };
 
     static RenderData *s_Data;
 
     void Renderer2D::Initialize()
     {
+        // TODO: clean up code
         s_Data = new RenderData;
 
-        // Quad data
-        s_Data->QuadShader = Shader::FromTextFiles(
-            "../Sandbox/assets/shaders/quad.vert.glsl",
-            "../Sandbox/assets/shaders/quad.frag.glsl"
-        );
+        s_Data->QuadShader = Shader::FromTextFiles("../Sandbox/assets/shaders/quad.vert.glsl", "../Sandbox/assets/shaders/quad.frag.glsl");
+        s_Data->LineShader = Shader::FromTextFiles("../Sandbox/assets/shaders/line.vert.glsl", "../Sandbox/assets/shaders/line.frag.glsl");
 
         // Create a 1x1 white fallback texture; will load unless we specify a texture in the draw call
         unsigned int white = 0xffffffff;
-        s_Data->QuadWhiteTexture = std::make_shared<Texture2D>(1, 1);
-        s_Data->QuadWhiteTexture->SetData(&white, sizeof(unsigned int));
-        s_Data->QuadWhiteTexture->Bind(0);
+        s_Data->WhiteTexture = std::make_shared<Texture2D>(1, 1);
+        s_Data->WhiteTexture->SetData(&white, sizeof(unsigned int));
+        s_Data->WhiteTexture->Bind(0);
 
-        unsigned int white1 = 0xffffffff;
-        s_Data->LineWhiteTexture = std::make_shared<Texture2D>(1, 1);
-        s_Data->LineWhiteTexture->SetData(&white1, sizeof(unsigned int));
-        s_Data->LineWhiteTexture->Bind(0);
+        s_Data->QuadVertexBufferBatch = new QuadVertex[s_Data->MaxQuads];
+        s_Data->QuadVertexBufferCursor = s_Data->QuadVertexBufferBatch;
 
-        float vertices[4 * 5] = {
-            // vertex position //  texture  //
-            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
-             0.5f, -0.5f, 0.0f,  1.0f, 0.0f, // bottom right
-             0.5f,  0.5f, 0.0f,  1.0f,  1.0f, // top right
-            -0.5f,  0.5f, 0.0f, 0.0f,  1.0f  // top left
-        };
+        unsigned int *quadIndices = new unsigned int[s_Data->MaxIndices];
+        int offset = 0;
+        for (int i = 0; i < s_Data->MaxIndices; i += 6)
+        {
+            quadIndices[i + 0] = 0 + offset;
+            quadIndices[i + 1] = 1 + offset;
+            quadIndices[i + 2] = 2 + offset;
 
-        GLuint indices[2 * 3] = {
-            0, 1, 2,
-            2, 3, 0
-        };
+            quadIndices[i + 3] = 2 + offset;
+            quadIndices[i + 4] = 3 + offset;
+            quadIndices[i + 5] = 0 + offset;
 
-        // Create a vertex array object
-        std::shared_ptr<VertexArray> vao = std::make_shared<VertexArray>();
+            offset += 4;
+        }
+        s_Data->QuadVertexArray = std::make_shared<VertexArray>();
+        s_Data->QuadVertexBuffer = std::make_shared<VertexBuffer>(s_Data->MaxVertices);
 
-        // Specify a layout of our vertices
-        // TODO: maybe change bufferlayout logic, looks ugly
-        BufferLayout layout;
-        layout.Push(3); // vertex positions
-        layout.Push(2); // texture coordinates
+        BufferLayout quadLayout;
+        quadLayout.Push(3);
+        quadLayout.Push(4);
+        quadLayout.Push(2);
 
-        // Create a vertex buffer object and bind it to the specified layout
-        std::shared_ptr<VertexBuffer> vbo = std::make_shared<VertexBuffer>(vertices, sizeof(vertices));
-        vbo->SetLayout(layout);
-
-        // Create an index buffer object 
-        std::shared_ptr<IndexBuffer> ibo = std::make_shared<IndexBuffer>(indices, sizeof(indices) / sizeof(GLuint));
-        ibo->Bind();
-
-        // Make the buffers the vertex array's private members, not used yet
-        vao->SetVertexBuffer(vbo);
-        vao->SetIndexBuffer(ibo);
-
-        s_Data->QuadVertexArray = vao;
-        
-        // ------------------------------------------
-        // Line data
-        s_Data->LineShader = Shader::FromTextFiles(
-            "../Sandbox/assets/shaders/line.vert.glsl",
-            "../Sandbox/assets/shaders/line.frag.glsl"
-        );
-        float lineVertices[] = {
-             -5.5f, 0.0f, 0.5f,
-              0.5f, 0.0f, 0.5f,
-        };
-        std::shared_ptr<VertexArray> lineVao = std::make_shared<VertexArray>();
-
-        BufferLayout lineLayout;
-        lineLayout.Push(3); // vertex positions
-
-        std::shared_ptr<VertexBuffer> lineVbo = std::make_shared<VertexBuffer>(lineVertices, sizeof(lineVertices));
-        lineVbo->SetLayout(lineLayout);
-
-        lineVao->SetVertexBuffer(lineVbo);
-
-        s_Data->LineVertexArray = lineVao;
-        s_Data->LineVertexBuffer = lineVbo;
-
-        // s_Data->QuadShader->SetUniform4fv("u_Color", glm::vec4(1.0f));
-        // s_Data->QuadShader->SetUniformMatrix4fv("u_Transform", glm::mat4(1.0f));
-        // s_Data->LineShader->SetUniform4fv("u_Color", glm::vec4(1.0f));
-        // s_Data->LineShader->SetUniformMatrix4fv("u_Transform", glm::mat4(1.0f));
+        s_Data->QuadVertexBuffer->SetLayout(quadLayout);
+        s_Data->QuadVertexArray->SetIndexBuffer(std::make_shared<IndexBuffer>(quadIndices, s_Data->MaxIndices));
+        delete[] quadIndices;
     }
 
     void Renderer2D::Shutdown()
@@ -115,16 +104,28 @@ namespace Engine
 
     void Renderer2D::BeginScene(std::shared_ptr<const OrthographicCamera> camera)
     {
-        s_Data->LineShader->Bind();
-        s_Data->LineShader->SetUniformMatrix4fv("u_VP", camera->GetProjectionMatrix() * camera->GetViewMatrix());
-        s_Data->QuadVertexArray->Bind();
         s_Data->QuadShader->Bind();
         s_Data->QuadShader->SetUniformMatrix4fv("u_VP", camera->GetProjectionMatrix() * camera->GetViewMatrix());
         s_Data->QuadShader->SetUniformMatrix4fv("u_Transform", glm::mat4(1.0f));
+        s_Data->QuadIndexCount = 0;
+        s_Data->QuadVertexBufferCursor = s_Data->QuadVertexBufferBatch;
     }
 
+    // TODO: fix bug that happens when you create one scene after another
     void Renderer2D::EndScene()
     {
+        Flush();
+    }
+
+    void Renderer2D::Flush()
+    {
+        // Draw stuff here
+        uint32_t dataSize = (uint32_t)((uint8_t *)s_Data->QuadVertexBufferCursor - (uint8_t *)s_Data->QuadVertexBufferBatch);
+        s_Data->QuadVertexArray->Bind();
+        s_Data->QuadVertexBuffer->SetData(s_Data->QuadVertexBufferBatch, dataSize);
+        s_Data->QuadVertexArray->SetVertexBuffer(s_Data->QuadVertexBuffer);
+        s_Data->QuadShader->Bind();
+        glDrawElements(GL_TRIANGLES, s_Data->QuadIndexCount, GL_UNSIGNED_INT, nullptr);
     }
 
     /* For every quad, the default values are vec4(1.0, 1.0, 1.0, 1.0) for color
@@ -132,14 +133,35 @@ namespace Engine
      * a solid color by specifying those parameters */
     void Renderer2D::DrawQuad(const glm::vec3 &position, const glm::vec2 &size, const glm::vec4 &color)
     {
-        GLsizei count = s_Data->QuadVertexArray->GetIndexBuffer()->GetCount();
+        s_Data->QuadVertexBufferCursor->Position = { -0.5f + position.x, -0.5f + position.y, position.z };
+        s_Data->QuadVertexBufferCursor->Color = color;
+        s_Data->QuadVertexBufferCursor->TextureCoordinates = { 0.0f, 0.0f };
+        s_Data->QuadVertexBufferCursor++;
 
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
-        s_Data->QuadShader->SetUniform4fv("u_Color", color);
-        s_Data->QuadShader->SetUniformMatrix4fv("u_Transform", transform);
-        s_Data->QuadWhiteTexture->Bind(0);
+        s_Data->QuadVertexBufferCursor->Position = { 0.5f + position.x, -0.5f + position.y, position.z };
+        s_Data->QuadVertexBufferCursor->Color = color;
+        s_Data->QuadVertexBufferCursor->TextureCoordinates = { 1.0f, 0.0f };
+        s_Data->QuadVertexBufferCursor++;
 
-        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+        s_Data->QuadVertexBufferCursor->Position = { 0.5f + position.x, 0.5f + position.y, position.z };
+        s_Data->QuadVertexBufferCursor->Color = color;
+        s_Data->QuadVertexBufferCursor->TextureCoordinates = { 1.0f, 1.0f };
+        s_Data->QuadVertexBufferCursor++;
+
+        s_Data->QuadVertexBufferCursor->Position = { -0.5f + position.x, 0.5f + position.y, position.z };
+        s_Data->QuadVertexBufferCursor->Color = color;
+        s_Data->QuadVertexBufferCursor->TextureCoordinates = { 0.0f, 1.0f };
+        s_Data->QuadVertexBufferCursor++;
+
+        s_Data->QuadIndexCount += 6;
+        // GLsizei count = s_Data->QuadVertexArray->GetIndexBuffer()->GetCount();
+
+        // glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
+        // s_Data->QuadShader->SetUniform4fv("u_Color", color);
+        // s_Data->QuadShader->SetUniformMatrix4fv("u_Transform", transform);
+        // s_Data->WhiteTexture->Bind(0);
+
+        // glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
     }
 
     void Renderer2D::DrawQuad(const glm::vec3 &position, const glm::vec2 &size, std::shared_ptr<Texture2D> texture, const glm::vec4 &tintColor)
@@ -163,7 +185,7 @@ namespace Engine
                               glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
         s_Data->QuadShader->SetUniform4fv("u_Color", color);
         s_Data->QuadShader->SetUniformMatrix4fv("u_Transform", transform);
-        s_Data->QuadWhiteTexture->Bind(0);
+        s_Data->WhiteTexture->Bind(0);
 
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
     }
@@ -186,19 +208,20 @@ namespace Engine
      * we're binding the shader for every drawn line */
     void Renderer2D::DrawLine(const glm::vec3 &positionA, const glm::vec3 &positionB, const glm::vec4 &color)
     {
-        float vertices[] = {
-            positionA.x, positionA.y, positionA.z,
-            positionB.x, positionB.y, positionB.z 
-        };
+        // float vertices[] = {
+        //     positionA.x, positionA.y, positionA.z,
+        //     positionB.x, positionB.y, positionB.z 
+        // };
 
-        s_Data->LineVertexArray->Bind();
-        s_Data->LineVertexArray->SetVertexBuffer(s_Data->LineVertexBuffer);
-        s_Data->LineVertexBuffer->SetData(vertices, sizeof(vertices));
+        // s_Data->LineVertexArray->Bind();
+        // s_Data->LineVertexArray->SetVertexBuffer(s_Data->LineVertexBuffer);
+        // s_Data->LineVertexBuffer->SetData(vertices, sizeof(vertices));
 
-        s_Data->LineShader->Bind();
-        s_Data->LineShader->SetUniform4fv("u_Color", color);
-        s_Data->LineShader->SetUniformMatrix4fv("u_Transform", glm::mat4(1.0f));
+        // s_Data->LineShader->Bind();
+        // s_Data->LineShader->SetUniform4fv("u_Color", color);
+        // s_Data->LineShader->SetUniformMatrix4fv("u_Transform", glm::mat4(1.0f));
         
-        glDrawArrays(GL_LINES, 0, 2);
+        // glDrawArrays(GL_LINES, 0, 2);
+        ENG_INFO("We tried to draw a line but the code is disabled");
     }
 }

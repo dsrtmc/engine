@@ -4,6 +4,7 @@
 
 namespace Engine
 {
+    /* Buffer Layout */
     struct BufferElement
     {
         GLint count;
@@ -46,9 +47,11 @@ namespace Engine
         GLsizei m_Stride;
     };
 
+    /* Vertex Buffer */
     class VertexBuffer
     {
     public:
+        VertexBuffer(unsigned int size);
         VertexBuffer(const void *data, unsigned int size);
         ~VertexBuffer();
 
@@ -65,6 +68,7 @@ namespace Engine
         BufferLayout m_Layout;
     };
 
+    /* Index Buffer */
     class IndexBuffer
     {
     public:

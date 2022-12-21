@@ -2,6 +2,15 @@
 
 namespace Engine
 {
+    /* ------------ Vertex Buffer ------------ */
+    VertexBuffer::VertexBuffer(unsigned int size)
+    {
+        glCreateBuffers(1, &m_RendererID);
+
+        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+        glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+    }
+
     VertexBuffer::VertexBuffer(const void *data, unsigned int size)
     {
         glCreateBuffers(1, &m_RendererID);
@@ -41,6 +50,7 @@ namespace Engine
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
+    /* ------------ Index Buffer ------------ */
     IndexBuffer::IndexBuffer(const void *indices, GLsizei count)
         : m_Count(count)
     {

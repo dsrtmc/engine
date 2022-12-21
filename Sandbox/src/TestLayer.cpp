@@ -79,8 +79,12 @@ void TestLayer::OnUpdate(float timestep)
     m_CameraController.OnUpdate(timestep);
 
     Renderer2D::BeginScene(m_CameraController.GetCamera());
-    Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, m_ContainerTexture, { 0.2f, 0.6f, 0.8f, 1.0f });
-    Renderer2D::DrawQuad({ -1.0f, 1.0f, 0.0f }, { 0.5f, 0.5f }, { 0.3f, 0.8f, 0.7f, 1.0f });
+    Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, { 0.2f, 0.6f, 0.8f, 1.0f });
+    Renderer2D::DrawQuad({ -2.0f, 2.0f, 0.0f }, { 1.0f, 1.0f }, { 0.3f, 0.8f, 0.7f, 1.0f });
+    Renderer2D::EndScene();
+
+    Renderer2D::BeginScene(m_CameraController.GetCamera());
+    Renderer2D::DrawQuad({ 2.0f, -2.0f, 0.0f }, { 1.0f, 1.0f }, { 0.3f, 0.8f, 0.7f, 1.0f });
     Renderer2D::EndScene();
 
     // Draw a grid of quads
@@ -97,10 +101,10 @@ void TestLayer::OnUpdate(float timestep)
         }
         Renderer2D::EndScene();
     }
-    Renderer2D::BeginScene(m_CameraController.GetCamera());
-    Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 0.0f }, { 0.5f, 0.5f }, 45.0f, { 0.6f, 0.8f, 0.2f, 1.0f });
-    Renderer2D::DrawRotatedQuad({ -1.0f, 1.0f, 0.0f }, { 0.5f, 0.5f }, 45.0f, { 0.1f, 0.5f, 0.4f, 1.0f });
-    Renderer2D::EndScene();
+    // Renderer2D::BeginScene(m_CameraController.GetCamera());
+    // Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 0.0f }, { 0.5f, 0.5f }, 45.0f, { 0.6f, 0.8f, 0.2f, 1.0f });
+    // Renderer2D::DrawRotatedQuad({ -1.0f, 1.0f, 0.0f }, { 0.5f, 0.5f }, 45.0f, { 0.1f, 0.5f, 0.4f, 1.0f });
+    // Renderer2D::EndScene();
 }
 
 void TestLayer::OnEvent(Event &event)
