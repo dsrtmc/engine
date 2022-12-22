@@ -85,7 +85,7 @@ namespace Engine
             offset += 4;
         }
         s_Data->QuadVertexArray = std::make_shared<VertexArray>();
-        s_Data->QuadVertexBuffer = std::make_shared<VertexBuffer>(s_Data->MaxVertices);
+        s_Data->QuadVertexBuffer = std::make_shared<VertexBuffer>(s_Data->MaxVertices * sizeof(QuadVertex));
 
         BufferLayout quadLayout;
         quadLayout.Push(3);
@@ -122,7 +122,9 @@ namespace Engine
         // Draw stuff here
         uint32_t dataSize = (uint32_t)((uint8_t *)s_Data->QuadVertexBufferCursor - (uint8_t *)s_Data->QuadVertexBufferBatch);
         s_Data->QuadVertexArray->Bind();
+        ENG_INFO("Data size: {0}", dataSize);
         s_Data->QuadVertexBuffer->SetData(s_Data->QuadVertexBufferBatch, dataSize);
+        ENG_INFO("Index count = {0}", s_Data->QuadIndexCount);
         s_Data->QuadVertexArray->SetVertexBuffer(s_Data->QuadVertexBuffer);
         s_Data->QuadShader->Bind();
         glDrawElements(GL_TRIANGLES, s_Data->QuadIndexCount, GL_UNSIGNED_INT, nullptr);

@@ -89,13 +89,13 @@ void TestLayer::OnUpdate(float timestep)
 
     // Draw a grid of quads
     {
-        PROFILING_SCOPE("Renderer2D 144 draw calls");
+        PROFILING_SCOPE("144 batched calls");
         Renderer2D::BeginScene(m_CameraController.GetCamera());
         for (int col = 0; col < 12; col++)
         {
             for (int row = 0; row < 12; row++)
             {
-                glm::vec3 pos(row * 0.11f, col * 0.11f, 0.0f);
+                glm::vec3 pos(row * 1.11f, col * 1.11f, 0.0f);
                 Renderer2D::DrawQuad(pos, { 0.1f, 0.1f }, m_GridColor);
             }
         }
