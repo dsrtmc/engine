@@ -20,6 +20,7 @@ private:
     std::shared_ptr<Engine::Texture2D> m_ContainerTexture;
     Engine::OrthographicCameraController m_CameraController;
     glm::vec4 m_GridColor;
+    glm::vec2 m_Size;
 
     struct ProfilingResult
     {
