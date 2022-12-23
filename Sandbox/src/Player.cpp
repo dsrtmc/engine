@@ -93,7 +93,9 @@ void Player::OnUpdate(float timestep)
 
 void Player::OnRender()
 {
-    Engine::Renderer2D::DrawQuad(m_Position, m_Size, m_Texture);
+    // Does not work as of now since we're not allowing textures in batch rendering
+    // Engine::Renderer2D::DrawQuad(m_Position, m_Size, m_Texture);
+    Engine::Renderer2D::DrawQuad(m_Position, m_Size, { 1.0f, 1.0f, 1.0f, 1.0f});
 }
 
 void Player::OnEvent(Engine::Event &event)

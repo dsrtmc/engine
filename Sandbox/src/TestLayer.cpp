@@ -112,6 +112,10 @@ void TestLayer::OnUpdate(float timestep)
     Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 0.0f }, { 0.25f, 0.5f }, glm::radians(rotation), { 0.6f, 0.8f, 0.2f, 1.0f });
     Renderer2D::DrawRotatedQuad({ -1.0f, 1.0f, 0.0f }, { 0.5f, 0.25f }, glm::radians(45.0f), { 0.1f, 0.5f, 0.4f, 1.0f });
     Renderer2D::EndScene();
+
+    Renderer2D::BeginScene(m_CameraController.GetCamera());
+    Renderer2D::DrawLine({ -5.0f, 2.0f, 0.0f }, { -3.0f, -6.0f, 0.0f }, { 1.0f, 0.2f, 0.3f, 1.0f });
+    Renderer2D::EndScene();
 }
 
 void TestLayer::OnEvent(Event &event)

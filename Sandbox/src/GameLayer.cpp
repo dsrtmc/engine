@@ -52,9 +52,11 @@ void GameLayer::OnUpdate(float timestep)
     glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
     Renderer::Clear();
 
+    Renderer2D::BeginScene(m_CameraController.GetCamera());
     m_Level->OnUpdate(timestep);
     m_Player->OnUpdate(timestep);
     m_CameraController.SetCameraPosition(m_Player->GetPosition());
+    Renderer2D::EndScene();
 
 
     Renderer2D::BeginScene(m_CameraController.GetCamera());
