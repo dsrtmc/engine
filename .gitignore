@@ -46,6 +46,8 @@ _deps
 
 .cache
 .vscode
+.idea
+cmake-build-debug/
 
 /build
 [Bb][Uu][Ii][Ll][Dd]

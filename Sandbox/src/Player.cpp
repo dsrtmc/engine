@@ -38,7 +38,7 @@ void Player::OnUpdate(float timestep)
         npos.y += 1.5f * timestep;
 
         glm::vec2 result = m_Level->TestCollision(npos, m_Size);
-        if (result.y != -1 && result.y != -1)
+        if (result.x != -1 && result.y != -1)
             position.y += std::min(1.5f, result.y);
         else
             position.y = npos.y;
@@ -49,7 +49,7 @@ void Player::OnUpdate(float timestep)
         npos.y -= 1.5f * timestep;
 
         glm::vec2 result = m_Level->TestCollision(npos, m_Size);
-        if (result.y != -1 && result.y != -1)
+        if (result.x != -1 && result.y != -1)
             position.y -= std::min(1.5f, result.y);
         else
             position.y = npos.y;

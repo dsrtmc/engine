@@ -29,13 +29,14 @@ namespace Engine
         const unsigned int MaxIndices = MaxQuads * 6;
 
         /* Quad */
+
+        // We use a 4D vector, so we can multiply it with a 4D matrix
+        glm::vec4 QuadDefaultPositions[4];
+        glm::vec2 QuadTextureCoordinates[4];
+
         std::shared_ptr<VertexArray> QuadVertexArray;
         std::shared_ptr<VertexBuffer> QuadVertexBuffer;
         std::shared_ptr<Shader> QuadShader;
-
-        // We use a 4D vector so we can multiply it with a 4D matrix
-        glm::vec4 QuadDefaultPositions[4];
-        glm::vec2 QuadTextureCoordinates[4];
 
         unsigned int QuadIndexCount = 0;
         QuadVertex *QuadVertexBufferBatch = nullptr;
@@ -50,7 +51,7 @@ namespace Engine
         LineVertex *LineVertexBufferBatch = nullptr;
         LineVertex *LineVertexBufferCursor = nullptr;
 
-        // General
+        /* General */
         std::shared_ptr<Texture2D> WhiteTexture;
     };
 
@@ -110,11 +111,18 @@ namespace Engine
         delete[] quadIndices;
 
         /* Line */
-        s_Data->LineVertexArray = std::make_shared<VertexArray>();
-        s_Data->LineVertexBuffer = std::make_shared<VertexBuffer>(s_Data->MaxVertices * sizeof(LineVertex));
         // TODO: Maybe make unique pointers? too much issues with memory leak if delete is not a recursive(?) operator
         s_Data->LineVertexBufferBatch = new LineVertex[s_Data->MaxVertices];
         s_Data->LineVertexBufferCursor = s_Data->LineVertexBufferBatch;
+
+        s_Data->LineVertexArray = std::make_shared<VertexArray>();
+        s_Data->LineVertexBuffer = std::make_shared<VertexBuffer>(s_Data->MaxVertices * sizeof(LineVertex));
+
+        BufferLayout lineLayout;
+        lineLayout.Push(3);
+        lineLayout.Push(4);
+
+        s_Data->LineVertexBuffer->SetLayout(lineLayout);
     }
 
     void Renderer2D::Shutdown()
@@ -124,7 +132,6 @@ namespace Engine
 
     void Renderer2D::BeginScene(std::shared_ptr<const OrthographicCamera> camera)
     {
-        ENG_WARN("BEGIN SCENE");
         s_Data->QuadShader->Bind();
         s_Data->QuadShader->SetUniformMatrix4fv("u_VP", camera->GetProjectionMatrix() * camera->GetViewMatrix());
         s_Data->QuadShader->SetUniformMatrix4fv("u_Transform", glm::mat4(1.0f));
@@ -138,17 +145,14 @@ namespace Engine
         s_Data->LineVertexBufferCursor = s_Data->LineVertexBufferBatch;
     }
 
-    // TODO: fix bug that happens when you create one scene after another
     void Renderer2D::EndScene()
     {
-        ENG_WARN("END SCENE");
-        ENG_INFO("Line vertexcount RIGHT BEFORE FLUSH: {0}", s_Data->LineVertexCount);
-        ENG_INFO("Line count: {0}", s_Data->LineVertexCount);
         Flush();
     }
 
     void Renderer2D::Flush()
     {
+        if (s_Data->QuadIndexCount)
         {
             uint32_t dataSize = (uint8_t *)s_Data->QuadVertexBufferCursor - (uint8_t *)s_Data->QuadVertexBufferBatch;
             s_Data->QuadVertexArray->Bind();
@@ -158,6 +162,7 @@ namespace Engine
             glDrawElements(GL_TRIANGLES, s_Data->QuadIndexCount, GL_UNSIGNED_INT, nullptr);
         }
 
+        if (s_Data->LineVertexCount)
         {
             uint32_t dataSize = (uint8_t *)s_Data->LineVertexBufferCursor - (uint8_t *)s_Data->LineVertexBufferBatch;
             s_Data->LineVertexArray->Bind();
@@ -165,7 +170,6 @@ namespace Engine
             s_Data->LineVertexArray->SetVertexBuffer(s_Data->LineVertexBuffer);
             s_Data->LineShader->Bind();
             // 私がっかりしてます ^_^
-            // literally cancer fucking impossible to fix idk why it doesn't work
             glDrawArrays(GL_LINES, 0, s_Data->LineVertexCount);
         }
     }
@@ -231,10 +235,10 @@ namespace Engine
     }
 
     /* Bad performance if called a lot of times, avoid big batches of rotated quads unless we somehow improve the transform */
-    void Renderer2D::DrawRotatedQuad(const glm::vec3 &position, const glm::vec2 &size, float rotation, const glm::vec4 &color)
+    void Renderer2D::DrawRotatedQuad(const glm::vec3 &position, const glm::vec2 &size, float rotationRadians, const glm::vec4 &color)
     {
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
-                              glm::rotate(glm::mat4(1.0f), rotation, glm::vec3(0.0f, 0.0f, 1.0f)) *
+                              glm::rotate(glm::mat4(1.0f), rotationRadians, glm::vec3(0.0f, 0.0f, 1.0f)) *
                               glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 1.0f));
         DrawRotatedQuad(transform, color);
     }
