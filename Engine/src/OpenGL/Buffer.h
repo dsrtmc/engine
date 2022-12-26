@@ -29,7 +29,15 @@ namespace Engine
     class BufferLayout
     {
     public:
-        BufferLayout() : m_Stride(0) {}
+        BufferLayout(const std::vector<std::pair<int, std::string>> &elements)
+            : m_Stride(0)
+        {
+            for (auto &element : elements)
+            {
+                m_Elements.push_back((BufferElement) { element.first, GL_FLOAT, GL_FALSE });
+                m_Stride += element.first * sizeof(GLfloat);
+            }
+        }
 
         std::vector<BufferElement> GetElements() const { return m_Elements; };
         GLsizei GetStride() const { return m_Stride; };

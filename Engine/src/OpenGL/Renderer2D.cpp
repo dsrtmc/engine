@@ -101,12 +101,11 @@ namespace Engine
         s_Data->QuadVertexArray = std::make_shared<VertexArray>();
         s_Data->QuadVertexBuffer = std::make_shared<VertexBuffer>(s_Data->MaxVertices * sizeof(QuadVertex));
 
-        BufferLayout quadLayout;
-        quadLayout.Push(3);
-        quadLayout.Push(4);
-        quadLayout.Push(2);
-
-        s_Data->QuadVertexBuffer->SetLayout(quadLayout);
+        s_Data->QuadVertexBuffer->SetLayout(BufferLayout({
+             {3, "a_Position"},
+             {4, "a_Color"},
+             {2, "a_TextureCoordinates"}
+        }));
         s_Data->QuadVertexArray->SetIndexBuffer(std::make_shared<IndexBuffer>(quadIndices, s_Data->MaxIndices));
         delete[] quadIndices;
 
@@ -118,11 +117,10 @@ namespace Engine
         s_Data->LineVertexArray = std::make_shared<VertexArray>();
         s_Data->LineVertexBuffer = std::make_shared<VertexBuffer>(s_Data->MaxVertices * sizeof(LineVertex));
 
-        BufferLayout lineLayout;
-        lineLayout.Push(3);
-        lineLayout.Push(4);
-
-        s_Data->LineVertexBuffer->SetLayout(lineLayout);
+        s_Data->LineVertexBuffer->SetLayout(BufferLayout({
+            {3, "a_Position"},
+            {4, "a_Color"}
+        }));
     }
 
     void Renderer2D::Shutdown()

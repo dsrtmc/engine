@@ -4,6 +4,7 @@ namespace Engine
 {
     /* ------------ Vertex Buffer ------------ */
     VertexBuffer::VertexBuffer(unsigned int size)
+        : m_Layout({})
     {
         glCreateBuffers(1, &m_RendererID);
 
@@ -12,6 +13,7 @@ namespace Engine
     }
 
     VertexBuffer::VertexBuffer(const void *data, unsigned int size)
+        : m_Layout({})
     {
         glCreateBuffers(1, &m_RendererID);
 
