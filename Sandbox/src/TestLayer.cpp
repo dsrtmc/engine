@@ -87,6 +87,8 @@ void TestLayer::OnUpdate(float timestep)
 
     Renderer2D::BeginScene(m_CameraController.GetCamera());
     Renderer2D::DrawQuad({ 2.0f, -2.0f, 0.0f }, { 1.0f, 1.0f }, { 0.3f, 0.8f, 0.7f, 1.0f });
+    Renderer2D::DrawRotatedQuad({ 0.0f, -2.0f, 0.0f }, { 1.0f, 1.0f }, glm::radians(45.0f), { 0.3f, 0.8f, 0.9f, 1.0f });
+    Renderer2D::DrawRotatedQuad({ 0.0f, 2.0f, 0.0f }, { 1.0f, 1.0f }, glm::radians(45.0f), m_ContainerTexture, { 0.5f, 0.5f, 0.5f, 1.0f });
     Renderer2D::EndScene();
 
     {

@@ -6,12 +6,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-/* whenever we load the texture, we need to assign it a slot
- * to do that, I think we could probably have like a static variable in the texture class
- * that would just get incremented every time we add a new texture, that would correspond to its slot number
- * it could be returned by the LoadTexture() function or whatever, so our variable, say, m_PirateTexture.GetSlot() would
- * hold the slot number, which we could then pass into our vertex buffer as, like, TextureIndex */
-
 namespace Engine
 {
     struct QuadVertex
@@ -68,7 +62,6 @@ namespace Engine
 
     void Renderer2D::Initialize()
     {
-        // TODO: clean up code
         s_Data = new RenderData;
 
         s_Data->QuadShader = Shader::FromTextFiles("../Sandbox/assets/shaders/quad.vert.glsl", "../Sandbox/assets/shaders/quad.frag.glsl");
@@ -94,6 +87,16 @@ namespace Engine
         s_Data->QuadVertexBufferBatch = new QuadVertex[s_Data->MaxVertices];
         s_Data->QuadVertexBufferCursor = s_Data->QuadVertexBufferBatch;
 
+        s_Data->QuadVertexArray = std::make_shared<VertexArray>();
+        s_Data->QuadVertexBuffer = std::make_shared<VertexBuffer>(s_Data->MaxVertices * sizeof(QuadVertex));
+
+        s_Data->QuadVertexBuffer->SetLayout(BufferLayout({
+            {3, "a_Position"},
+            {4, "a_Color"},
+            {2, "a_TextureCoordinates"},
+            {1, "a_TextureIndex"}
+        }));
+
         auto *quadIndices = new unsigned int[s_Data->MaxIndices];
         int offset = 0;
         for (int i = 0; i < s_Data->MaxIndices; i += 6)
@@ -108,19 +111,11 @@ namespace Engine
 
             offset += 4;
         }
-        s_Data->QuadVertexArray = std::make_shared<VertexArray>();
-        s_Data->QuadVertexBuffer = std::make_shared<VertexBuffer>(s_Data->MaxVertices * sizeof(QuadVertex));
-
-        s_Data->QuadVertexBuffer->SetLayout(BufferLayout({
-             {3, "a_Position"},
-             {4, "a_Color"},
-             {2, "a_TextureCoordinates"},
-             {1, "a_TextureIndex"}
-        }));
         s_Data->QuadVertexArray->SetIndexBuffer(std::make_shared<IndexBuffer>(quadIndices, s_Data->MaxIndices));
         delete[] quadIndices;
 
         s_Data->TextureSlots[0] = s_Data->WhiteTexture;
+
         int samplers[s_Data->MaxTextureSlots];
         for (int i = 0; i < s_Data->MaxTextureSlots; i++)
             samplers[i] = i;
@@ -193,8 +188,6 @@ namespace Engine
         }
     }
 
-    /* Should probably only be called directly, rather than by other functions, since recalculating the
-    transform matrix every call is really expensive */
     void Renderer2D::DrawQuad(const glm::mat4 &transform, const glm::vec4 &color)
     {
         for (int i = 0; i < 4; i++)
@@ -208,6 +201,33 @@ namespace Engine
         s_Data->QuadIndexCount += 6;
     }
 
+    void Renderer2D::DrawQuad(const glm::mat4 &transform, std::shared_ptr<Texture2D> texture, const glm::vec4 &tintColor) {
+        float textureIndex = 0.0f;
+        for (int i = 1; i < s_Data->CurrentTextureIndex; i++)
+        {
+            if (s_Data->TextureSlots[i]->GetRendererID() == texture->GetRendererID())
+            {
+                textureIndex = (float)i;
+                break;
+            }
+        }
+        if (textureIndex == 0.0f)
+        {
+            s_Data->TextureSlots[s_Data->CurrentTextureIndex] = texture;
+            s_Data->CurrentTextureIndex++;
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            s_Data->QuadVertexBufferCursor->Position = transform * s_Data->QuadDefaultPositions[i];
+            s_Data->QuadVertexBufferCursor->Color = tintColor;
+            s_Data->QuadVertexBufferCursor->TextureCoordinates = s_Data->QuadTextureCoordinates[i];
+            s_Data->QuadVertexBufferCursor->TextureIndex = textureIndex;
+            s_Data->QuadVertexBufferCursor++;
+        }
+        s_Data->QuadIndexCount += 6;
+    }
+
+    /* Should be used the most for regular quads since that's the most performant function */
     void Renderer2D::DrawQuad(const glm::vec3 &position, const glm::vec2 &size, const glm::vec4 &color)
     {
         /* TextureCoordinates help us determine which corner we are in:
@@ -230,15 +250,6 @@ namespace Engine
 
     void Renderer2D::DrawQuad(const glm::vec3 &position, const glm::vec2 &size, std::shared_ptr<Texture2D> texture, const glm::vec4 &tintColor)
     {
-//        GLsizei count = s_Data->QuadVertexArray->GetIndexBuffer()->GetCount();
-//
-//        glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
-//        s_Data->QuadShader->SetUniform4fv("u_Color", tintColor);
-//        s_Data->QuadShader->SetUniformMatrix4fv("u_Transform", transform);
-//        texture->Bind(0);
-//
-//        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
-        //ENG_INFO("Texture slot: {0}", texture->GetSlot());
         float textureIndex = 0.0f;
         for (int i = 1; i < s_Data->CurrentTextureIndex; i++)
         {
@@ -268,43 +279,22 @@ namespace Engine
         s_Data->QuadIndexCount += 6;
     }
 
-    /* The main draw function, which can be called by other overloaded DrawRotatedQuad() functions */
-    void Renderer2D::DrawRotatedQuad(const glm::mat4 &transform, const glm::vec4 &color)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            s_Data->QuadVertexBufferCursor->Position = transform * s_Data->QuadDefaultPositions[i];
-            s_Data->QuadVertexBufferCursor->Color = color;
-            s_Data->QuadVertexBufferCursor->TextureCoordinates = s_Data->QuadTextureCoordinates[i];
-            s_Data->QuadVertexBufferCursor++;
-        }
-        s_Data->QuadIndexCount += 6;
-    }
-
     /* Bad performance if called a lot of times, avoid big batches of rotated quads unless we somehow improve the transform */
     void Renderer2D::DrawRotatedQuad(const glm::vec3 &position, const glm::vec2 &size, float rotationRadians, const glm::vec4 &color)
     {
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
                               glm::rotate(glm::mat4(1.0f), rotationRadians, glm::vec3(0.0f, 0.0f, 1.0f)) *
                               glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 1.0f));
-        DrawRotatedQuad(transform, color);
+        DrawQuad(transform, color);
     }
 
-#if OLD_API
-    void Renderer2D::DrawRotatedQuad(const glm::vec3 &position, const glm::vec2 &size, float rotation, std::shared_ptr<Texture2D> texture, const glm::vec4 &tintColor)
+    void Renderer2D::DrawRotatedQuad(const glm::vec3 &position, const glm::vec2 &size, float rotationRadians, std::shared_ptr<Texture2D> texture, const glm::vec4 &tintColor)
     {
-        GLsizei count = s_Data->QuadVertexArray->GetIndexBuffer()->GetCount();
-
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
-                              glm::rotate(glm::mat4(1.0f), glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f)) * 
-                              glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
-        s_Data->QuadShader->SetUniform4fv("u_Color", tintColor);
-        s_Data->QuadShader->SetUniformMatrix4fv("u_Transform", transform);
-        texture->Bind(0);
-
-        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+                              glm::rotate(glm::mat4(1.0f), rotationRadians, glm::vec3(0.0f, 0.0f, 1.0f)) *
+                              glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 1.0f));
+        DrawQuad(transform, texture, tintColor);
     }
-#endif
 
     void Renderer2D::DrawLine(const glm::vec3 &positionA, const glm::vec3 &positionB, const glm::vec4 &color)
     {

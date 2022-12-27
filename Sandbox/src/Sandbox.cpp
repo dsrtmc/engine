@@ -27,8 +27,8 @@ Sandbox::Sandbox()
     m_UILayer = std::make_unique<UILayer>();
 
     // Ideally, we should have a function like PushLayer() that also calls layer's OnAttach()
-    // m_Layers.push_back(new TestLayer);
-    m_Layers.push_back(new GameLayer);
+    m_Layers.push_back(new TestLayer);
+    //    m_Layers.push_back(new GameLayer);
 
     ENG_INFO("Created Sandbox");
 }
