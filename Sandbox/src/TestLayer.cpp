@@ -17,8 +17,8 @@ using namespace Engine;
 TestLayer::TestLayer()
     : Layer("Test layer"), m_CameraController(1440.0f / 900.0f)
 {
-    m_ContainerTexture = std::make_shared<Texture2D>("../Sandbox/assets/textures/container.jpg");
-    m_GridColor = glm::vec4(0.9f, 0.2f, 0.5f, 1.0f);
+    m_ContainerTexture = std::make_shared<Texture2D>("../../Sandbox/assets/textures/container.jpg");
+    m_GridColor = glm::vec4(0.015f, 0.2f, 0.5f, 1.0f);
     m_Size = glm::vec2(0.1f, 0.1f);
     Renderer2D::Initialize();
     ENG_TRACE("Created Test layer");
@@ -81,29 +81,25 @@ void TestLayer::OnUpdate(float timestep)
     m_CameraController.OnUpdate(timestep);
 
     Renderer2D::BeginScene(m_CameraController.GetCamera());
-    Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.0f }, { 0.5f, 0.5f }, { 0.2f, 0.6f, 0.8f, 1.0f });
+    Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.99f }, { 0.5f, 0.5f }, { 0.2f, 0.6f, 0.8f, 1.0f });
     Renderer2D::DrawQuad({ -2.0f, 2.0f, 0.0f }, { 1.0f, 1.0f }, { 0.3f, 0.8f, 0.7f, 1.0f });
     Renderer2D::EndScene();
 
     Renderer2D::BeginScene(m_CameraController.GetCamera());
     Renderer2D::DrawQuad({ 2.0f, -2.0f, 0.0f }, { 1.0f, 1.0f }, { 0.3f, 0.8f, 0.7f, 1.0f });
     Renderer2D::DrawRotatedQuad({ 0.0f, -2.0f, 0.0f }, { 1.0f, 1.0f }, glm::radians(45.0f), { 0.3f, 0.8f, 0.9f, 1.0f });
-    Renderer2D::DrawRotatedQuad({ 0.0f, 2.0f, 0.0f }, { 1.0f, 1.0f }, glm::radians(45.0f), m_ContainerTexture, { 0.5f, 0.5f, 0.5f, 1.0f });
+    Renderer2D::DrawRotatedQuad({ 0.0f, 2.0f, -0.1f }, { 1.0f, 1.0f }, glm::radians(45.0f), m_ContainerTexture, { 0.5f, 0.5f, 0.5f, 1.0f });
     Renderer2D::EndScene();
 
     {
         PROFILING_SCOPE("a lot of batched calls");
         Renderer2D::BeginScene(m_CameraController.GetCamera());
-        /* ImGui prevents us from going over ~2400 calls here, and I have no idea why;
-         * It seems that ImGui fails to get its own backend data with that many draw calls
-         * for whatever reason (ImGui_Impl_OpenGL3_NewFrame) to allow for more batched quads,
-         * you could probably just disable the ImGuiLayer and it should work. */
-        for (int col = 0; col < 45; col++)
+        for (int row = 0; row < 45; row++)
         {
-            for (int row = 0; row < 45; row++)
+            for (int col = 0; col < 100; col++)
             {
-                glm::vec3 pos(row * 0.11f, col * 0.11f, 0.0f);
-                Renderer2D::DrawQuad(pos, m_Size, m_GridColor);
+                glm::vec3 pos(col * 0.11f, row * 0.11f, 1.0f);
+                Renderer2D::DrawQuad(pos, m_Size, { m_GridColor.r, row * 0.02f, col * 0.02f, 0.5f });
             }
         }
         Renderer2D::EndScene();
@@ -111,7 +107,7 @@ void TestLayer::OnUpdate(float timestep)
     static float rotation = 0.0f;
     rotation += timestep * 50.0f;
     Renderer2D::BeginScene(m_CameraController.GetCamera());
-    Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 0.0f }, { 0.25f, 0.5f }, glm::radians(rotation), { 0.6f, 0.8f, 0.2f, 1.0f });
+    Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 0.5f }, { 0.25f, 0.5f }, glm::radians(rotation), { 0.6f, 0.8f, 0.2f, 1.0f });
     Renderer2D::DrawRotatedQuad({ -1.0f, 1.0f, 0.0f }, { 0.5f, 0.25f }, glm::radians(45.0f), { 0.1f, 0.5f, 0.4f, 1.0f });
     Renderer2D::EndScene();
 

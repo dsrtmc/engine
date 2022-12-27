@@ -8,7 +8,7 @@ public:
     Rock(const glm::vec3 &position)
         : m_Position(position)
     {
-        m_Texture = std::make_shared<Engine::Texture2D>("../Sandbox/assets/textures/cobblestone.png");
+        m_Texture = std::make_shared<Engine::Texture2D>("../../Sandbox/assets/textures/cobblestone.png");
     }
 
     ~Rock() {}

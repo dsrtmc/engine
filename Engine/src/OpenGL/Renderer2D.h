@@ -13,7 +13,6 @@ namespace Engine
 
         static void BeginScene(std::shared_ptr<const OrthographicCamera> camera);
         static void EndScene();
-        static void Flush();
 
         static void DrawQuad(const glm::mat4 &transform, const glm::vec4 &color);
         static void DrawQuad(const glm::mat4 &transform, std::shared_ptr<Texture2D> texture, const glm::vec4 &tintColor);
@@ -24,5 +23,9 @@ namespace Engine
         static void DrawRotatedQuad(const glm::vec3 &position, const glm::vec2 &size, float rotationRadians, std::shared_ptr<Texture2D> texture, const glm::vec4 &tintColor = glm::vec4(1.0f));
 
         static void DrawLine(const glm::vec3 &positionA, const glm::vec3 &positionB, const glm::vec4 &color);
+    private:
+        static void Flush();
+        static void StartBatch();
+        static void NextBatch();
     };
 }

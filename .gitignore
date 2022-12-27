@@ -48,6 +48,7 @@ _deps
 .vscode
 .idea
 cmake-build-debug/
+cmake-build-release/
 
 /build
 [Bb][Uu][Ii][Ll][Dd]

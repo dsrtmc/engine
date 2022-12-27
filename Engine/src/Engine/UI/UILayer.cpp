@@ -21,7 +21,8 @@ namespace Engine
         ImGuiStyle &style = ImGui::GetStyle();
 
         // Filepath relative from /build/
-        io.Fonts->AddFontFromFileTTF("../Sandbox/assets/fonts/opensans/OpenSans-Regular.ttf", 16.5);
+//        io.Fonts->AddFontFromFileTTF("../Sandbox/assets/fonts/opensans/OpenSans-Regular.ttf", 16.5);
+        io.Fonts->AddFontFromFileTTF("../../Sandbox/assets/fonts/opensans/OpenSans-Regular.ttf", 16.5);
 
         ImGui_ImplGlfw_InitForOpenGL(Application::Get()->GetWindow()->GetNativeWindow(), true);
         ImGui_ImplOpenGL3_Init("#version 460");

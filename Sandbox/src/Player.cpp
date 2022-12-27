@@ -3,7 +3,7 @@
 Player::Player(const glm::vec3 &position, const glm::vec2 &size, Level *level)
     : m_Position(position), m_Size(size), m_Level(level)
 {
-    m_Texture = std::make_shared<Engine::Texture2D>("../Sandbox/assets/textures/pirate.png");
+    m_Texture = std::make_shared<Engine::Texture2D>("../../Sandbox/assets/textures/pirate.png");
 
     std::vector<glm::vec3> defaultVertices = {
         { -0.5f, -0.5f, 0.0f },
