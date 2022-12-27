@@ -1,11 +1,16 @@
 #include "Renderer2D.h"
 
-#include "Renderer.h"
 #include "Shader.h"
 #include "VertexArray.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
+/* whenever we load the texture, we need to assign it a slot
+ * to do that, I think we could probably have like a static variable in the texture class
+ * that would just get incremented every time we add a new texture, that would correspond to its slot number
+ * it could be returned by the LoadTexture() function or whatever, so our variable, say, m_PirateTexture.GetSlot() would
+ * hold the slot number, which we could then pass into our vertex buffer as, like, TextureIndex */
 
 namespace Engine
 {
@@ -14,6 +19,7 @@ namespace Engine
         glm::vec3 Position;
         glm::vec4 Color;
         glm::vec2 TextureCoordinates;
+        float TextureIndex;
     };
 
     struct LineVertex
@@ -24,9 +30,10 @@ namespace Engine
 
     struct RenderData
     {
-        const unsigned int MaxQuads = 10000;
-        const unsigned int MaxVertices = MaxQuads * 4;
-        const unsigned int MaxIndices = MaxQuads * 6;
+        static constexpr unsigned int MaxQuads = 10000;
+        static constexpr unsigned int MaxVertices = MaxQuads * 4;
+        static constexpr unsigned int MaxIndices = MaxQuads * 6;
+        static constexpr unsigned int MaxTextureSlots = 16; // TODO: check what the target machine has available
 
         /* Quad */
 
@@ -53,6 +60,8 @@ namespace Engine
 
         /* General */
         std::shared_ptr<Texture2D> WhiteTexture;
+        std::array<std::shared_ptr<Texture2D>, MaxTextureSlots> TextureSlots;
+        unsigned int CurrentTextureIndex = 1; // 0 - white texture
     };
 
     static RenderData *s_Data;
@@ -76,6 +85,7 @@ namespace Engine
         s_Data->QuadDefaultPositions[1] = {  0.5f, -0.5f, 0.0f, 1.0f };
         s_Data->QuadDefaultPositions[2] = {  0.5f,  0.5f, 0.0f, 1.0f };
         s_Data->QuadDefaultPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
+
         s_Data->QuadTextureCoordinates[0] = { 0.0f, 0.0f };
         s_Data->QuadTextureCoordinates[1] = { 1.0f, 0.0f };
         s_Data->QuadTextureCoordinates[2] = { 1.0f, 1.0f };
@@ -84,7 +94,7 @@ namespace Engine
         s_Data->QuadVertexBufferBatch = new QuadVertex[s_Data->MaxVertices];
         s_Data->QuadVertexBufferCursor = s_Data->QuadVertexBufferBatch;
 
-        unsigned int *quadIndices = new unsigned int[s_Data->MaxIndices];
+        auto *quadIndices = new unsigned int[s_Data->MaxIndices];
         int offset = 0;
         for (int i = 0; i < s_Data->MaxIndices; i += 6)
         {
@@ -104,13 +114,20 @@ namespace Engine
         s_Data->QuadVertexBuffer->SetLayout(BufferLayout({
              {3, "a_Position"},
              {4, "a_Color"},
-             {2, "a_TextureCoordinates"}
+             {2, "a_TextureCoordinates"},
+             {1, "a_TextureIndex"}
         }));
         s_Data->QuadVertexArray->SetIndexBuffer(std::make_shared<IndexBuffer>(quadIndices, s_Data->MaxIndices));
         delete[] quadIndices;
 
+        s_Data->TextureSlots[0] = s_Data->WhiteTexture;
+        int samplers[s_Data->MaxTextureSlots];
+        for (int i = 0; i < s_Data->MaxTextureSlots; i++)
+            samplers[i] = i;
+        s_Data->QuadShader->Bind();
+        s_Data->QuadShader->SetUniform1iv("u_Textures", samplers, s_Data->MaxTextureSlots);
+
         /* Line */
-        // TODO: Maybe make unique pointers? too much issues with memory leak if delete is not a recursive(?) operator
         s_Data->LineVertexBufferBatch = new LineVertex[s_Data->MaxVertices];
         s_Data->LineVertexBufferCursor = s_Data->LineVertexBufferBatch;
 
@@ -125,6 +142,8 @@ namespace Engine
 
     void Renderer2D::Shutdown()
     {
+        delete s_Data->QuadVertexBufferBatch;
+        delete s_Data->LineVertexBufferBatch;
         delete s_Data;
     }
 
@@ -152,6 +171,9 @@ namespace Engine
     {
         if (s_Data->QuadIndexCount)
         {
+            for (int i = 0; i < s_Data->CurrentTextureIndex; i++)
+                s_Data->TextureSlots[i]->Bind(i);
+
             uint32_t dataSize = (uint8_t *)s_Data->QuadVertexBufferCursor - (uint8_t *)s_Data->QuadVertexBufferBatch;
             s_Data->QuadVertexArray->Bind();
             s_Data->QuadVertexBuffer->SetData(s_Data->QuadVertexBufferBatch, dataSize);
@@ -167,7 +189,6 @@ namespace Engine
             s_Data->LineVertexBuffer->SetData(s_Data->LineVertexBufferBatch, dataSize);
             s_Data->LineVertexArray->SetVertexBuffer(s_Data->LineVertexBuffer);
             s_Data->LineShader->Bind();
-            // 私がっかりしてます ^_^
             glDrawArrays(GL_LINES, 0, s_Data->LineVertexCount);
         }
     }
@@ -181,6 +202,7 @@ namespace Engine
             s_Data->QuadVertexBufferCursor->Position = transform * s_Data->QuadDefaultPositions[i];
             s_Data->QuadVertexBufferCursor->Color = color;
             s_Data->QuadVertexBufferCursor->TextureCoordinates = s_Data->QuadTextureCoordinates[i];
+            s_Data->QuadVertexBufferCursor->TextureIndex = 0.0f;
             s_Data->QuadVertexBufferCursor++;
         }
         s_Data->QuadIndexCount += 6;
@@ -191,33 +213,60 @@ namespace Engine
         /* TextureCoordinates help us determine which corner we are in:
          * (0, 0) is bottom-left, (1, 0) is bottom-right etc., thus we can use current vertex's
          * texture coordinate to know whether we should modify the position by the given size */
-        for (int i = 0; i < 4; i++)
+        for (auto &QuadTextureCoordinate : s_Data->QuadTextureCoordinates)
         {
             s_Data->QuadVertexBufferCursor->Position = {
-                position.x - (size.x / 2) + s_Data->QuadTextureCoordinates[i].x * size.x,
-                position.y - (size.y / 2) + s_Data->QuadTextureCoordinates[i].y * size.y,
+                position.x - (size.x / 2) + QuadTextureCoordinate.x * size.x,
+                position.y - (size.y / 2) + QuadTextureCoordinate.y * size.y,
                 position.z
             };
             s_Data->QuadVertexBufferCursor->Color = color;
-            s_Data->QuadVertexBufferCursor->TextureCoordinates = s_Data->QuadTextureCoordinates[i];
+            s_Data->QuadVertexBufferCursor->TextureCoordinates = QuadTextureCoordinate;
+            s_Data->QuadVertexBufferCursor->TextureIndex = 0.0f;
             s_Data->QuadVertexBufferCursor++;
         }
         s_Data->QuadIndexCount += 6;
     }
 
-#if OLD_API
     void Renderer2D::DrawQuad(const glm::vec3 &position, const glm::vec2 &size, std::shared_ptr<Texture2D> texture, const glm::vec4 &tintColor)
     {
-        GLsizei count = s_Data->QuadVertexArray->GetIndexBuffer()->GetCount();
-
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
-        s_Data->QuadShader->SetUniform4fv("u_Color", tintColor);
-        s_Data->QuadShader->SetUniformMatrix4fv("u_Transform", transform);
-        texture->Bind(0);
-
-        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+//        GLsizei count = s_Data->QuadVertexArray->GetIndexBuffer()->GetCount();
+//
+//        glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
+//        s_Data->QuadShader->SetUniform4fv("u_Color", tintColor);
+//        s_Data->QuadShader->SetUniformMatrix4fv("u_Transform", transform);
+//        texture->Bind(0);
+//
+//        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+        //ENG_INFO("Texture slot: {0}", texture->GetSlot());
+        float textureIndex = 0.0f;
+        for (int i = 1; i < s_Data->CurrentTextureIndex; i++)
+        {
+            if (s_Data->TextureSlots[i]->GetRendererID() == texture->GetRendererID())
+            {
+                textureIndex = (float)i;
+                break;
+            }
+        }
+        if (textureIndex == 0.0f)
+        {
+            s_Data->TextureSlots[s_Data->CurrentTextureIndex] = texture;
+            s_Data->CurrentTextureIndex++;
+        }
+        for (auto &QuadTextureCoordinate : s_Data->QuadTextureCoordinates)
+        {
+            s_Data->QuadVertexBufferCursor->Position = {
+                    position.x - (size.x / 2) + QuadTextureCoordinate.x * size.x,
+                    position.y - (size.y / 2) + QuadTextureCoordinate.y * size.y,
+                    position.z
+            };
+            s_Data->QuadVertexBufferCursor->Color = tintColor;
+            s_Data->QuadVertexBufferCursor->TextureCoordinates = QuadTextureCoordinate;
+            s_Data->QuadVertexBufferCursor->TextureIndex = textureIndex;
+            s_Data->QuadVertexBufferCursor++;
+        }
+        s_Data->QuadIndexCount += 6;
     }
-#endif
 
     /* The main draw function, which can be called by other overloaded DrawRotatedQuad() functions */
     void Renderer2D::DrawRotatedQuad(const glm::mat4 &transform, const glm::vec4 &color)

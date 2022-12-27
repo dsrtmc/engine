@@ -29,7 +29,7 @@ namespace Engine
         m_DataFormat(0), m_InternalFormat(0)
     {
         stbi_set_flip_vertically_on_load(true);
-        // TODO: think if we actually need to store height, width etc in the class itself
+
         m_Data = stbi_load(filepath.c_str(), &m_Width, &m_Height, &m_Channels, 0);
 
         if (!m_Data)
@@ -47,7 +47,7 @@ namespace Engine
         }
         
         // TODO: assert(dataFormat != 0, "wrong format");
-        if (!m_DataFormat || !m_InternalFormat)
+        if (!m_DataFormat)
             ENG_WARN("Texture format not supported: {0}", filepath);
 
         glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
@@ -84,10 +84,5 @@ namespace Engine
     void Texture2D::Bind(unsigned int slot) const
     {
         glBindTextureUnit(slot, m_RendererID);
-    }
-
-    void Texture2D::Unbind() const
-    {
-        glBindTexture(GL_TEXTURE_2D, 0);
     }
 }

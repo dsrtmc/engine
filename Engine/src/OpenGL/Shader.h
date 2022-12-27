@@ -21,6 +21,7 @@ namespace Engine
 
         void SetUniform1i(const std::string &name, bool value);
         void SetUniform1i(const std::string &name, GLint value);
+        void SetUniform1iv(const std::string &name, GLint *values, int count);
         void SetUniform1f(const std::string &name, GLfloat value);
         void SetUniform2f(const std::string &name, GLfloat v0, GLfloat v1);
         void SetUniform2fv(const std::string &name, const glm::vec2 &vector);

@@ -6,21 +6,25 @@ class Rock
 {
 public:
     Rock(const glm::vec3 &position)
-        : m_Position(position) {}
+        : m_Position(position)
+    {
+        m_Texture = std::make_shared<Engine::Texture2D>("../Sandbox/assets/textures/cobblestone.png");
+    }
 
     ~Rock() {}
 
     void OnUpdate(float timestep) {}
     void OnRender()
     {
-        Engine::Renderer2D::DrawQuad(m_Position, { 1.0f, 0.5f }, { 0.2f, 0.2f, 0.2f, 1.0f });
+        Engine::Renderer2D::DrawQuad(m_Position, { 0.5f, 0.5f }, m_Texture, { 1.0f, 1.0f, 1.0f, 1.0f });
     }
 
     inline const glm::vec3 &GetPosition() const { return m_Position; }
-    inline const glm::vec2 GetSize() const { return { 1.0f, 0.5f }; }
+    inline const glm::vec2 GetSize() const { return { 0.5f, 0.5f }; }
 
 private:
     glm::vec3 m_Position;
+    std::shared_ptr<Engine::Texture2D> m_Texture;
 };
 
 class Level

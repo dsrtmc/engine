@@ -42,14 +42,6 @@ namespace Engine
         std::vector<BufferElement> GetElements() const { return m_Elements; };
         GLsizei GetStride() const { return m_Stride; };
 
-        // Add an attribute to the layout with *count* coordinates
-        // TODO: parameterize buffer element type
-        void Push(GLint count)
-        {
-            m_Elements.push_back((BufferElement){ count, GL_FLOAT, GL_FALSE });
-            m_Stride += count * sizeof(GLfloat);
-        }
-
     private:
         std::vector<BufferElement> m_Elements;
         GLsizei m_Stride;

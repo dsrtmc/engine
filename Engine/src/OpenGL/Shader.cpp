@@ -98,12 +98,16 @@ namespace Engine
 
     void Shader::SetUniform1i(const std::string &name, bool value)
     {
-        glUniform1i(GetUniformLocation(name), (GLint) value);
+        glUniform1i(GetUniformLocation(name), (GLint)value);
     }
 
     void Shader::SetUniform1i(const std::string &name, GLint value)
     {
         glUniform1i(GetUniformLocation(name), value);
+    }
+
+    void Shader::SetUniform1iv(const std::string &name, GLint *values, int count) {
+        glUniform1iv(GetUniformLocation(name), count, values);
     }
 
     void Shader::SetUniform1f(const std::string &name, GLfloat value)

@@ -1,14 +1,15 @@
 #version 460 core
 
-in vec2 TexCoord;
 in vec4 v_Color;
+in vec2 v_TextureCoordinates;
+in float v_TextureIndex;
 
 out vec4 color;
 
-uniform vec4 u_Color;
-uniform sampler2D Texture;
+uniform sampler2D u_Textures[16];
 
 void main()
 {
-    color = texture(Texture, TexCoord) * v_Color;
+    int index = int(v_TextureIndex);
+    color = texture(u_Textures[index], v_TextureCoordinates) * v_Color;
 }
