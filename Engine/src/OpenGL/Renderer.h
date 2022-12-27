@@ -19,10 +19,10 @@ namespace Engine
         static void Submit(const RefVAO &vao, const RefShader &shader);
 
     private:
-        static void Draw(unsigned int count);
+        static void Draw(GLsizei count);
 
     private:
-        Renderer();
+        Renderer() = default;
         unsigned int m_RendererID;
     };
 };

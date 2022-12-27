@@ -10,8 +10,8 @@ namespace Engine
     {
     public:
         Application(const Application &) = delete;
-        Application() {}
-        virtual ~Application() {}
+        Application() = default;
+        virtual ~Application() = default;
 
         virtual Window *GetWindow() = 0;
 

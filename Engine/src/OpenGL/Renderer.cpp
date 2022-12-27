@@ -14,7 +14,7 @@ namespace Engine
         Draw(vao->GetIndexBuffer()->GetCount());
     }
 
-    void Renderer::Draw(unsigned int count)
+    void Renderer::Draw(GLsizei count)
     {
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
     }

@@ -8,7 +8,7 @@ namespace Engine
     {
     public:
         UILayer();
-        ~UILayer();
+        ~UILayer() override;
 
         void Begin();
         void End();

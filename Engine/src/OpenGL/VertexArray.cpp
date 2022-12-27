@@ -30,7 +30,7 @@ namespace Engine
             // Do a double cast to ignore the compiler warning: -W-int-to-void-pointer-cast
             glVertexAttribPointer(i, element.count, element.type, element.normalized,
                                                         stride, (const void *)(uintptr_t)offset);
-            offset += element.count * element.GetSizeOfType(element.type);
+            offset += element.count * BufferElement::GetSizeOfType(element.type);
         }
         m_VertexBuffer = vbo;
     }

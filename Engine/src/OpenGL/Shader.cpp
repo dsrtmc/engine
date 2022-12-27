@@ -29,9 +29,9 @@ namespace Engine
     {
         std::string vertexSource = ParseShader(vertexShaderPath);
         std::string fragmentSource = ParseShader(fragmentShaderPath);
-        if (vertexSource == "")
+        if (vertexSource.empty())
             ENG_WARN("Vertex shader not found");
-        if (fragmentSource == "")
+        if (fragmentSource.empty())
             ENG_WARN("Fragment shader not found");
 
         GLuint vs = CreateShader(vertexSource, GL_VERTEX_SHADER);
@@ -78,7 +78,7 @@ namespace Engine
         return shader;
     }
 
-    GLint Shader::GetUniformLocation(const std::string &name)
+    GLint Shader::GetUniformLocation(const std::string &name) const
     {
         GLint location = glGetUniformLocation(m_RendererID, name.c_str());
         if (location == -1)
@@ -106,7 +106,8 @@ namespace Engine
         glUniform1i(GetUniformLocation(name), value);
     }
 
-    void Shader::SetUniform1iv(const std::string &name, GLint *values, int count) {
+    void Shader::SetUniform1iv(const std::string &name, GLint *values, int count)
+    {
         glUniform1iv(GetUniformLocation(name), count, values);
     }
 

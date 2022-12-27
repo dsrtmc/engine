@@ -25,12 +25,12 @@ namespace Engine
     public:
         typedef std::function<void (Event &)> EventCallbackFunction;
     public:
-        Window(const WindowProps &props);
+        explicit Window(const WindowProps &props);
         ~Window();
 
-        unsigned int GetWidth() const;
-        unsigned int GetHeight() const;
-        GLFWwindow *GetNativeWindow() const;
+        [[nodiscard]] unsigned int GetWidth() const { return m_Data.Width; }
+        [[nodiscard]] unsigned int GetHeight() const { return m_Data.Height; }
+        [[nodiscard]] GLFWwindow *GetNativeWindow() const { return m_Window; }
 
         void SetEventCallback(const EventCallbackFunction &callback);
 

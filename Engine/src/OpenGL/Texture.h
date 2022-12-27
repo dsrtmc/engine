@@ -15,9 +15,9 @@ namespace Engine
 
         void SetData(const void *data, unsigned int size);
 
-        inline int GetWidth() const { return m_Width; }
-        inline int GetHeight() const { return m_Height; }
-        inline GLuint GetRendererID() const { return m_RendererID; }
+        [[nodiscard]] inline int GetWidth() const { return m_Width; }
+        [[nodiscard]] inline int GetHeight() const { return m_Height; }
+        [[nodiscard]] inline GLuint GetRendererID() const { return m_RendererID; }
 
         void Bind(unsigned int slot) const;
 

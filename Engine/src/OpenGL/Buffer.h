@@ -7,11 +7,11 @@ namespace Engine
     /* Buffer Layout */
     struct BufferElement
     {
-        GLint count;
+        GLsizei count;
         GLenum type;
         GLboolean normalized;
 
-        unsigned int GetSizeOfType(GLenum type) const
+        static unsigned int GetSizeOfType(GLenum type)
         {
             switch (type)
             {
@@ -21,15 +21,16 @@ namespace Engine
                     return sizeof(GLuint);
                 case GL_UNSIGNED_BYTE:
                     return sizeof(GLubyte);
+                default:
+                    return 0;
             }
-            return 0;
         };
     };
 
     class BufferLayout
     {
     public:
-        BufferLayout(const std::vector<std::pair<int, std::string>> &elements)
+        explicit BufferLayout(const std::vector<std::pair<GLsizei, std::string>> &elements)
             : m_Stride(0)
         {
             for (auto &element : elements)
@@ -39,8 +40,8 @@ namespace Engine
             }
         }
 
-        std::vector<BufferElement> GetElements() const { return m_Elements; };
-        GLsizei GetStride() const { return m_Stride; };
+        [[nodiscard]] std::vector<BufferElement> GetElements() const { return m_Elements; };
+        [[nodiscard]] GLsizei GetStride() const { return m_Stride; };
 
     private:
         std::vector<BufferElement> m_Elements;
@@ -51,14 +52,14 @@ namespace Engine
     class VertexBuffer
     {
     public:
-        VertexBuffer(unsigned int size);
+        explicit VertexBuffer(unsigned int size);
         VertexBuffer(const void *data, unsigned int size);
         ~VertexBuffer();
 
-        void SetData(const void *data, unsigned int size);
+        void SetData(const void *data, unsigned int size) const;
         void SetLayout(const BufferLayout &layout);
         
-        BufferLayout GetLayout() const;
+        [[nodiscard]] BufferLayout GetLayout() const;
 
         void Bind() const;
         void Unbind() const;
@@ -79,7 +80,7 @@ namespace Engine
 
         void Bind() const;
         void Unbind() const;
-        inline GLsizei GetCount() { return m_Count; };
+        [[nodiscard]] inline GLsizei GetCount() const { return m_Count; };
 
     private:
         GLuint m_RendererID;

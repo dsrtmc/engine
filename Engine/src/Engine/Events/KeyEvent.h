@@ -8,7 +8,7 @@ namespace Engine
     {
     public:
         // should probably be int since we're using GLFW unknown key that's -1
-        KeyEvent(unsigned int Keycode)
+        explicit KeyEvent(unsigned int Keycode)
             : m_Keycode(Keycode) {}
 
     private:
@@ -18,12 +18,12 @@ namespace Engine
     class KeyPressedEvent : public KeyEvent
     {
     public:
-        KeyPressedEvent(int keycode, bool repeated = false)
+        explicit KeyPressedEvent(int keycode, bool repeated = false)
             : KeyEvent(keycode), m_IsRepeat(repeated) {}
 
         EVENT_GET_TYPE_NAME(KeyPressed);
 
-        bool IsRepeat() const { return m_IsRepeat; }
+        [[nodiscard]] bool IsRepeat() const { return m_IsRepeat; }
 
     private:
         bool m_IsRepeat;
@@ -32,7 +32,7 @@ namespace Engine
     class KeyReleasedEvent : public KeyEvent
     {
     public:
-        KeyReleasedEvent(int keycode)
+        explicit KeyReleasedEvent(int keycode)
             : KeyEvent(keycode) {}
 
         EVENT_GET_TYPE_NAME(KeyReleased);

@@ -17,7 +17,7 @@ namespace Engine
 
         static std::unique_ptr<Shader> FromTextFiles(const std::string &vertexShaderPath, const std::string &fragmentShaderPath);
 
-        GLint GetUniformLocation(const std::string &name);
+        GLint GetUniformLocation(const std::string &name) const;
 
         void SetUniform1i(const std::string &name, bool value);
         void SetUniform1i(const std::string &name, GLint value);

@@ -7,8 +7,8 @@ namespace Engine
     class Layer
     {
     public:
-        Layer(const std::string &name = "Layer") { m_Name = name; }
-        virtual ~Layer() {}
+        explicit Layer(const std::string &name = "Layer") { m_Name = name; }
+        virtual ~Layer() = default;
 
         virtual void OnImGuiUpdate() {}
         virtual void OnUpdate(float timestep) {}

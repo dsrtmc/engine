@@ -13,10 +13,10 @@ namespace Engine
         OrthographicCamera(float left, float right, float bottom, float top);
         ~OrthographicCamera();
 
-        const glm::mat4 &GetViewMatrix() const { return m_ViewMatrix; }
-        const glm::mat4 &GetProjectionMatrix() const { return m_ProjectionMatrix; }
-        const glm::vec3 &GetPosition() const { return m_Position; };
-        float GetRotation() const { return m_Rotation; };
+        [[nodiscard]] const glm::mat4 &GetViewMatrix() const { return m_ViewMatrix; }
+        [[nodiscard]] const glm::mat4 &GetProjectionMatrix() const { return m_ProjectionMatrix; }
+        [[nodiscard]] const glm::vec3 &GetPosition() const { return m_Position; };
+        [[nodiscard]] float GetRotation() const { return m_Rotation; };
 
         void SetProjectionMatrix(const glm::mat4 &projection);
         void SetPosition(const glm::vec3 &position);

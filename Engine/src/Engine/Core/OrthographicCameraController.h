@@ -11,13 +11,13 @@ namespace Engine
     class OrthographicCameraController
     {
     public:
-        OrthographicCameraController(float aspectRatio);
+        explicit OrthographicCameraController(float aspectRatio);
         ~OrthographicCameraController();
 
-        const std::shared_ptr<OrthographicCamera> GetCamera() const { return m_Camera; }
-        const glm::vec3 &GetCameraPosition() const { return m_CameraPosition; }
-        float GetCameraRotation() const { return m_CameraRotation; }
-        float GetZoomLevel() const { return m_ZoomLevel; }
+        [[nodiscard]] std::shared_ptr<OrthographicCamera> GetCamera() const { return m_Camera; }
+        [[nodiscard]] const glm::vec3 &GetCameraPosition() const { return m_CameraPosition; }
+        [[nodiscard]] float GetCameraRotation() const { return m_CameraRotation; }
+        [[nodiscard]] float GetZoomLevel() const { return m_ZoomLevel; }
 
         void SetCameraPosition(const glm::vec3 &position);
         void SetCameraRotation(float rotation);

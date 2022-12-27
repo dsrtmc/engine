@@ -87,6 +87,8 @@ namespace Engine
                     data.EventCallback(event);
                     break;
                 }
+                default:
+                    break;
             }
         });
 
@@ -115,20 +117,5 @@ namespace Engine
     {
         glfwSwapBuffers(m_Window);
         glfwPollEvents();
-    }
-
-    unsigned int Window::GetWidth() const
-    {
-        return m_Data.Width;
-    }
-
-    unsigned int Window::GetHeight() const
-    {
-        return m_Data.Height;
-    }
-
-    GLFWwindow *Window::GetNativeWindow() const
-    {
-        return m_Window;
     }
 };

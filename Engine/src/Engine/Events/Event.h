@@ -18,8 +18,8 @@ namespace Engine
     class Event
     {
     public:
-        virtual EventType GetType() const = 0;
-        virtual std::string GetName() const = 0;
+        [[nodiscard]] virtual EventType GetType() const = 0;
+        [[nodiscard]] virtual std::string GetName() const = 0;
 
     private:
         bool m_Handled = false;

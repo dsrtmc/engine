@@ -13,7 +13,7 @@ namespace Engine
         inline static bool IsMouseButtonPressed(int button) { return s_Instance->IsMouseButtonPressedInternal(button); }
 
     private:
-        Input();
+        Input() = default;
         bool IsKeyPressedInternal(int keycode);
         bool IsMouseButtonPressedInternal(int button);
 

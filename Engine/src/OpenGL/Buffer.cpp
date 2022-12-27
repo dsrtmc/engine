@@ -26,7 +26,7 @@ namespace Engine
         glDeleteBuffers(1, &m_RendererID);
     }
 
-    void VertexBuffer::SetData(const void *data, unsigned int size)
+    void VertexBuffer::SetData(const void *data, unsigned int size) const
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
         glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);

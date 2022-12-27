@@ -5,7 +5,7 @@ namespace Engine
     class MouseButtonEvent : public Event
     {
     public:
-        MouseButtonEvent(int button)
+        explicit MouseButtonEvent(int button)
             : m_Button(button) {}
 
     private:
@@ -15,7 +15,7 @@ namespace Engine
     class MouseButtonPressed : public MouseButtonEvent
     {
     public:
-        MouseButtonPressed(int button)
+        explicit MouseButtonPressed(int button)
             : MouseButtonEvent(button) {}
         
         EVENT_GET_TYPE_NAME(MouseButtonPressed);
@@ -24,7 +24,7 @@ namespace Engine
     class MouseButtonReleased : public MouseButtonEvent
     {
     public:
-        MouseButtonReleased(int button)
+        explicit MouseButtonReleased(int button)
             : MouseButtonEvent(button) {}
         
         EVENT_GET_TYPE_NAME(MouseButtonReleased);
@@ -36,8 +36,8 @@ namespace Engine
         MouseScrolledEvent(double xoffset, double yoffset)
             : m_OffsetX(xoffset), m_OffsetY(yoffset) {}
         
-        double GetXOffset() { return m_OffsetX; }
-        double GetYOffset() { return m_OffsetY; }
+        [[nodiscard]] double GetXOffset() const { return m_OffsetX; }
+        [[nodiscard]] double GetYOffset() const { return m_OffsetY; }
 
         EVENT_GET_TYPE_NAME(MouseScrolled);
 
