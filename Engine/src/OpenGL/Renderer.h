@@ -1,10 +1,10 @@
 #pragma once
 
-#include <glad/glad.h>
-
 #include "Buffer.h"
 #include "Shader.h"
 #include "VertexArray.h"
+
+#include <glad/glad.h>
 
 namespace Engine
 {

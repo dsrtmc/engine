@@ -1,8 +1,8 @@
 #pragma once
 
-#include "OrthographicCamera.h"
 #include "Event.h"
 #include "MouseEvent.h"
+#include "OrthographicCamera.h"
 
 #include <glm/glm.hpp>
 

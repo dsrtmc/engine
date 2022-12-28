@@ -4,7 +4,7 @@
 
 namespace Engine
 {
-    // For now it supports one vertex buffer per vertex array, will probably change in the future
+    // For now, it supports one vertex buffer per vertex array, will probably change in the future
     class VertexArray
     {
     public:

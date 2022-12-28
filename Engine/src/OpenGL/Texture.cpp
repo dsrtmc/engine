@@ -1,6 +1,6 @@
 #include "Texture.h"
 
-#include "stb_image.h"
+#include <stb_image.h>
 
 namespace Engine
 {

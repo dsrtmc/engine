@@ -1,7 +1,5 @@
 #include "Input.h"
 
-#include "Application.h"
-
 #include <GLFW/glfw3.h>
 
 namespace Engine

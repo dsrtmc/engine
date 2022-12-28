@@ -4,9 +4,9 @@
 #include "TestLayer.h"
 #include "GameLayer.h"
 
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 using namespace Engine;
 
@@ -27,8 +27,8 @@ Sandbox::Sandbox()
     m_UILayer = std::make_unique<UILayer>();
 
     // Ideally, we should have a function like PushLayer() that also calls layer's OnAttach()
-//    m_Layers.push_back(new TestLayer);
-    m_Layers.push_back(new GameLayer);
+    m_Layers.push_back(new TestLayer);
+//    m_Layers.push_back(new GameLayer);
 
     ENG_INFO("Created Sandbox");
 }
@@ -81,7 +81,7 @@ void Sandbox::Initialize()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
 
     // TODO: make engine specific not app specific i guess?
     // Set up logging for OpenGL debug messages
