@@ -25,7 +25,7 @@ namespace Engine
         std::unique_ptr<UILayer> m_UILayer;
         std::vector<Layer *> m_Layers;
 
-        static Application *s_Instance;
+        inline static Application *s_Instance;
     };
 
     Application *CreateApplication();
