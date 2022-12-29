@@ -2,11 +2,41 @@
 
 #include <cmath>
 
+// 4x11
+std::vector<std::string> tilemap = {
+    "...........",
+    "...........",
+    "..XX...XX..",
+    "...XX.XX...",
+    "....XXX....",
+    ".....X.....",
+    "...........",
+    "...........",
+    "...........",
+    "..........."
+};
+
 Level::Level(const std::string &name)
     : m_Name(name)
 {
     m_Rocks.push_back(Rock({ -3.0f, 0.5f, 0.0f }));
     m_Rocks.push_back(Rock({ -1.0f, -1.5f, 0.0f }));
+    for (int i = 0; i < tilemap.size(); i++)
+    {
+        for (int j = 0; j < tilemap[i].size(); j++)
+        {
+            if (tilemap[i][j] == '.')
+            {
+                // TODO: write Wood.Size() (?) instead of hard-coding * 0.25f
+                m_WoodBlocks.push_back(Wood({ (1 - j) * 0.3f, (1 - i) * 0.3f, -0.5f }));
+            }
+            else if (tilemap[i][j] == 'X')
+            {
+                // TODO: write Rock.Size() (?) instead of hard-coding * 0.25f
+                m_Rocks.push_back(Rock({ (1 - j) * 0.3f, (1 - i) * 0.3f, 0.0f }));
+            }
+        }
+    }
     ENG_TRACE("Created Level");
 }
 
@@ -24,8 +54,8 @@ void Level::OnRender()
     for (auto rock : m_Rocks)
         rock.OnRender();
 
-    Engine::Renderer2D::DrawQuad({ -1.0f, 0.0f, 0.0f }, { 1.5f, 1.0f }, { 0.5f, 0.6f, 0.5f, 1.0f });
-    Engine::Renderer2D::DrawQuad({ 0.0f, -1.0f, 0.0f }, { 2.0f, 1.0f }, { 0.2f, 0.3f, 0.8f, 1.0f });
+    for (auto wood : m_WoodBlocks)
+        wood.OnRender();
 }
 
 /* Returns { -1, -1 } if there's a collision on the specified location, otherwise returns distance required to create a collision */

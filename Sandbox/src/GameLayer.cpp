@@ -18,7 +18,7 @@ using namespace Engine;
 
 GameLayer::GameLayer()
     : Layer("Game layer"), m_CameraController(1440.0f / 900.0f), m_Level(new Level("Main Level")),
-    m_Player(new Player(m_CameraController.GetCameraPosition(), { 0.25f, 0.25f }, m_Level))
+    m_Player(new Player({ 0.25f, 0.25f, 0.0f }, { 0.25f, 0.25f }, m_Level))
 {
     Renderer2D::Initialize();
     ENG_TRACE("Created Game layer");
@@ -74,6 +74,14 @@ void GameLayer::OnEvent(Event &event)
 
     if (event.GetType() == EventType::KeyPressed)
         OnKeyPressed((KeyPressedEvent &)event);
+
+    if (event.GetType() == EventType::MouseScrolled)
+        OnMouseScrolled((MouseScrolledEvent &)event);
+}
+
+void GameLayer::OnMouseScrolled(MouseScrolledEvent &event)
+{
+    m_CameraController.SetZoomLevel(m_CameraController.GetZoomLevel() - event.GetYOffset() * 0.1f);
 }
 
 void GameLayer::OnKeyPressed(Engine::KeyPressedEvent &event)

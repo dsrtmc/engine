@@ -8,7 +8,7 @@ class GameLayer : public Engine::Layer
 {
 public:
     GameLayer();
-    ~GameLayer();
+    ~GameLayer() override;
 
     void OnImGuiUpdate() override;
     void OnUpdate(float timestep) override;
@@ -16,6 +16,7 @@ public:
     void OnEvent(Engine::Event &event) override;
     void OnKeyPressed(Engine::KeyPressedEvent &event);
     void OnWindowResized(Engine::WindowResizeEvent &event);
+    void OnMouseScrolled(Engine::MouseScrolledEvent &event);
 
 private:
     Engine::OrthographicCameraController m_CameraController;
