@@ -58,11 +58,16 @@ public:
     void OnUpdate(float timestep);
     void OnRender();
     glm::vec2 TestCollision(const glm::vec3 &position, const glm::vec2 &entitySize);
+    bool IsOutOfBounds(const glm::vec3 &position, const glm::vec2 &entitySize);
 
 private:
     std::string m_Name;
-    std::shared_ptr<Engine::Texture2D> m_RockTexture;
-    std::shared_ptr<Engine::Texture2D> m_WoodTexture;
+
     std::vector<Rock> m_Rocks;
+    std::shared_ptr<Engine::Texture2D> m_RockTexture;
+
     std::vector<Wood> m_WoodBlocks;
+    std::shared_ptr<Engine::Texture2D> m_WoodTexture;
+
+    glm::vec2 m_Bounds[4];
 };

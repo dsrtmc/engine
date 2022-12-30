@@ -31,7 +31,6 @@ void Player::OnUpdate(float timestep)
     /* TODO: Fix the bug - as of right now, there is a bug that causes the entity to move within
      * 2px inside/outside of the actual tile border; I believe that has something to do with the
      * floating point imprecision, however it's just my best guess */
-    
     if (Engine::Input::IsKeyPressed(ENG_KEY_W))
     {
         glm::vec3 npos = position;
@@ -93,7 +92,6 @@ void Player::OnUpdate(float timestep)
 
 void Player::OnRender()
 {
-    ENG_TRACE("We are drawing the player: {0}", m_Texture->GetRendererID());
     Engine::Renderer2D::DrawQuad(m_Position, m_Size, m_Texture);
 }
 

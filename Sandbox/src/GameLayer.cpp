@@ -58,7 +58,6 @@ void GameLayer::OnUpdate(float timestep)
 
     Renderer2D::BeginScene(m_CameraController.GetCamera());
     {
-        ENG_WARN("Starting OnRender() loop in GameLayer");
         PROFILING_SCOPE("Level & Player OnRender()");
         m_Level->OnRender();
         m_Player->OnRender();
