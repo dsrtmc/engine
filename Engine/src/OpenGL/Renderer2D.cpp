@@ -149,6 +149,8 @@ namespace Engine
 
         s_Data->LineVertexCount = 0;
         s_Data->LineVertexBufferCursor = s_Data->LineVertexBufferBatch;
+
+        s_Data->CurrentTextureIndex = 1;
     }
 
     void Renderer2D::NextBatch()
@@ -166,6 +168,7 @@ namespace Engine
         s_Data->LineShader->Bind();
         s_Data->LineShader->SetUniformMatrix4fv("u_VP", camera->GetProjectionMatrix() * camera->GetViewMatrix());
         s_Data->LineShader->SetUniformMatrix4fv("u_Transform", glm::mat4(1.0f));
+
         StartBatch();
     }
 
@@ -233,6 +236,9 @@ namespace Engine
         }
         if (textureIndex == 0.0f)
         {
+            if (s_Data->CurrentTextureIndex >= RenderData::MaxTextureSlots)
+                NextBatch();
+
             s_Data->TextureSlots[s_Data->CurrentTextureIndex] = texture;
             s_Data->CurrentTextureIndex++;
         }
@@ -286,6 +292,10 @@ namespace Engine
         }
         if (textureIndex == 0.0f)
         {
+            if (s_Data->CurrentTextureIndex >= RenderData::MaxTextureSlots)
+                NextBatch();
+
+            textureIndex = (float)s_Data->CurrentTextureIndex;
             s_Data->TextureSlots[s_Data->CurrentTextureIndex] = texture;
             s_Data->CurrentTextureIndex++;
         }

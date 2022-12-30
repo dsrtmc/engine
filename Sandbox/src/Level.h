@@ -6,11 +6,8 @@
 class Rock
 {
 public:
-    explicit Rock(const glm::vec3 &position)
-        : m_Position(position), m_Size({ 0.3f, 0.3f })
-    {
-        m_Texture = std::make_shared<Engine::Texture2D>("../../Sandbox/assets/textures/cobblestone.png");
-    }
+    explicit Rock(const glm::vec3 &position, std::shared_ptr<Engine::Texture2D> texture)
+        : m_Position(position), m_Size({ 0.3f, 0.3f }), m_Texture(texture) {}
     ~Rock() = default;
 
     void OnUpdate(float timestep) {}
@@ -32,18 +29,14 @@ private:
 class Wood
 {
 public:
-    explicit Wood(const glm::vec3 &position)
-        : m_Position(position), m_Size({ 0.3f, 0.3f })
-    {
-        m_Texture = std::make_shared<Engine::Texture2D>("../../Sandbox/assets/textures/wood.png");
-    }
+    explicit Wood(const glm::vec3 &position, std::shared_ptr<Engine::Texture2D> texture)
+        : m_Position(position), m_Size({ 0.3f, 0.3f }), m_Texture(texture) {}
     ~Wood() = default;
 
     void OnUpdate(float timestep) {}
     void OnRender()
     {
-        Engine::Renderer2D::DrawQuad(m_Position, m_Size, { 0.4f, 0.305f, 0.227f, 1.0f });
-//        Engine::Renderer2D::DrawQuad(m_Position, m_Size, m_Texture, { 1.0f, 1.0f, 1.0f, 1.0f });
+        Engine::Renderer2D::DrawQuad(m_Position, m_Size, m_Texture, { 1.0f, 1.0f, 1.0f, 1.0f });
     }
 
     [[nodiscard]] inline const glm::vec3 &GetPosition() const { return m_Position; }
@@ -68,6 +61,8 @@ public:
 
 private:
     std::string m_Name;
+    std::shared_ptr<Engine::Texture2D> m_RockTexture;
+    std::shared_ptr<Engine::Texture2D> m_WoodTexture;
     std::vector<Rock> m_Rocks;
     std::vector<Wood> m_WoodBlocks;
 };

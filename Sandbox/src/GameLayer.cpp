@@ -1,13 +1,7 @@
 #include "GameLayer.h"
 
 #include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
-
-#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-
-#include <unistd.h>
 
 using namespace Engine;
 
@@ -48,20 +42,27 @@ void GameLayer::OnImGuiUpdate()
 
 void GameLayer::OnUpdate(float timestep)
 {
-    PROFILING_SCOPE("GameLayer::OnUpdate");
+    PROFILING_SCOPE("GameLayer::OnUpdate()");
     glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
     Renderer::Clear();
 
     Renderer2D::BeginScene(m_CameraController.GetCamera());
-    m_Level->OnUpdate(timestep);
-    m_Player->OnUpdate(timestep);
+    {
+        PROFILING_SCOPE("Level & Player OnUpdate()");
+        m_Level->OnUpdate(timestep);
+        m_Player->OnUpdate(timestep);
+    }
     m_CameraController.SetCameraPosition(m_Player->GetPosition());
     Renderer2D::EndScene();
 
 
     Renderer2D::BeginScene(m_CameraController.GetCamera());
-    m_Level->OnRender();
-    m_Player->OnRender();
+    {
+        ENG_WARN("Starting OnRender() loop in GameLayer");
+        PROFILING_SCOPE("Level & Player OnRender()");
+        m_Level->OnRender();
+        m_Player->OnRender();
+    }
     Renderer2D::EndScene();
 }
 
@@ -81,7 +82,7 @@ void GameLayer::OnEvent(Event &event)
 
 void GameLayer::OnMouseScrolled(MouseScrolledEvent &event)
 {
-    m_CameraController.SetZoomLevel(m_CameraController.GetZoomLevel() - event.GetYOffset() * 0.1f);
+    m_CameraController.SetZoomLevel(m_CameraController.GetZoomLevel() - (float)event.GetYOffset() * 0.1f);
 }
 
 void GameLayer::OnKeyPressed(Engine::KeyPressedEvent &event)
