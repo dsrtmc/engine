@@ -3,11 +3,11 @@
 
 #include <memory>
 
-class Sandbox : public Engine::Application
+class GameApp : public Engine::Application
 {
 public:
-    Sandbox();
-    ~Sandbox() override;
+    GameApp();
+    ~GameApp() override;
 
     inline Engine::Window *GetWindow() override { return m_Window; };
 
@@ -26,5 +26,5 @@ private:
 
 Engine::Application *Engine::CreateApplication()
 {
-    return new Sandbox();
+    return new GameApp();
 }

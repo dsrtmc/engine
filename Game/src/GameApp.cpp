@@ -1,21 +1,16 @@
-#include "Sandbox.h"
+#include "GameApp.h"
 
-// #include "Test2D.h"
-#include "TestLayer.h"
-
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
+#include "GameLayer.h"
 
 using namespace Engine;
 
-Sandbox::Sandbox()
+GameApp::GameApp()
 {
     // Required to make this the main application instance
     s_Instance = this;
 
     // Create a window, set its event callbacks
-    m_Window = Window::Create({ "Engine", 1440, 900 });
+    m_Window = Window::Create({ "Engine", 1440, 900 }); // The only reason why I call it engine is so that it works better with my tiling WM
 
     // The window's event callback now becomes Sandbox's OnEvent() function
     m_Window->SetEventCallback([&](Event &e){ return OnEvent(e); });
@@ -26,12 +21,12 @@ Sandbox::Sandbox()
     m_UILayer = std::make_unique<UILayer>();
 
     // Ideally, we should have a function like PushLayer() that also calls layer's OnAttach()
-    m_Layers.push_back(new TestLayer);
+    m_Layers.push_back(new GameLayer);
 
     ENG_INFO("Created Sandbox");
 }
 
-Sandbox::~Sandbox()
+GameApp::~GameApp()
 {
     // Ideally do that for a LayerStack
     for (Layer *layer : m_Layers)
@@ -42,12 +37,12 @@ Sandbox::~Sandbox()
 }
 
 // App's event callback
-void Sandbox::OnEvent(Event &event)
+void GameApp::OnEvent(Event &event)
 {
     for (Layer *layer : m_Layers)
         layer->OnEvent(event);
 
-    // Write Sandbox specific events below
+    // Write app-specific events below
     EventType type = event.GetType();
     if (type == EventType::WindowClosed)
         m_Running = false;
@@ -68,7 +63,7 @@ void Sandbox::OnEvent(Event &event)
 }
 
 // Initialize GLAD, log OpenGL version
-void Sandbox::Initialize()
+void GameApp::Initialize()
 {
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         ENG_ERROR("Failed to initialize GLAD");
@@ -106,7 +101,7 @@ void Sandbox::Initialize()
 }
 
 // Main app logic
-void Sandbox::Run()
+void GameApp::Run()
 {
     while (m_Running)
     {

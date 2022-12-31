@@ -6,5 +6,6 @@ enable_testing()
 
 add_subdirectory(Engine)
 add_subdirectory(Sandbox)
+add_subdirectory(Game)
 
 # add_executable(${PROJECT_NAME} IMPORTED sandbox)
