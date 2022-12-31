@@ -1,11 +1,6 @@
 #include "Sandbox.h"
 
-// #include "Test2D.h"
 #include "TestLayer.h"
-
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
 
 using namespace Engine;
 
@@ -90,7 +85,7 @@ void Sandbox::Initialize()
         switch (severity)
         {
             case GL_DEBUG_SEVERITY_NOTIFICATION:
-                // ENG_TRACE("OpenGL notification ({0}): {1}", id, message);
+                // ENG_TRACE("(OpenGL) notification {0}: {1}", id, message);
                 break;
             case GL_DEBUG_SEVERITY_LOW:
                 ENG_INFO("(OpenGL) info {0}: {1}", id, message);

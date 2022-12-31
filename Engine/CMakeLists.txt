@@ -6,7 +6,7 @@ enable_testing()
 
 # Main library
 add_library(${PROJECT_NAME}
-        src/Engine/Core/Input.cpp
+    src/Engine/Core/Input.cpp
     src/Engine/Core/Log.cpp
     src/Engine/Core/OrthographicCamera.cpp
     src/Engine/Core/OrthographicCameraController.cpp
