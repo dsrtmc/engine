@@ -19,8 +19,8 @@ std::vector<std::string> tilemap = {
 Level::Level(const std::string &name)
     : m_Name(name)
 {
-    m_RockTexture = std::make_shared<Engine::Texture2D>("../../Sandbox/assets/textures/cobblestone.png");
-    m_WoodTexture = std::make_shared<Engine::Texture2D>("../../Sandbox/assets/textures/wood.png");
+    m_RockTexture = std::make_shared<Engine::Texture2D>("../../Game/assets/textures/cobblestone.png");
+    m_WoodTexture = std::make_shared<Engine::Texture2D>("../../Game/assets/textures/wood.png");
     size_t height = tilemap.size();
     size_t width = tilemap[0].size();
     for (int i = 0; i < height; i++)
