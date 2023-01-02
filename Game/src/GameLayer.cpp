@@ -92,6 +92,7 @@ void GameLayer::OnWindowResized(Engine::WindowResizeEvent &event)
 {
     float aspectRatio = (float) event.GetWidth() / (float) event.GetHeight();
     float zoomLevel = m_CameraController.GetZoomLevel();
-    // I don't think it works as intended as of right now
+
+    m_CameraController.SetAspectRatio(aspectRatio);
     m_CameraController.GetCamera()->SetProjectionMatrix(glm::ortho(-aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel, -1.0f, 1.0f));
 }

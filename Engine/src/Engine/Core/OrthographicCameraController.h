@@ -21,6 +21,8 @@ namespace Engine
 
         void SetCameraPosition(const glm::vec3 &position);
         void SetCameraRotation(float rotation);
+        void SetMovementSpeed(float speed);
+        void SetAspectRatio(float ratio);
         void SetZoomLevel(float level);
 
         void OnUpdate(float timestep);

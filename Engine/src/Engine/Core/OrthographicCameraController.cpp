@@ -43,6 +43,16 @@ namespace Engine
         m_Camera->SetProjectionMatrix(glm::ortho(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel, -1.0f, 1.0f));
     }
 
+    void OrthographicCameraController::SetMovementSpeed(float speed)
+    {
+        m_MovementSpeed = speed;
+    }
+
+    void OrthographicCameraController::SetAspectRatio(float ratio)
+    {
+        m_AspectRatio = ratio;
+    }
+
     void OrthographicCameraController::OnUpdate(float timestep)
     {
         // * 1000 to compensate for really low timestep values

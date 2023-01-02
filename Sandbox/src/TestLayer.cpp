@@ -96,7 +96,7 @@ void TestLayer::OnUpdate(float timestep)
         {
             for (int col = 0; col < 100; col++)
             {
-                glm::vec3 pos(col * 0.11f, row * 0.11f, 1.0f);
+                glm::vec3 pos(col * 0.105f, row * 0.105f, 1.0f);
                 Renderer2D::DrawQuad(pos, m_Size, { m_GridColor.r, row * 0.02f, col * 0.02f, 0.5f });
             }
         }
@@ -134,5 +134,6 @@ void TestLayer::OnWindowResized(Engine::WindowResizeEvent &event)
     float aspectRatio = (float) event.GetWidth() / (float) event.GetHeight();
     float zoomLevel = m_CameraController.GetZoomLevel();
     // I don't think it works as intended as of right now
+    m_CameraController.SetAspectRatio(aspectRatio);
     m_CameraController.GetCamera()->SetProjectionMatrix(glm::ortho(-aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel, -1.0f, 1.0f));
 }
