@@ -2,6 +2,7 @@
 
 #include "Event.h"
 #include "MouseEvent.h"
+#include "ApplicationEvent.h"
 #include "OrthographicCamera.h"
 
 #include <glm/glm.hpp>
@@ -31,6 +32,7 @@ namespace Engine
     private:
         void OnKeyPressed(KeyPressedEvent &event);
         void OnMouseScrolled(MouseScrolledEvent &event);
+        void OnWindowResized(WindowResizeEvent &event);
 
     private:
         glm::vec3 m_CameraPosition;

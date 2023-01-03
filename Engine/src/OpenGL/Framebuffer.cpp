@@ -34,6 +34,8 @@ namespace Engine
     Framebuffer::~Framebuffer()
     {
         glDeleteFramebuffers(1, &m_RendererID);
+        glDeleteTextures(1, &m_ColorAttachmentID);
+        glDeleteRenderbuffers(1, &m_DepthStencilAttachmentID);
     }
 
     void Framebuffer::Bind()

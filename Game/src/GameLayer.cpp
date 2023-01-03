@@ -67,6 +67,7 @@ void GameLayer::OnUpdate(float timestep)
 
 void GameLayer::OnEvent(Event &event)
 {
+    m_CameraController.OnEvent(event);
     m_Player->OnEvent(event);
 
     if (event.GetType() == EventType::WindowResized)
@@ -90,9 +91,4 @@ void GameLayer::OnKeyPressed(Engine::KeyPressedEvent &event)
 
 void GameLayer::OnWindowResized(Engine::WindowResizeEvent &event)
 {
-    float aspectRatio = (float) event.GetWidth() / (float) event.GetHeight();
-    float zoomLevel = m_CameraController.GetZoomLevel();
-
-    m_CameraController.SetAspectRatio(aspectRatio);
-    m_CameraController.GetCamera()->SetProjectionMatrix(glm::ortho(-aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel, -1.0f, 1.0f));
 }

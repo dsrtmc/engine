@@ -83,6 +83,9 @@ namespace Engine
 
         if (event.GetType() == EventType::MouseScrolled)
             OnMouseScrolled((MouseScrolledEvent &)event);
+
+        if (event.GetType() == EventType::WindowResized)
+            OnWindowResized((WindowResizeEvent &)event);
     }
 
     void OrthographicCameraController::OnKeyPressed(KeyPressedEvent &event)
@@ -97,5 +100,14 @@ namespace Engine
     void OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent &event)
     {
         SetZoomLevel(m_ZoomLevel - event.GetYOffset() * 0.1f);
+    }
+
+    void OrthographicCameraController::OnWindowResized(WindowResizeEvent &event)
+    {
+        float aspectRatio = (float) event.GetWidth() / (float) event.GetHeight();
+        float zoomLevel = GetZoomLevel();
+
+        SetAspectRatio(aspectRatio);
+        GetCamera()->SetProjectionMatrix(glm::ortho(-aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel, -1.0f, 1.0f));
     }
 }
