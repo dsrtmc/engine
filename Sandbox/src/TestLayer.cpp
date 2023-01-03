@@ -16,8 +16,13 @@ TestLayer::TestLayer()
     : Layer("Test layer"), m_CameraController(1440.0f / 900.0f)
 {
     m_ContainerTexture = std::make_shared<Texture2D>("../../Sandbox/assets/textures/container.jpg");
+
+    FramebufferProperties framebufferProps = { 1440, 900 };
+    m_Framebuffer = std::make_shared<Framebuffer>(framebufferProps);
+
     m_GridColor = glm::vec4(0.015f, 0.2f, 0.5f, 1.0f);
     m_Size = glm::vec2(0.1f, 0.1f);
+
     Renderer2D::Initialize();
     ENG_TRACE("Created Test layer");
 }
@@ -66,13 +71,17 @@ void TestLayer::OnImGuiUpdate()
         ImGui::Text("%.3fms %s", result.duration * 0.001, result.name.c_str());
     }
     m_ProfilingResults.clear();
-
+    unsigned int textureID = m_Framebuffer->GetColorAttachmentID();
+    ImGui::Image((void *)textureID, ImVec2(432.0f, 270.0f), ImVec2(0, 1), ImVec2(1, 0));
     ImGui::End();
+
+    ImGui::ShowDemoWindow();
 }
 
 void TestLayer::OnUpdate(float timestep)
 {
     PROFILING_SCOPE("TestLayer::OnUpdate");
+    m_Framebuffer->Bind();
     glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
     Renderer::Clear();
 
@@ -87,6 +96,7 @@ void TestLayer::OnUpdate(float timestep)
     Renderer2D::DrawQuad({ 2.0f, -2.0f, 0.0f }, { 1.0f, 1.0f }, { 0.3f, 0.8f, 0.7f, 1.0f });
     Renderer2D::DrawRotatedQuad({ 0.0f, -2.0f, 0.0f }, { 1.0f, 1.0f }, glm::radians(45.0f), { 0.3f, 0.8f, 0.9f, 1.0f });
     Renderer2D::DrawRotatedQuad({ 0.0f, 2.0f, -0.1f }, { 1.0f, 1.0f }, glm::radians(45.0f), m_ContainerTexture, { 0.5f, 0.5f, 0.5f, 1.0f });
+    // TODO: FIX FIX FIX ^^^^^^^^^^^^^^^^^^ FIX FIX FIX IF XIF XIF XIF I
     Renderer2D::EndScene();
 
     {
@@ -112,6 +122,7 @@ void TestLayer::OnUpdate(float timestep)
     Renderer2D::BeginScene(m_CameraController.GetCamera());
     Renderer2D::DrawLine({ -5.0f, 2.0f, 0.0f }, { -3.0f, -6.0f, 0.0f }, { 1.0f, 0.2f, 0.3f, 1.0f });
     Renderer2D::EndScene();
+    m_Framebuffer->Unbind();
 }
 
 void TestLayer::OnEvent(Event &event)

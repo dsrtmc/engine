@@ -20,9 +20,10 @@ add_library(${PROJECT_NAME}
     src/Engine/UI/UILayer.cpp
 
     src/OpenGL/Shader.cpp
+    src/OpenGL/Buffer.cpp
+    src/OpenGL/Framebuffer.cpp
     src/OpenGL/Renderer.cpp
     src/OpenGL/Renderer2D.cpp
-    src/OpenGL/Buffer.cpp
     src/OpenGL/VertexArray.cpp
     src/OpenGL/Texture.cpp
 
