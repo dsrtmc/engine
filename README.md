@@ -30,7 +30,7 @@ __<ins>2. Configuring the dependencies</ins>__
       ```
       The reason for that is I've spent way too long trying to link imgui into the project without relying on relative paths, therefore I temporarily left it like that.
       
-__<ins>3. Go to the root folder and build the project:</ins>__
+__<ins>3. Build the project:</ins>__
 
    ```bash
    # current directory: engine/
@@ -40,7 +40,7 @@ __<ins>3. Go to the root folder and build the project:</ins>__
    make
    ```
 
-__<ins>4. Run the desired project:</ins>__
+__<ins>4. Run the desired sub-project:</ins>__
 
    ```bash
    # current directory: engine/build/Sandbox/
