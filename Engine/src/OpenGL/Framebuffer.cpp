@@ -25,7 +25,7 @@ namespace Engine
         glNamedRenderbufferStorage(m_DepthStencilAttachmentID, GL_DEPTH_STENCIL, m_Properties.width, m_Properties.height);
         glNamedFramebufferRenderbuffer(m_RendererID, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_DepthStencilAttachmentID);
 
-        if (glCheckNamedFramebufferStatus(m_RendererID, GL_DRAW_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        if (glCheckFramebufferStatus(m_RendererID) != GL_FRAMEBUFFER_COMPLETE)
             ENG_ERROR("Framebuffer is not complete");
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);

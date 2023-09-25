@@ -1,5 +1,6 @@
 #pragma once
 
+// TODO: Use an enum class instead
 namespace Engine
 {
     // Keyboard

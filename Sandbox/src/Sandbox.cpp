@@ -103,6 +103,7 @@ void Sandbox::Initialize()
 // Main app logic
 void Sandbox::Run()
 {
+    // NOTE: the logic that uses the framebuffer is not fully implemented yet, expect bugs
     while (m_Running)
     {
         // Calculate the timestep for OnUpdate() methods
