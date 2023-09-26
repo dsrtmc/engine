@@ -23,7 +23,7 @@ __<ins>2. Configuring the dependencies</ins>__
       ```
    3. Fix [imgui](https://github.com/ocornut/imgui)'s GLFW imports:
       
-      Go to `Engine/vendor/imgui/backends/` and edit the file `imgui_impl_glfw3.cpp`:
+      Go to `Engine/vendor/imgui/backends/` and edit the file `imgui_impl_glfw.cpp`:
       ```cpp
       // #include <GLFW/glfw3.h>              // Comment this include out
       #include "../glfw/include/GLFW/glfw3.h" // and add this line instead
