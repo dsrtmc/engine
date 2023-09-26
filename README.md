@@ -10,7 +10,7 @@ __<ins>1. Clone the repository and its submodules:</ins>__
   
    If the repository was cloned non-recursively first, use: `git submodule update --init`
 
-__<ins>2. Configuring the dependencies</ins>__
+__<ins>2. Configuring the dependencies:</ins>__
    
    1. Build [spdlog](https://github.com/gabime/spdlog)
       
