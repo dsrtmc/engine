@@ -1,6 +1,7 @@
 # Engine
 
-"Engine" is a very aptly named project that's eventually to resemble a basic game engine. Right now it's in a state that just facilitates playing around with OpenGL, though still enabling one to treat it as a game engine with just a few tweaks to personal liking.
+"Engine" is a very aptly named project that's eventually to resemble a basic game engine. As of right nowm, it's in a state that just facilitates playing around with OpenGL, though still enabling one to treat it as a game engine with just a few tweaks to personal liking.
+*Highly inspired by [Hazel](https://github.com/TheCherno/Hazel)*
 
 ## Getting Started
 
@@ -49,4 +50,4 @@ __<ins>4. Run the desired sub-project:</ins>__
    # current directory: engine/build/Game/
    ./game
    ```
-   **NOTE: You must be inside the `engine/build/<project name>/` folder before running the executable, becuase as of right now all filepaths are relative.**
+   **NOTE: You must be inside the `engine/build/<project name>/` folder before running the executable, because as of right now all filepaths are relative.**
