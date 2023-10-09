@@ -13,7 +13,7 @@ __<ins>1. Clone the repository and its submodules:</ins>__
 
 __<ins>2. Configuring the dependencies:</ins>__
    
-   1. Build [spdlog](https://github.com/gabime/spdlog)
+   1. Build [spdlog](https://github.com/gabime/spdlog):
       
       ```bash
       cd Engine/vendor/spdlog
