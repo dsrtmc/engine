@@ -9,7 +9,7 @@ __<ins>1. Clone the repository and its submodules:</ins>__
 
    `git clone --recurse-submodules https://github.com/dsrtmc/engine.git`
   
-   If the repository was cloned non-recursively first, use: `git submodule update --init`
+   If the repository was cloned non-recursively first, use: `git submodule update --init` instead.
 
 __<ins>2. Configuring the dependencies:</ins>__
    
