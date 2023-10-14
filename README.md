@@ -1,6 +1,6 @@
 # Engine
 
-"Engine" is a very aptly named project that's eventually to resemble a basic game engine. As of right nowm, it's in a state that just facilitates playing around with OpenGL, though still enabling one to treat it as a game engine with just a few tweaks to personal liking.
+"Engine" is a very aptly named project that's eventually to resemble a basic game engine. As of right now, it's in a state that just facilitates playing around with OpenGL, though still enabling one to treat it as a game engine with just a few tweaks to personal liking.
 *Highly inspired by [Hazel](https://github.com/TheCherno/Hazel)*
 
 ## Getting Started
