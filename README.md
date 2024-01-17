@@ -44,10 +44,10 @@ __<ins>3. Build the project:</ins>__
 __<ins>4. Run the desired sub-project:</ins>__
 
    ```bash
-   # current directory: engine/build/Sandbox/
+   # current directory: engine/cmake-build-(debug/release)/Sandbox/
    ./sandbox
 
-   # current directory: engine/build/Game/
+   # current directory: engine/cmake-build-(debug/release)/Game/
    ./game
    ```
    **NOTE: You must be inside the `engine/build/<project name>/` folder before running the executable, because as of right now all filepaths are relative.**
